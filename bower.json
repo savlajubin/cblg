@@ -1,9 +1,0 @@
-{
-  "name": "Callbaseleadgen",
-  "version": "0.0.0",
-  "license": "MIT",
-  "dependencies": {
-    "angular-audio": "1.7.0",
-    "ngprogress": "1.1.2"
-  }
-}
