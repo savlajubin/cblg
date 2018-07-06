@@ -1,0 +1,34 @@
+<form  class="loginForm vertical-form form-validation" name="registartionLB_form" role="form" ng-init="reglb_err = false" ng-submit="thirdparty_registerLB(registerInfo)" class="">
+    <legend>
+        <span class="logo"></span>
+        Buyer Registration Form
+    </legend>
+    <div class="form-group" ng-class="{ 'has-error': registartionLB_form.email.$dirty && registartionLB_form.email.$error.required }">
+        <input type="email" class="form-control" required data-ng-model="registerInfo.email" placeholder="Email address" title="Please fill the email address" tabindex="2" name="email">
+        <span ng-show="reglb_err && registartionLB_form.email.$error.required" class="text-danger">Email is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartionLB_form.password.$dirty && registartionLB_form.password.$error.required }" >
+        <input type="password" class="form-control" data-ng-minlength="6" required data-ng-model="registerInfo.password" placeholder="Password" title="Please fill the password" tabindex="3" name="password">
+        <span ng-show="reglb_err && registartionLB_form.password.$error.required" class="text-danger">Password is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartionLB_form.firstname.$dirty && registartionLB_form.firstname.$error.required }" >
+        <input type="text" class="form-control" id="firstName" data-ng-model="registerInfo.first_name" placeholder="First name" required title="Please fill the first name" tabindex="4" name="firstname">
+        <span ng-show="reglb_err && registartionLB_form.firstname.$error.required" class="text-danger">First name is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartionLB_form.lastname.$dirty && registartionLB_form.lastname.$error.required }" >
+        <input type="text" class="form-control" id="lastName" data-ng-model="registerInfo.last_name" placeholder="Last name" required title="Please fill the last name" tabindex="5" name="lastname">
+        <span ng-show="reglb_err && registartionLB_form.lastname.$error.required" class="text-danger">Last name is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartionLB_form.zip.$dirty && registartionLB_form.zip.$error.required }" >
+        <input type="text" class="form-control" id="zip" data-ng-model="registerInfo.zip" placeholder="Zip code" required title="Please fill the zip code" tabindex="6" name="zip">
+        <span ng-show="reglb_err && registartionLB_form.zip.$error.required" class="text-danger">Zip code is required</span>
+    </div>
+    <div class="form-actions">
+        <!-- <input class="btn btn-primary" type="submit" value="Sign Up" tabindex="7" data-ng-disabled="registartionLB_form.$invalid || dataLoading" data-ng-click="thirdparty_registerLGN(registerInfo)" title="Sign Up"> -->
+        <button type="submit" ng-click="registartionLB_form.$invalid ? reglb_err = true : '';" class="btn btn-primary bigButtonForLoad" busy='<i class="fa fa-spinner fa-pulse"></i> Please Wait....'>
+            <!--<busy-message><i class="fa fa-spinner fa-pulse"></i> Please wait...</busy-message>-->
+            Sign Up
+        </button>
+    </div>
+</form>
+<div class="footer"><p>Already have an account? &nbsp; <a href="#!/login" title="Sign In"> Sign In</a></p></div>

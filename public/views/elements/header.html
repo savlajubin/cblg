@@ -1,0 +1,91 @@
+<header class="main-header" ng-show="authenticated">
+    <a href ng-click="goToDashboard()" class="logo">
+        <!--mini logo for sidebar mini 50x50 pixels-->
+        <!--<span class="logo-mini"><b>A</b>LT</span>-->
+        <span class="logo-mini"></span>
+        <!--logo for regular state and mobile devices-->
+        <!--<span class="logo-lg"><b>Admin</b>LTE</span>-->
+        <span class="logo-lg"></span>
+    </a>
+
+    <nav class="navbar navbar-static-top">
+        <a href="javascript:void(0)" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown" col-show-hide>
+                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" data-ng-click="isTHdropdown = !isTHdropdown">
+                        <i class="fa fa-user actionBtn"></i>
+                        <span class="hidden-xs">{{authenticatedUser.first_name}} {{authenticatedUser.last_name}}</span>
+                        <!--<i class="fa fa-user visible-xs-inline-block"></i>-->
+                        <i class="fa fa-caret-down actionBtn hidden-xs"></i>
+                    </a>
+                    <ul class="dropdown-menu gearbox" data-ng-show="isTHdropdown">
+                        <li>
+                            <a href="#!/{{authenticatedUser.role_id.code| lowercase}}/myaccount" title="MY ACCOUNT" aria-controls="myaccount"><i class="fa fa-user"></i> MY ACCOUNT</a>
+                            <!--<a ng-if="authenticatedUser.role_id.code == 'ADMIN'" href="#!/myaccount" title="MY ACCOUNT" aria-controls="myaccount"><i class="fa fa-user"></i> MY ACCOUNT</a>-->
+                            <!--<a href="javascript:void(0)" class="btn btn-default btn-flat">Sign out</a>-->
+                        </li>
+                        <li>
+                            <a href="#!/support" title="SUPPORT" aria-controls="support"><i class="fa fa-headphones"></i> SUPPORT</a>
+                        </li>
+                        <li>
+                            <a href="/api_user/logout" title="SIGN OUT" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-sign-out"></i> SIGN OUT</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+
+
+
+<aside class="main-sidebar" ng-controller="MenuController" ng-show="authenticated">
+    <section class="sidebar">
+        <ul class="sidebar-menu">
+            <!--<li class="header">MAIN NAVIGATION</li>-->
+            <li class="treeview" ng-repeat="(mainIndex, item) in items[authenticatedUser.role_id.code]">
+                <a ng-href="{{(!item.sublinks.length)?item.href:'javascript:void(0)'}}" target="{{item.target}}" title="{{item.title| uppercase}}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>{{item.title| uppercase}}</span>
+                    <i ng-if="item.sublinks.length" class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu" ng-if="!item.sublinks.length"></ul>
+                <ul class="treeview-menu" ng-if="item.sublinks.length">
+                    <li ng-repeat="(subLinkIndex, sublink) in item.sublinks" ng-class="{'active':isActive[mainIndex + '' + subLinkIndex]}">
+                        <a href="{{sublink.href}}" ng-click="setActive(mainIndex + '' + subLinkIndex)">
+                            <!--<i class="fa fa-circle-o"></i>-->{{sublink.title}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!--            <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-share"></i><span>Multilevel</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
+                                <li>
+                                    <a href="#"><i class="fa fa-circle-o"></i> Level One <i class="fa fa-angle-left pull-right"></i></a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-circle-o"></i> Level Two <i class="fa fa-angle-left pull-right"></i></a>
+                                            <ul class="treeview-menu">
+                                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
+                            </ul>
+                        </li>-->
+        </ul>
+    </section>
+</aside>

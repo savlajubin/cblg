@@ -1,0 +1,67 @@
+
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <form name="compose_frm" class="vertical-form">
+
+                <input type="hidden" name="mode" ng-model="historyData.mode">
+                <div class="modal-body">
+                    <div ng-if="historyData.mode.toUpperCase() == 'SMS'">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="text" clss="form-control" name="desc" placeholder="Description" ng-model="historyData.description" ng-required="historyData.mode == 'SMS'">
+                                <span class="col-sm-4 text-danger" ng-show="composeFrm && compose_frm.desc.$error.required">Please Enter Description</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <select name="smsheader" ng-model="historyData.sms_header" ng-required="historyData.mode == 'SMS'">
+                                    <option value="" selected>Select Caller Id</option>
+                                    <option ng-repeat="number in phoneNumbers" ng-selected="historyData.from == number.phone_no" value="{{number.phone_no}}">{{number.phone_no}}</option>
+                                </select>
+                                <span class="col-sm-4 text-danger" ng-show="composeFrm && compose_frm.smsheader.$error.required">Please Enter SMS Header</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="partfix col-sm-12 form-control">
+                                <textarea class="up" readonly="readonly" ng-model="historyData.append"></textarea><br/>
+                                <textarea class="down" ng-model="historyData.text"></textarea>
+                                <p class="text-right">{{historyData.text| smsCharCount:this}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="historyData.mode.toUpperCase() == 'EMAIL'">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="text" clss="form-control" name="desc" placeholder="Description" ng-model="historyData.description" ng-required="historyData.mode == 'SMS'">
+                                <span class="col-sm-4 text-danger" ng-show="composeFrm && compose_frm.desc.$error.required">Please Enter Description</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <input type="text" clss="form-control" name="subject" placeholder="Subject" ng-model="historyData.subject" ng-required="historyData.mode == 'Email'">
+                                <span class="col-sm-4 text-danger" ng-show="composeFrm && compose_frm.subject.$error.required">Please Enter Subject</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-sm-12" text-angular="text-angular" ta-text-editor-class="border-around" ta-html-editor-class="border-around" name="htmlcontent1" ng-model="historyData.text" ></div>
+
+                            <div ng-hide="true"><textarea ng-model="historyData.text" style="width: 100%;" placeholder="Text Message Goes here"></textarea></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-flat" ng-click="sendMessageEdit(historyData)">Send</button>
+                    <button type="button" class="btn btn-primary btn-flat" ng-click="$hide()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

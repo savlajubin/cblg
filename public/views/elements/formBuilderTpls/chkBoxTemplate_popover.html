@@ -1,0 +1,24 @@
+<form>
+    <div class="form-group">
+        <label class='control-label'>Label</label>
+        <input type='text' ng-model="label" validator="[required]" class='form-control'/>
+    </div>    <div class="form-group">
+        <label class='control-label'>Description</label>
+        <input type='text' ng-model="description" class='form-control'/>
+    </div>
+    <div class="form-group">
+        <label class='control-label'>Options</label>
+        <textarea class="form-control" rows="3" ng-model="optionsText"></textarea>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type='checkbox' ng-model="required" />
+            Required
+        </label>
+    </div>
+    <div class="btn-group formBuilderCloseBtn">
+        <button class="btn btn-xs btn-success" bs-tooltip data-title="Save Changes" ng-click="popover.save($event)"><i class="fa fa-save"></i></button>
+        <button class="btn btn-xs btn-danger" bs-tooltip data-title="Delete" ng-click="popover.remove($event)"><i class="fa fa-trash"></i></button>
+        <button class="btn btn-xs btn-info" bs-tooltip data-title="Cancel" ng-click="popover.cancel($event)"><i class="fa fa-close"></i></button>
+    </div>
+</form>

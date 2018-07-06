@@ -1,0 +1,144 @@
+<!-- Call Routing Prompts View Form -->
+<div class="animate-repeat col-sm-12">
+    <section class="content-header">
+        <div class="box-header">
+            <h1 class="box-title-new">Prompts</h1>
+            <div class="box-tools" ng-show="list">
+                <div class="input-group input-group-sm pull-left tableSearchBox">
+                    <input type="text" name="table_search" ng-model="query" ng-change="tableParams.filter(query)" class="form-control pull-right" placeholder="Search">
+
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <button class="btn google-add-btn pull-right" ng-click='getAddForm();'><i class="fa fa-plus"></i> Prompt</button>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body" col-show-hide>
+                <div ng-show="list">
+                    <table  class="table table-condensed ng-table-responsive" ng-table="tableParams" export-csv="csv">
+                        <tbody>
+                            <tr ng-class="$even? 'oddcolor' : 'evencolor'" ng-repeat="prompt in $data" ng-if="dataPresent">
+                                <td data-title="'#'"><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                                <td ng-show="showCol[0]" data-title="'Name'" sortable="'name'" data-title-text="Name">{{prompt.name}}</td>
+                                <td ng-show="showCol[1]" data-title="'Type'" sortable="'type'" data-title-text="Type">{{(prompt.type=='text')?'Text-to-Speech':'Audio'}}</td>
+                                <td ng-show="showCol[2]" data-title="'Content'" sortableX="'file_name'" data-title-text="Audio">
+                                    <span ng-if="prompt.type == 'text'" class="glyphicon glyphicon-eye-open actionBtn" data-html="true" data-title="{{prompt.text}}" data-placement="right" data-animation="am-flip-x" bs-tooltip></span>
+                                    <p class="jEllipsis" style="max-width:250px" ng-if="prompt.type == 'audio'"><i class="fa fa-music" aria-hidden="true"></i> {{prompt.file_name}}</p>
+                                </td>
+                                <td ng-show="showCol[3]" data-title="'Build'" sortable="'user_id'" data-title-text="Build">{{(prompt.user_id)?'Custom':'In-House'}}</td>
+                                <td data-title="'Action'" data-title-text="Action">
+                                    <span class="glyphicon glyphicon-trash actionBtn" title="Delete" ng-click="deletePrompt(prompt._id)"></span>
+                                    <!--<span class="btn btn-primary actionBtn" ng-if="prompt.type == 'audio'" ng-click='(!audioFile[$index]) ? playAudio(prompt.file_path, $index) : stopAudio($index)' title="Listen" ng-click="">{{(text[$index]) ? (audioFile[$index].progress == 1) ? 'Listen' : text[$index] : 'Listen'}}</span>-->
+                                    <i class="fa actionBtn" ng-class="{'fa-play':((!text[prompt._id]) || (text[prompt._id] && audioFile[prompt._id].progress == 1) || (text[prompt._id] == 'Listen')), 'fa-stop':(audioFile[prompt._id].progress != 1 && text[prompt._id] == 'Stop') }" ng-if="prompt.type == 'audio'" ng-click='(!audioFile[prompt._id]) ? playAudio(prompt.file_path, prompt._id) : stopAudio(prompt._id)' title="Listen">
+                                        <!--{{(text[prompt._id]) ?( (audioFile[prompt._id].progress == 1) ? 'Listen' : text[prompt._id] ): 'Listen'}}-->
+                                    </i>
+                                </td>
+                                <td header="'headerSettingGear.html'" ></td>
+                            </tr>
+                            <tr ng-if="!dataPresent">
+                                <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ivr-based" ng-show="!list">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <div ng-show="error" class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{error}}
+                        </div>
+                        <form name="prompt_form" method="post" ng-init="prompt_err = false;" novalidate>
+                            <div class="col-sm-10 form-group">
+                                <input type="text" class="form-control" name="prompt_name" ng-model="prompt.name" placeholder="Name this Prompt" required>
+                                <span class="text-danger" ng-show="prompt_err && prompt_form.prompt_name.$error.required">Enter Name</span>
+                            </div>
+
+                            <div class="col-sm-10 form-group">
+                                <div class="col-sm-5 pull-left">
+                                    <input type="radio" id="text" value="text" ng-model="media_mode" name="media_mode" class="regular-radio solid-blue"><label for="text"></label>
+                                    <label for="text">Use Text to Speech</label>
+                                </div>
+                                <div class="col-sm-5 pull-left">
+                                    <input type="radio" id="audio" value="audio" ng-model="media_mode" name="media_mode" class="regular-radio solid-blue" ><label for="audio"></label>
+                                    <label for="audio">Use Audio</label>
+                                </div>
+                            </div>
+
+<!--                            <div class="col-sm-12 form-group">
+                                <div class="btn-group btn-toggle borderBlue">
+                                <button class="btn btn-primary btn-flat activePrompts " ng-click="toggleClass('text');"
+                                        id="text">Use Text to Speech</button>
+                                <button class="btn btn-primary btn-flat" ng-click="toggleClass('audio');"
+                                        id="audio">Use Audio</button>
+                                </div>
+                            </div>-->
+                            <div class="col-sm-12 paddingLR5p" ng-if="media_mode == 'audio'">
+                            <!--<div class="col-sm-12 paddingLR5p" ng-if="audio">-->
+                                <div class="col-sm-10 form-group">
+                                    <input type="file" class="form-controlX" name="audio_file" data-ng-model="prompt.file" ngf-select="" ngf-pattern="audio/*" accept="audio/*" style="heightX:45px; padding:0;" required>
+                                    <!--<button class="btn btn-primary btn-flat" name="audio_file" data-ng-model="prompt.file" ngf-select ngf-pattern="audio/*" accept="audio/*" required>Select -- {{prompt.file}}</button>-->
+                                    <span class="text-danger" ng-show="prompt_err && prompt_form.audio_file.$error.required">Select File</span>
+                                    <span class="text-danger" ng-show="prompt_err && prompt_form.audio_file.$error.pattern">Select Audio File Only</span>
+                                </div>
+
+                                <div class="col-sm-10 form-group">
+                                    <input type="text" class="form-control" name="audio_repeat" ng-pattern="/^[0-9+-]*$/" ng-model="prompt.repeat" placeholder="Repeat" required>
+                                    <span class="text-danger" ng-show="prompt_err && prompt_form.audio_repeat.$error.required">Enter Repeat</span>
+                                    <span class="text-danger" ng-show="prompt_err && prompt_form.audio_repeat.$error.pattern">Enter Numbers only</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 paddingLR5p" ng-if="media_mode == 'text'">
+                            <!--<div class="col-sm-12 paddingLR5p" ng-if="!audio">-->
+                                <div class="col-sm-10 form-group">
+                                    <input type="text" class="form-control" ng-model="prompt.text" name="text_to_speech" placeholder="Enter Text" required>
+                                    <span class="text-danger" ng-show="prompt_err && prompt_form.text_to_speech.$error.required">Enter Text</span>
+                                </div>
+                                <div class="col-sm-10 form-group">
+                                    <select class="form-control" name="text_voice" ng-model="prompt.voice" required>
+                                        <option value="">Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                    <span class="text-danger" ng-show="prompt_err && prompt_form.text_voice.$error.required">Select Voice </span>
+                                </div>
+                                <div class="col-sm-10 form-group">
+                                    <input type="text" class="form-control" ng-model="prompt.repeat" ng-pattern="/^[0-9+-]*$/" name="text_repeat" placeholder="Repeat" required>
+                                    <span class="text-danger" ng-show="prompt_err && prompt_form.text_repeat.$error.required">Enter Repeat</span>
+                                    <span class="text-danger" ng-show="prompt_err && prompt_form.text_repeat.$error.pattern">Enter Numbers Only</span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-5 form-group">
+                                <input type="button" value="Cancel" ng-click="list = true;" class="btn btn-primary btn-block btn-flat">
+                            </div>
+                            <div class="col-sm-5 form-group">
+                                <input type="submit" value="Submit" ng-click="(prompt_form.$invalid) ? prompt_err = true : submitForm(prompt)" class="btn btn-primary btn-block btn-flat">
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- Call Routing Prompts View Form -->
+
+
+<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[0] = !showCol[0]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[0]]"></i> Name</a></li>
+    <li><a ng-click="showCol[1] = !showCol[1]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[1]]"></i> Type</a></li>
+    <li><a ng-click="showCol[2] = !showCol[2]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[2]]"></i> Audio</a></li>
+    <li><a ng-click="showCol[3] = !showCol[3]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[3]]"></i> Build</a></li>
+    </ul>
+    </div>
+</script>

@@ -1,0 +1,74 @@
+<div ng-show="authenticated" class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar1" role="navigation">
+    <div ng-if="authenticatedUser.role_id.code=='ADMIN'">
+        <ul class="nav nav-sidebar">
+            <li><a href="/#!/admin/dashboard">SAAS Dashboard</a></li>
+            <li><a href="/#!/admin/role">Role management</a></li>
+            <li><a href="/#!/admin/vertical">Vertical Management</a></li>
+            <li><a href="/#!/admin/category">Category Management</a></li>
+            <!-- <li><a href="/#!/admin/subcategory">Sub Category Management</a></li> -->
+            <li><a href="/#!/admin/user/LGN" title="test">List Lead Generator Network</a></li>
+            <li><a href="/#!/admin/user/SUB-LGN" title="test">List SUB-Lead Generator Network</a></li>
+            <li><a href="/#!/admin/user/LB" title="test">List Lead Buyer</a></li>
+            <li><a href="/#!/admin/user/LG" title="test">List Lead Generator</a></li>
+            <li><a href="/#!/admin/user/PA" title="test">List Phone Agent</a></li>
+            <li><a href="/#!/admin/offer">Offer Management</a></li>
+            <li><a href="/#!/admin/campaign">Campaign Management</a></li>
+            <li><a href="/#!/admin/base-price">Base Price Management</a></li>
+            <li><a href="/#!/admin/payment">Payment Management</a></li>
+            <li><a href="/#!/admin/faq">FAQ Management</a></li>
+            <li><a href="/#!/">My Account Move</a></li>
+            <li><a href="/#!/my-inbox">My Inbox</a></li>
+            <li><a href="/#!/admin/report">Reports</a></li>
+            <li><a href="/#!/admin/add_phone">Reports</a></li>
+        </ul>
+    </div>
+    <div ng-if="authenticatedUser.role_id.code=='LGN'">
+        <ul class="nav nav-sidebar">
+            <li><a  href="/#!/lgn/dashboard">Lead Gen Network Dashboard</a></li>
+            <!-- <li><a  href="/#!/">Registered New LB</a></li>
+            <li><a  href="/#!/">Registered New LGN</a></li> -->
+            <li><a href="/#!/lgn/user/LB">View Buyers</a></li>
+            <li><a href="/#!/lgn/base-price">View/set Base Price</a></li>
+            <li><a href="/#!/">Current A/R from Buyers</a></li>
+            <li><a href="/#!/">Payment History from Buyer</a></li>
+            <li><a href="/#!/">Payment History to SAAS</a></li>
+            <li><a href="/#!/">Payment Settings</a></li>
+            <li><a href="/#!/">Get HTML-Registration</a></li>
+            <li><a href="/#!/lgn/vertical">Add Vertical</a></li>
+            <li><a href="/#!/">Reports</a></li>
+            <li><a href="/#!/">Add Fund</a></li>
+        </ul>
+    </div>
+    <div ng-if="authenticatedUser.role_id.code=='LB'">
+        <ul class="nav nav-sidebar">
+            <li><a href="/#!/lb/dashboard">Lead Buyer Dashboard</a></li>
+            <li><a href="/#!/lb/offer">Manage Offer</a></li>
+            <li><a href="/#!/">Current Campaigns</a></li>
+            <!-- <li><a href="/#!/lb/phone_agents">Phone Agents</a></li> -->
+            <li><a href="/#!/">View & Approve Payable Calls</a></li>
+            <li><a href="/#!/">Payment History</a></li>
+            <li><a href="/#!/">Payment Settings</a></li>
+            <li><a href="/#!/">Get HTML-Registration</a></li>
+            <li><a href="/#!/">Reports</a></li>
+            <li><a href="/#!/">Add Funds</a></li>
+        </ul>
+    </div>
+    <div ng-if="authenticatedUser.role_id.code=='LG'">
+        <ul class="nav nav-sidebar">
+            <li><a href="/#!/lg/dashboard">Lead Seller Dashboard</a></li>
+            <li><a href="/#!/lg/offer">View all Offer</a></li>
+            <!-- <li><a href="/#!/">Manage/Add Campaigns</a></li> -->
+            <li><a href="/#!/">Call</a></li>
+            <li><a href="/#!/">Payment History</a></li>
+            <li><a href="/#!/">Payment Settings</a></li>
+            <li><a href="/#!/">Payment Options</a></li>
+            <li><a href="/#!/">Reports</a></li>
+        </ul>
+    </div>
+    <div ng-if="authenticatedUser.role_id.code=='PA'">
+        <ul class="nav nav-sidebar">
+            <li><a href="/#!/pa/web-phone">Web Phone</a></li>
+            <li><a href="/#!/pa/callHistory">Call History</a></li>
+        </ul>
+    </div>
+</div>

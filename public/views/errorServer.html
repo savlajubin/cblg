@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <% include ./elements/head.html %>
+        <style>
+            div#ajaxLoaderDiv {
+                position: fixed;
+                background-color: rgba(50,50,50,0.75);
+                bottom: 30px;
+                left: 10px;
+                z-index: 1;
+                padding: 6px 10px;
+                border-radius: 5px;
+                border: 1px solid rgba(75,75,75,0.15);
+                color: #fff;
+                font-size: 20px;
+            }
+        </style>
+    </head>
+    <body ng-app="callbaseleadgenApp" ng-controller="HomesCtrl" ng-cloak>
+        <header>
+            <div class="container-fluid">
+                <!-- views/elements/header.html -->
+                <div ng-app="MenuModule" ng-controller="MenuController">
+                    <nav role="navigation" class="navbar navbar-default">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" data-target="#navbarCollapse" data-ng-click="collapse = !collapse" class="navbar-toggle">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a href="/" ng-click="hideSubMenu();" class="navbar-brand">
+                                <span class="logo"></span>
+                                <!--[LGN's logo placeholder]-->
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+
+            </div>
+        </header>
+        <div id="middle" class="container-fluid" ng-class="!header ? 'main' : ''">
+            <div id="ajaxLoaderDiv" data-ng-if="xhrLoading"><i class="fa fa-circle-o-notch fa-spin"></i> Loading</div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center mrgbtp30">
+                        <h2 class="404"><%=title%></h2>
+                        <h4 class="secondtxt"><%=message%></h4>
+                        <p class="lasttxt">Either something went wrong or the page doesn't exists anymore</p>
+                        <a href="/" class="btn btn-primary">Go To Main Page</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="container-fluid ">
+                <% include ./elements/footer.html %>
+            </div>
+        </footer>
+    </body>
+</html>
+
+
+<style>
+    h2 {
+        font-size: 280px !important;
+    }
+    h4 {
+        font-size: 24px !important;
+    }
+    .mrgbtp30{
+        margin-bottom:23px;
+        margin-top: 0px;
+    }
+</style>

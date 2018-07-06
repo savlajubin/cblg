@@ -1,0 +1,64 @@
+<div class="col-sm-12" ng-init="listContact()">
+    <section class="content-header">
+        <div class="box-header">
+            <h1 class="box-title-new">Contact Lists</h1>
+            <div class="box-tools">
+                <div class="input-group input-group-sm pull-left tableSearchBox">
+                    <input type="text" name="table_search" ng-model="query" ng-change="tableParams.filter(query)" class="form-control pull-right" placeholder="Search">
+
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <button data-title="Create Contact List" data-animation="am-fade-and-slide-top" template="/views/advCC/addContactList.html"  bs-modal="modal" type="button" class="btn google-add-btn pull-right mrgRt5">
+                    <i class="fa fa-plus"></i> List
+                </button>
+                <a class="btn google-add-btn pull-right mrgRt5" ng-href="#!/advcc/contacts/add-contact"><i class="fa fa-plus"></i> Contact</a>
+                <a class="btn btn-primary pull-right mrgRt5" ng-href="#!/advcc/contacts/compose-message">Send Message</a>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body" col-show-hide>
+                <div class="table-responsive">
+                    <table class="table table-condensed ng-table-responsive" ng-table="tableParams" export-csv="csv">
+                        <tbody>
+                            <tr ng-class="$even? 'oddcolor' : 'evencolor'" ng-repeat="list in $data" ng-if="dataPresent">
+                                <td data-title="'#'"><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                                <td ng-show="showCol[0]" sortable="'list_name'" data-title="'List Name'" data-title-text="'Script Name'">{{list.list_name}}</td>
+                                <td ng-show="showCol[1]" data-title="'Number of Contacts'" data-title-text="'No. of Contacts '">{{list.contacts.length}}</td>
+                                <td data-title="'Action'" data-title-text="Action">
+                                    <!--<span class="glyphicon glyphicon-edit actionBtn" title="Edit" ng-click="editScript(script._id)"></span>-->
+                                    <span data-title="View Contacts" ng-click="goToNewLink('/' + currentRoleCode + '/contacts/view-contacts/' + list._id)" class="glyphicon glyphicon-eye-open actionBtn" bs-tooltip></span>
+                                    <span data-title="Import Contacts from CSV" bs-tooltip><span data-title="Import Contacts from CSV" ng-click="setListId(list._id);" class="fa fa-upload actionBtn" data-animation="am-fade-and-slide-top" template="/views/advCC/importContactsCSV.html"  bs-modal="modal"></span></span>
+                                    <!--<span data-title="Send SMS and Email" ng-click="goToNewLink('/' + currentRoleCode + '/contacts/view-contacts/' + list._id)" class="fa fa-envelope actionBtn" bs-tooltip></span>-->
+                                    <span class="glyphicon glyphicon-trash actionBtn" title="Delete" ng-click="deleteContactList(list._id)" bs-tooltip></span>
+                                </td>
+                                <td header="'headerSettingGear.html'" ></td>
+                            </tr>
+                            <tr ng-if="!dataPresent">
+                                <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row pull-right downloadCsvLink">Download as <a href="javascript:void(0)" ng-click='hideDropDown();
+                    csv.generate($event, "AgentScripts" + currentDate + ".csv");'>CSV</a></div>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[0] = !showCol[0]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[0]]"></i> List Name</a></li>
+    <li><a ng-click="showCol[1] = !showCol[1]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[1]]"></i> No of Contacts</a></li>
+    </ul>
+    </div>
+</script>
+
+

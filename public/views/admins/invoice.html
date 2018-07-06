@@ -1,0 +1,600 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<style>
+    .invoiceDataDelete {
+        padding-left: 4px;
+        border-left: 1px solid #eaedee;
+        border-bottom: 1px solid #eaedee;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        vertical-align: top;
+        padding-top: 7px;
+    }
+    .invoiceDataItem {
+        border-bottom: 1px solid #eaedee;
+        vertical-align: top;
+        padding-left: 4px;
+    }
+    .inputInvoiceDataItem {
+        outline: none;
+        border: 0px solid white;
+        padding: 5px;
+        padding-top: 5px;
+        padding-left: 1px;
+        width: 86px;
+        font-weight: normal;
+        font-family: verdana;
+        font-size: 13px;
+        color: #3c3c3c;
+    }
+    .invoiceDataDescription {
+        border-bottom: 1px solid #eaedee;
+        border-left: 1px solid #eaedee;
+        vertical-align: top;
+    }
+    .inputInvoiceDataDescription {
+        outline: none;
+        overflow: hidden;
+        border: 0px solid white;
+        padding: 5px;
+        width: 304px;
+        font-weight: normal;
+        font-family: verdana;
+        font-size: 13px;
+        color: #3c3c3c;
+    }
+    .inputInvoiceDataPriceOrQty {
+        outline: none;
+        border: 0px solid white;
+        text-align: right;
+        width: 100px;
+        padding: 5px;
+        font-family: verdana;
+        font-size: 13px;
+        color: silver;
+    }
+    .invoiceDataPriceOrQty {
+        vertical-align: top;
+        text-align: right;
+        border-bottom: 1px solid #eaedee;
+        border-left: 1px solid #eaedee;
+    }
+    .invoiceDataAmount {
+        background-color: #eaedee;
+        background-image: url(images/grey.png);
+        background-repeat: repeat-x repeat-y;
+        vertical-align: top;
+        text-align: right;
+        padding-right: 4px;
+        border-right: 1px solid #eaedee;
+        border-bottom: 1px solid #eaedee;
+        border-left: 1px solid #eaedee;
+    }
+    .inputInvoiceDataAmount {
+        background-image: url(images/grey.png);
+        background-repeat: repeat-x repeat-y;
+        background-color: #eaedee;
+        border: 0px solid white;
+        text-align: right;
+        width: 100px;
+        padding: 5px;
+        font-weight: normal;
+        font-family: verdana;
+        font-size: 13px;
+        color: #3c3c3c;
+    }
+    .invoice_notes_onFocus {
+        background-color: #FFFADC;
+        border: 1px solid #54A0E7;
+    }
+    .send_button {
+        margin-top: 0px;
+    }
+    .invoiceForm_fromNameTD {
+        border-top: 1px solid #ABADB3;
+        border-left: 1px solid #ABADB3;
+        border-bottom: 1px solid #E3E9EF;
+        border-right: 1px solid #DBDFE6;
+    }
+    .invoiceForm_fromNameTD:hover {
+        border-top: 1px solid #3D7BAD;
+        border-left: 1px solid #B5CFE7;
+        border-bottom: 1px solid #B7D9ED;
+        border-right: 1px solid #A4C9E3;
+    }
+    .invoiceForm_fromNameTD_onFocus {
+        border: 1px solid #54A0E7;
+        background-color: #FFFADC;
+    }
+    .invoiceForm_uploadArea {
+        position: relative;
+        margin-top: -14px;
+        margin-right: 0px;
+        float: right;
+        text-align: right;
+        width: 321px;
+        align: right;
+        height: 125px;
+        border: 1px dashed #d1d1d1;
+        background-color: #FFFADC;
+    }
+    .invoiceForm_uploadAreaNoBg {
+        position: relative;
+        margin-top: -14px;
+        margin-right: 0px;
+        float: right;
+        text-align: right;
+        width: 300px;
+        align: right;
+        height: 125px;
+        border: 1px dashed #d1d1d1;
+    }
+    .invoiceForm_uploadArea_done {
+        position: relative;
+        margin-top: -16px;
+        margin-right: 0px;
+        float: right;
+        text-align: right;
+        width: 300px;
+        align: right;
+    }
+    .invoiceForm_uploadField {
+        float: right;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        margin-top: 3px;
+        position: relative;
+        width: 73px;
+        height: 22px;
+        overflow: hidden;
+    }
+    .invoiceForm_uploadField_hidden {
+        display: none;
+    }
+    .saveButton {
+        height: 36px;
+        width: 139px;
+        background-image: url(images/graph_button.png);
+        background-repeat: no-repeat;
+        border: 0px;
+        font-family: verdana;
+        font-size: 12px;
+        color: #616161;
+        padding-bottom: 5px;
+        font-weight: bold;
+    }
+    .saveButton:hover {
+        height: 36px;
+        width: 139px;
+        background-image: url(images/graph_button.png);
+        background-repeat: no-repeat;
+        border: 0px;
+        font-family: verdana;
+        font-size: 12px;
+        color: black;
+        padding-bottom: 5px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    p.spacing {
+        text-align: justify;
+        font-size: 13px;
+        font-family: verdana;
+        color: #3c3c3c;
+        margin: 18px 0px 20px 0px;
+    }
+    h1.headline {
+        font-size: 21px;
+        font-weight: bold;
+        font-family: verdana;
+        color: #3c3c3c;
+        margin: 0px;
+        padding: 0px 0px 0px 0px;
+    }
+    div.tooltip {
+        text-decoration: none;
+        margin: 0px;
+        padding: 0px;
+        font-family: verdana;
+        font-size: 11px;
+        color: #1869B8;
+    } /*BG color is a must for IE6*/
+    div.tooltip span {
+        display: none;
+        padding-left: 7px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-right: 7px;
+        max-width: 180px;
+    }
+    div.tooltip:hover span {
+        z-index: 10000;
+        display: block;
+        position: absolute;
+        background: #f9f9f9;
+        border: 1px solid #cccccc;
+        color: #3c3c3c;
+    }
+    div.disable-invoice-button div {
+        color: #ababab;
+        font-family: verdana;
+        font-size: 14px;
+        position: relative;
+        top: 6px;
+    }
+    #paymentReminderDialog input.entry[type="text"]:focus, textarea:focus {
+        background: #fffadc none repeat scroll 0 0;
+    }
+    .newlineButton {
+        background-image: url("new_line_left.png");
+        background-repeat: no-repeat;
+        height: 22px;
+        position: relative;
+        width: 91px;
+    }
+    .newlineButton span.start {
+        background-image: url("new_line_right.png");
+        background-position: right center;
+        background-repeat: no-repeat;
+        color: #777777;
+        cursor: pointer;
+        font-family: Verdana;
+        font-size: 11px;
+        height: 100%;
+        position: absolute;
+        text-decoration: none;
+        width: 100%;
+    }
+    .newlineButton span.start span {
+        left: 25px;
+        position: relative;
+        top: 4px;
+    }
+
+    .buttonTD{
+        padding-top:0px;
+        margin:0px;
+        text-align:left;
+    }
+
+    .topbutton{
+        height:32px;
+        width:120px;
+    }
+
+    .td-1{
+        background-color:white;
+        text-align:left;
+        border-left:1px solid silver;
+        border-top:1px solid silver;
+        border-right:2px solid silver;
+        border-bottom:2px solid silver;
+        padding-left:20px;
+        padding-right:20px; 
+        padding-top:15px; 
+        padding-bottom:15px;
+    }
+
+    .table-1{
+        padding:0px;
+        margin:0px;
+        text-align:left;
+    }
+</style>
+<form id="invoice_form" name="invoice_form" ng-submit="invoiceSubmit(invoice)" action="" method="post" enctype="multipart/form-data" style="margin-top:20px;padding:0px;">
+<table id="main_table_wrapper" cellpadding=0 cellspacing=0 style="position:relative;top:-6px; width:800px;margin: 0 auto !important;text-align:left;" border=0>
+    <tr>
+
+        <td>
+
+
+            <!-- TB 1 -->
+            <table style="width:100%; margin-left:0px;">
+                
+                    <tr>
+
+                        <td style="text-align:left;padding-top:15px;">
+
+
+
+
+                            <!-- TB 2 -->
+                            <table cellpadding=0 cellspacing=0 style="width:100%;margin:0px;padding:0px;margin-top:10px;">
+                                <tr>
+                                    <td colspan=100 width="100%" style="text-align:left;"><!-- TB 3 -->
+
+                                        <table cellpadding=0 cellspacing=0 width="100%" style="padding:0px; margin:0px;text-align:left;">
+                                            <tr>
+                                                <td class="buttonTD"><input class="topbutton btn btn-primary" type="button" value="Preview"></td>
+                                                <td class="buttonTD"><input class="topbutton btn btn-primary" type="button" value="Print"></td>
+                                                <td class="buttonTD"><input class="topbutton btn btn-primary" type="button" value="PDF"></td>
+                                                <td class="buttonTD"><input class="topbutton btn btn-primary" type="button" value="Send"></td>
+                                                <td class="buttonTD"><input class="topbutton btn btn-primary" type="button" value="Payments"></td>
+                                                <td class="buttonTD">&nbsp;</td>
+                                                <td class="buttonTD"><input id="realSave" class="topbutton btn btn-primary" type=submit value="Save">
+                                                    <input id="cancelSave" class="topbutton btn btn-primary" style="display:none" type=button value="Cancel Save"></td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- TB 3 -->
+                                </tr>
+                                <tr>
+                                    <td style="height:10px;"></td>
+                                </tr>
+                                <tr>
+
+                                    <td colspan=100 width="100%" class="td-1">
+
+
+                                        <!-- TB 3 -->
+                                        <table border=0 cellpadding=0 cellspacing=0 width="100%" class="table-1">
+                                            <tr>
+                                                <td><table border=0 cellpadding=0 cellspacing=0 style="width:100%;">
+                                                        <tr style="vertical-align:bottom;">
+                                                            <td style="padding:0px; margin:0px;"><font style="font-size:18px;font-family:verdana;color:#3c3c3c;">From</font></td>
+                                                            <td style="padding:0px; margin:0px;text-align:right;"><font style="font-size:28px;font-weight:bold; letter-spacing:5px; font-family:arial;color:#808080;">
+                                                                <span id="invoiceHeadlineNoLogo" style="position:relative; z-index:100; margin-bottom:-14px;">
+                                                                    <input id="invoice_heading" style="text-align:right; padding-top:3px; padding-bottom:3px; padding-right:8px; width:250px; font-weight:bold; letter-spacing:5px; font-family:arial;font-size:28px;color:#808080;" class="invoiceForm_fromNameTD"  type=text name="invoice_heading" value="INVOICE">
+                                                                </span>
+                                                                </font></td>
+                                                        </tr>
+                                                    </table></td>
+                                            </tr>
+                                            <tr>
+                                                <td><!-- TB 4 -->
+
+                                                    <table border=0 cellspacing=0 cellpadding=0>
+                                                        <tr>
+                                                            <td rowspan=2 style="vertical-align:top;"><!-- TB 5 -->
+
+                                                                <table border=0 cellpadding=0 cellspacing=0 style="margin-top:5px;">
+                                                                    <tr style="height:25px;">
+                                                                        <td class="invoiceForm_fromNameTD" id="from_nameTD">
+                                                                            <input ng-model="invoice.from_name" id="from_name" style="outline:none;border:0px solid white;width:287px; padding-top:4px; padding-bottom:4px; padding-left:7px; font-weight:normal; font-family:verdana;font-size:13px;color:silver;" type=text name=from_name placeholder="Your name"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="height:5px;"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><textarea ng-model="invoice.from_address" name="from_address" id="from_address" rows=4 cols=40 class="invoiceForm_fromNameTD" style="width:289px; overflow:auto; outline:none; padding:5px; font-weight:normal; font-family:verdana;font-size:13px;color:silver;" placeholder="Your address" ></textarea></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="padding:0px; margin:0px;padding-top:25px;padding-bottom:5px;"><font style="font-size:18px;font-family:verdana;color:#3c3c3c;">To</font></td>
+                                                                    </tr>
+                                                                    <tr style="height:25px;">
+                                                                        <td class="invoiceForm_fromNameTD" id="to_nameTD"><input ng-model="invoice.to_name" id="to_name" style="outline:none;border:0px solid white;width:287px; padding-top:4px; padding-bottom:4px; padding-left:7px; font-weight:normal; font-family:verdana;font-size:13px;color:silver;" type=text name="to_name"  placeholder="Customer name"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="height:5px;"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><textarea ng-model="invoice.to_address" name="to_address" id="to_address" rows=4 cols=40 class="invoiceForm_fromNameTD" style="width:289px; overflow:auto; outline:none; padding:5px; font-weight:normal; font-family:verdana;font-size:13px;color:silver;" placeholder="Customer address"></textarea></td>
+                                                                    </tr>
+
+                                                                    <!-- TB 5 -->
+                                                                </table></td>
+                                                            <td  style="border:0px solid red; padding-right:0px; width:495px; text-align:right;vertical-align:top;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="vertical-align:bottom;"><!-- TB 5 -->
+
+                                                                <table border=0 cellpadding=0 cellspacing=0 style="width:100%; height:100%; vertical-align:bottom;border:1px solid white;">
+                                                                    <tr>
+                                                                        <td style="width:155px;"></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan=3><div id="invoiceHeadlineWhenLogo" style="display:none; float:right; vertical-align:top;margin-top:5px;margin-bottom:20px;text-align:right;letter-spacing:3px;font-size:22px;color:#3c3c3c;font-weight:normal;font-family:arial;"> <br>
+                                                                                <input id="invoice_heading_copy" style="text-align:right; padding-top:3px; padding-bottom:3px; padding-right:8px; width:200px; font-weight:normal; letter-spacing:3px; font-family:arial;font-size:22px;color:#3c3c3c;" class="invoiceForm_fromNameTD" type=text value="INVOICE">
+                                                                            </div></td>
+                                                                    </tr>
+                                                                    <tr style="height:25px;">
+                                                                        <td></td>
+                                                                        <td style="width:146px; padding-right:8px;text-align:right;font-weight:bold;font-family:verdana;font-size:13px;color:#3c3c3c;"> Invoice # </td>
+                                                                        <td class="invoiceForm_fromNameTD" id="invoice_numberTD"><input id="invoice_number" style="outline:none;border:0px solid white; width:141px; padding-left:7px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" ng-model="invoice.invoice_number" type=text name="invoice_number" placeholder="0000001"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="height:5px;"></td>
+                                                                    </tr>
+                                                                    <tr id="po_numberTR" style="height:25px;display:none;">
+                                                                        <td></td>
+                                                                        <td style="width:126px; padding-right:8px;text-align:right;font-weight:bold;font-family:verdana;font-size:13px;color:#3c3c3c;"> P.O. # </td>
+                                                                        <td class="invoiceForm_fromNameTD" id="po_numberTD"><input id="po_number" style="outline:none;border:0px solid white; width:141px; padding-left:7px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" ng-model="invoice.po_number" type=text name="po_number" value=""></td>
+                                                                    </tr>
+                                                                    <tr id="po_numberBlankTR" style="display:none;">
+                                                                        <td style="height:5px;"></td>
+                                                                    </tr>
+                                                                    <tr style="height:25px;">
+                                                                        <td></td>
+                                                                        <td style="padding-right:8px;text-align:right;font-weight:bold;font-family:verdana;font-size:13px;color:#3c3c3c;"> Invoice Date </td>
+                                                                        <td class="invoiceForm_fromNameTD" id="invoice_dateTD">
+                                                                            <input id="invoice_date" style="width:141px;outline:none;border:0px solid white;cursor:pointer;background: url(calendar-16.png) 120px 2px no-repeat; padding-left:7px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;"  ng-model="invoice.invoice_date"  type=text name="invoice_date" placeholder="08/27/2015">
+                                                                            <!--<input type="text" style="width:79%; float:left;" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />-->
+<!--                                                                            <span class="input-group-btn" style="float:left; width:20%;">
+                                                                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                                            </span>-->
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="height:5px;"></td>
+                                                                    </tr>
+                                                                    <tr style="height:25px;">
+                                                                        <td></td>
+                                                                        <td style="padding-right:8px;text-align:right;font-weight:bold;font-family:verdana;font-size:13px;color:#3c3c3c;"> Due Date </td>
+                                                                        <td class="invoiceForm_fromNameTD" id="payment_due_dateTD">
+                                                                                  <input style="width:141px;outline:none;border:0px solid white;cursor:pointer; padding-left:7px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" type=text id="payment_due_date" ng-model="invoice.payment_due_date" name="payment_due_date" placeholder="08/27/2015">
+<!--                                                                            <input type="text" style="width:79%; float:left;" class="form-control"  datepicker-popup="{{format}}"ng-model="dt" is-open="true" ng-required="true" close-text="Close" />
+                                                                            <span class="input-group-btn" style="float:left; width:20%;">
+                                                                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                                            </span>
+                                                                        </td>-->
+                                                                    </tr>
+
+                                                                    <!-- TB 5 -->
+                                                                </table></td>
+                                                        </tr>
+
+                                                        <!-- TB 4 -->
+                                                    </table></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan=100 style="width:100%;vertical-align:top;padding-top:35px;"><!-- TB 4 -->
+
+                                                    <table id="dataTable" border=0 cellpadding=0 cellspacing=0 width="100%" style="vertical-align:top;">
+                                                        <tbody>
+                                                            <tr id="topRow" style="background-color:#54A0E7;height:30px;">
+                                                                <th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:8px;text-align:left;">Item</th>
+                                                                <th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:5px;text-align:left;">Description</th>
+                                                                <th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:0px;text-align:right;padding-right:4px;">Unit Price</th>
+                                                                <th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:0px;text-align:right;padding-right:4px;">Quantity</th>
+                                                                <th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:0px;text-align:right;padding-right:10px;">Amount</th>
+                                                            </tr>
+                                                            <tr class="invoiceDataHeadRow">
+
+                                                                <td class="invoiceDataItem"><input type="text" ng-model="invoice.item" name="item" class="inputInvoiceDataDescription"></td>
+                                                                <td class="invoiceDataDescription"><textarea ng-model="invoice.description" name="description" id="description" rows=1 cols=40 class="inputInvoiceDataDescription"></textarea></td>
+                                                                <td class="invoiceDataPriceOrQty"><input ng-model="invoice.unit_price" name="unit_price" id="unit_price" type=text autocomplete=off class="inputInvoiceDataPriceOrQty" style="color:silver;" placeholder="0.00"></td>
+                                                                <td class="invoiceDataPriceOrQty"><input ng-model="invoice.qty" name="qty" id="qty" type=text autocomplete=off class="inputInvoiceDataPriceOrQty" style="color:silver;" placeholder="0.00"></td>
+                                                                <td class="invoiceDataAmount"><input ng-model="invoice.total" name="total" id="total" type=text autocomplete=off readonly  class="inputInvoiceDataAmount" placeholder="0.00"></td>
+                                                            </tr>
+
+                                                        </tbody>
+
+                                                    </table></td>
+                                            </tr>
+                                            <tr>
+                                                <!--<td style="padding-top:10px;margin:0px;text-align:left;"><div class="newlineButton"><span class="start"><span><i class="fa fa-plus"></i> New Line</span></span></div></td>-->
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td><!-- TB 4 -->
+
+                                                    <table border=0 cellpadding=0 cellspacing=0>
+                                                        <tr>
+                                                            <td style="width:500px;vertical-align:top;"><!-- TB 5 -->
+
+                                                                <table cellspacing=0 cellpadding=0>
+                                                                    <tr>
+                                                                        <td style="padding-left:2px; font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;"> 
+                                                                            Invoice Notes 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="padding-top:3px;">
+                                                                            <textarea placeholder="This section will be automatically populated with the eCheck Information of the invoice sender" name="invoice_notes" id="invoice_notes" rows=6 cols=60 style="width:430px; overflow:auto; outline:none; padding:5px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;"></textarea>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <!-- TB 5 -->
+                                                                </table></td>
+                                                            <td style="width:1px;">&nbsp;</td>
+                                                            <td style="vertical-align:top;"><!-- TB 5 -->
+
+                                                                <table id="table_sums" border=0 cellpadding=0 cellspacing=0>
+                                                                    <tr>
+                                                                        <td>&nbsp;</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="width:15px; border-top:2px solid #eaedee;">&nbsp;</td>
+                                                                        <td style="width:200px; border-top:2px solid #eaedee;font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;padding-top:6px;padding-bottom:3px;"> 
+                                                                            Subtotal 
+                                                                        </td>
+                                                                        <td style="text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid white;padding-top:6px;padding-bottom:3px;">
+                                                                            <input style="border:0px solid white;text-align:right; width:100px; padding-right:5px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" readonly type=text id="sum_subtotal" name="sum_subtotal" value="0.00">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr id="sum_blankSubtotalTR" style="height:3px;display:none;">
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr id="sum_discountTR" style="display:none;">
+                                                                        <td style="width:0px;">&nbsp;</td>
+                                                                        <td style="width:200px; font-family:verdana; font-size:11px; color:#3c3c3c; padding-left:10px;padding-bottom:1px;"> - Discount </td>
+                                                                        <td align=right><table border=0 cellpadding=0 cellspacing=0 style="width:70px;">
+                                                                                <tr>
+                                                                                    <td>&nbsp;</td>
+                                                                                    <td class="invoiceForm_fromNameTD" id ="sum_discountTD" style="text-align:right;padding-right:4px;padding-bottom:1px;"><input id="sum_discount" autocomplete=off style="outline:none; border:0px solid white;text-align:right; width:70px; padding-right:5px; font-family:verdana;font-size:13px;color:silver;" type=text name="sum_discount" value="0.00"></td>
+                                                                                </tr>
+                                                                            </table></td>
+                                                                    </tr>
+                                                                    <tr id="sum_blankAfterDiscountOrTaxTR" style="height:7px;">
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="width:15px; border-top:2px solid #eaedee;">&nbsp;</td>
+                                                                        <td style="border-top:2px solid #eaedee;font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;padding-top:7px;"> 
+                                                                            Total 
+                                                                        </td>
+                                                                        <td style="padding-top:7px; text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid white;">
+                                                                            <input style="border:0px solid white;text-align:right; width:100px; padding-right:5px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" readonly type=text name=sum_total id=sum_total value="0.00">
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <!-- amount paid -->
+                                                                    <tr>
+                                                                        <td style="width:15px; border-top:0px solid #eaedee;">&nbsp;</td>
+                                                                        <td style="border-top:0px solid #eaedee;font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;"> 
+                                                                            Amount Paid 
+                                                                        </td>
+                                                                        <td style="padding-bottom:7px;text-align:right;padding-right:4px;border-right:1px solid white;border-top:0px solid #eaedee;border-left:1px solid white;">
+                                                                            <input style="border:0px solid white;text-align:right; width:100px; padding-right:5px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" readonly type=text name=amount_paid id=amount_paid value="0.00">
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <!-- balance due -->
+                                                                    <tr style="background-color:#FBFF9E;">
+                                                                        <td style="background-color:#FBFF9E;width:15px; border-top:2px solid #eaedee;">&nbsp;</td>
+                                                                        <td style="background-color:#FBFF9E;width:200px; border-top:2px solid #eaedee;font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;padding-top:7px;padding-bottom:7px;"> 
+                                                                            Balance Due&nbsp;<span id="currency_code_output" style="font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:normal;"></span>
+                                                                        </td>
+                                                                        <td style="background-color:#FBFF9E;text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid #FBFF9E;">
+                                                                            <input style="background-color:#FBFF9E;border:0px solid white;text-align:right; width:100px; padding-right:5px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" readonly type=text name=balance_due id=balance_due value="$0.00">
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <!-- TB 5 -->
+                                                                </table></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+
+                                                        <!-- TB 4 -->
+                                                    </table></td>
+
+
+                                            </tr>
+
+
+                                            <!-- TB 3 -->
+                                        </table>
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- TB 2 -->
+                            </table>
+                        </td>
+
+                    </tr>
+
+
+                    <!-- TB 1 -->
+               
+            </table>
+
+
+
+            <!-- end main table wrapper -->
+
+        </td>
+
+    </tr>
+
+</table>
+ </form>

@@ -1,0 +1,115 @@
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h2>Agent Script</h2></div>
+        <div class="panel-body pad0 formBuilderWrapper">
+            <div class="col-md-3">
+                <div fb-components></div>
+            </div>
+            <div class="col-md-9 panel panel-default pad0" style="border-radius:0;background-color:#e7f0fa">
+                <div class="col-md-8" style="background-color:#f1f4f6">
+                    <h4 class="col-md-12 panel-heading">Script</h4>
+                    <div fb-builder="default"></div>
+                    <div>
+                        <button class="btn btn-success btn-block btn-lg faqBtn" ng-click="submitEverything(form, faqs)">Save</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="col-md-12 panel-heading">FAQ</h4>
+                    <div class="faq-group" ng-class="{faqEditMode:isEdit[fIndex]}" ng-repeat="(fIndex, faq) in faqs" ng-click="editFaq(fIndex)">
+                        <div class="faqView" ng-if="!isEdit[fIndex]">
+                            <h4>{{faq.que}}</h4>
+                            <p>{{faq.ans}}</p>
+                        </div>
+                        <div class="faqEdit" ng-if="isEdit[fIndex]">
+
+                            <div class="btn-group formBuilderCloseBtn faqCloseBtn">
+                                <button class="btn btn-xs btn-success" bs-tooltip data-title="Save" ng-click="saveFaq(fIndex)"><i class="fa fa-save"></i></button>
+                                <button class="btn btn-xs btn-danger" bs-tooltip data-title="Delete" ng-click="deleteFaq(fIndex)"><i class="fa fa-trash"></i></button>
+                                <button class="btn btn-xs btn-info" bs-tooltip data-title="Cancel" ng-click="cancelFaq(fIndex)"><i class="fa fa-close"></i></button>
+                            </div>
+
+                            <div class="row">
+                                <label>Question:</label>
+                                <textarea class="form-control" ng-model="tempFaqs[fIndex].que"></textarea>
+                            </div>
+                            <div class="row">
+                                <label>Answer:</label>
+                                <textarea class="form-control" ng-model="tempFaqs[fIndex].ans"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-click="addFaq();" class="btn btn-block btn-primary faqBtn">
+                        <i class="fa fa-plus-circle"></i> Add FAQ
+                    </div>
+                    <!--<pre ng-repeat="f in form">
+                        {{f | json}}
+                    </pre>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    h3.popover-title {margin-top: 25px;}
+    .fb-builder .fb-form-object-editable{
+        border: 1px solid #CBD2D5;
+        margin-bottom: 10px;
+        width: 100%;
+        display: inline-block;
+        background-color: #fff;
+    }
+    .fb-builder .fb-form-object-editable.empty {border: 1px dashed #aaa;}
+    .fb-builder .fb-form-object-editable:hover{
+        box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+    .formBuilderWrapper .form-group.fb_element {
+        margin-top: -11px;
+        margin-left: -11px;
+        margin-bottom: 0;
+    }
+    .formBuilderWrapper h4.panel-heading {
+        padding-left: 0;
+        border-bottom: 1px solid #CBD2D5;
+    }
+    .formBuilderWrapper .form-group > label.control-label.headLabel {
+        position: relative;
+        text-align: left !important;
+        background-color: #c8dff8;
+        color:#31708f;
+        padding: 5px 20px 5px 5px;
+        border-bottom-right-radius: 35px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    h3.popover-title{
+        background-color: transparent;
+        border-bottom: none;
+    }
+    .faq-group {
+        background: #fff;
+        display: inline-block;
+        width: 100%;
+        border: 1px solid #CBD2D5;
+        margin-bottom: 10px;
+        padding: 0px 10px;
+        cursor: pointer;
+    }
+    .faq-group:hover{
+        box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+    .faqEdit .row{
+        width: 100%;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    .faqBtn{margin: 10px 0;display: inline-block;}
+    .faqCloseBtn.formBuilderCloseBtn{position: relative;margin-top: 10px;float: right;top:inherit;right: inherit;}
+    .faqEditMode{background-color: #fffceb;}
+
+    /*div.popover.in {background-color: #fffceb;}*/
+</style>

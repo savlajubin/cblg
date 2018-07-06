@@ -1,0 +1,99 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Appointment</h4>
+            </div>
+            <form autocomplete="off" name="appointmentForm" novalidate ng-init="ap_err = false;">
+                <div class="modal-body">
+                    <div class="form-group row" >
+                        <label>Appointment Title </label>
+                        <input type="text" name="appointmentName" ng-pattern="/^\d*[a-z A-Z][a-z\d A-Z\d]*$/" ng-model="appointmentData.appointmentName" placeholder="Appointment Name" class="form-control" focus-me required>
+                        <span ng-show="ap_err && appointmentForm.appointmentName.$error.required" class="text-danger">Appointment name is required</span>
+                        <span ng-show="ap_err && appointmentForm.appointmentName.$error.pattern" class="text-danger">Appointment name should not be only numbers</span>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6 datePickerDiv padL0">
+                            <label>Appointment date</label>
+                            <input type="text" name="appointmentFrom" ng-model="appointmentData.appointmentFrom" date-format="MM/dd/yyyy" data-min-date="{{todaysDate}}" date-type="string" placeholder="Appointment From" class="form-control" bs-datepicker required>
+                            <span ng-show="ap_err && appointmentForm.appointmentFrom.$error.required" class="text-danger">Please enter valid date</span>
+                            <span ng-show="ap_err && appointmentForm.appointmentFrom.$error.min" class="text-danger">Past date appointment cannot be added</span>
+                        </div>
+                        <!--                        <div class="col-sm-6 datePickerDiv padR0" ng-class="{'has-error': appointmentForm.appointmentTo.$dirty && appointmentForm.appointmentTo.$error.required }">
+                                                    <label>To:</label>
+                                                    <input type="text" name="appointmentTo" ng-model="appointmentData.appointmentTo" date-format="yyyy/MM/dd" placeholder="Appointmnet To" class="form-control" bs-datepicker required>
+                                                    <span ng-show="ap_err && appointmentForm.appointmentTo.$error.required" class="text-danger">End Date is required</span>
+                                                </div>-->
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6 padL0">
+                            <div class="input-append mrgrt30">
+                                <input type="text" class="ivr_selectX form-control dialInputSec backWhite timeInput" name="appointmentTimeFrom" bs-timepicker data-minute-step="1" ng-model="appointmentData.appointmentTimeFrom" autoclose="true" placeholder="From Time" required>
+                                <span class="add-on"><i class="glyphicon glyphicon-time"></i></span>
+                            </div>
+                            <span ng-show="ap_err && appointmentForm.appointmentTimeFrom.$error.required" class="text-danger">From Time is required</span>
+                        </div>
+                        <div class="col-sm-6 padR0">
+                            <div class="input-append mrgrt30">
+                                <input type="text" class="ivr_selectX form-control dialInputSec backWhite timeInput" name="appointmentTimeTo" bs-timepicker data-minute-step="1" ng-model="appointmentData.appointmentTimeTo" autoclose="true" placeholder="To Time" required>
+                                <span class="add-on"><i class="glyphicon glyphicon-time"></i></span>
+                            </div>
+                            <span ng-show="ap_err && appointmentForm.appointmentTimeTo.$error.required" class="text-danger">End Time is required</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="row">
+                            <label>Appointment Mode</label>
+                        </div>
+
+                        <div class="col-sm-3 padL0">
+                            <input type="radio" id="private" ng-init="appointmentData.appointmentMode = 'true'" value="true" name="appointmentMode" ng-model="appointmentData.appointmentMode" class="regular-radio solid-blue" required>
+                            <label for="private"></label>
+                            <label for="private">Private</label>
+                        </div>
+
+                        <div class="col-sm-3 padL0">
+                            <input type="radio" id="public" value="false" name="appointmentMode" ng-model="appointmentData.appointmentMode" class="regular-radio solid-blue" required>
+                            <label for="public"></label>
+                            <label for="public">Public</label>
+                        </div>
+
+                        <span ng-show="ap_err && appointmentForm.appointmentMode.$error.required" class="text-danger">Select appointment mode</span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label>Calendar</label>
+                        <!--                        <isteven-multi-select
+                                                    input-model="calendarScript"
+                                                    output-model="calendarId"
+                                                    button-label="script_id"
+                                                    item-label="script_id"
+                                                    tick-property="ticked"
+                                                    search-property="script_id"
+                                                    selection-mode='single'
+                                                    >
+                                                </isteven-multi-select>-->
+                        <select ng-change="getSpecificCalendarScript(calendarId)" ng-model="calendarId" name="calendarScript" class="form-control" ng-model="appointmentForm.calendarScript">
+                            <option value="">General</option>
+                            <option ng-repeat="calendar in calendarScript" value="{{calendar.script_id._id}}" >{{calendar.script_id.script_name}}</option>
+                        </select>
+                        <span ng-show="ap_err && appointmentForm.calendarScript.$error.required" class="text-danger">Please Select calendar</span>
+                    </div>
+
+                    <div class="form-group row formBuilderWrapper">
+                        <div ng-if="newForm" ng-model="inputData" fb-form="default" fb-form-value="newForm" fb-default="defaultValue"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                   
+                    <button type="button" class="btn btn-primary btn-flat" ng-click="(appointmentForm.$invalid) ? ap_err = true : createAppointment(appointmentData, inputData);" style="float:left">Submit</button>
+                    <button type="button" class="btn btn-primary btn-flat" ng-click="$hide()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

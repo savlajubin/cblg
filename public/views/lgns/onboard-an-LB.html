@@ -1,0 +1,1148 @@
+<div class="tabsContainer col-sm-12">
+    <div class="panel panel-default" ng-init="setTab(0);
+            autorecharge = false;
+            common_msg = false;
+            contracts = false;
+            media_agency = false;
+            payment = false;
+            marketing = false;
+            call_recording = false;
+            cvv_err = false;
+            crm_err = false;
+            pa_err = false;
+            termss = false;
+            congrats = false;">
+        <div class="panel-heading"><h3>Onboard a Lead Buyer</h3><div class= "text-center text-danger" ng-show="common_msg">*Please complete the current tab before proceeding</div></div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(0)}"><a href ng-click="routeReload()">Get Registered</a></li>
+                    <li ng-class="{active:isSet(1)}"><a href ng-click="(contact_info.$invalid) ? '' : setTab(1)">Contact Info</a></li>
+                    <li ng-class="{active:isSet(2)}"><a href ng-click="(login_val.$invalid) ? '' : setTab(2)">Login Credentials</a></li>
+                    <li ng-class="{active:isSet(3)}"><a href ng-click="(echeck_info.$invalid) ? '' : setTab(3)">ECheck Information</a></li>
+                    <li ng-class="{active:isSet(4)}"><a href ng-click="(cvv_err) ? setTab(4) : ''">Credit Card Information</a></li>
+                    <li ng-class="{active:isSet(5)}"><a href ng-click="(autorecharge) ? setTab(5) : ''">Auto Recharge</a></li>
+                    <!--<li ng-class="{active:isSet(5)}"><a href ng-click="setTab(5)">Auto Recharge</a></li>-->
+                    <li ng-class="{active:isSet(6)}"><a href ng-click="(crm_err) ? setTab(6) : ''">CRM Options</a></li>
+                    <li ng-class="{active:isSet(8)}"><a href ng-click="(custom_val.$invalid) ? '' : setTab(8)">Customize your instance</a></li>
+                    <li ng-class="{active:isSet(9)}"><a href ng-click="(contracts) ? setTab(9) : ''">Contracts</a></li>
+                    <li ng-class="{active:isSet(10)}"><a href ng-click="(media_agency) ? setTab(10) : ''">Media Agency</a></li>
+                    <li ng-class="{active:isSet(11)}"><a href ng-click="(payment) ? setTab(11) : ''">Payments for Calls</a></li>
+                    <li ng-class="{active:isSet(12)}"><a href ng-click="(marketing) ? setTab(12) : ''">Automated Marketing</a></li>
+                    <li ng-class="{active:isSet(13)}"><a href ng-click="(call_recording) ? setTab(13) : ''">Call Recording</a></li>
+                    <!-- <li ng-class="{active:isSet(14)}"><a href ng-click="(phone_agent_usage) ? setTab(14) : ''">Phone Agents</a></li> -->
+                    <li ng-class="{active:isSet(14)}"><a href ng-click="(pa_err) ? setTab(14) : ''">Phone Agents</a></li>
+                    <li ng-class="{active:isSet(15)}"><a href ng-click="(regapproval) ? setTab(15) : ''">Registration Approval</a></li>
+                    <li ng-class="{active:isSet(16)}"><a href ng-click ="(termss) ? setTab(16) : ''">Terms and Conditions</a></li>
+                    <!--<li ng-class="{active:isSet(17)}"><a href ng-click ="(congrats) ? setTab(17) : ''">Congratulation</a></li>-->
+                    <li ng-class="{active:isSet(17)}"><a href ng-click ="setTab(17)">Congratulation</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div ng-show="isSet(0)">
+                        <div class="user">
+                            <div  class="form-group">
+                                <div class="search-user-copy">
+                                    <h1>Search Existing User Registrations</h1>
+                                    First, let's check Existing Users to see if the Lead Buyer has began the registration process online.  If we can't find him under Existing Users, we'll add him as a New User
+                                </div>
+
+                                <div ng-show = "selectOption == '1'" class="text-right">
+                                    <h4>
+                                        <a class="btn btn-primary btn-flat" ng-click = "(user.$invalid) ? common_msg = true : '';
+                                            (user.$invalid) ? myerror = true : register_lb(userD)">Next</a>
+                                    </h4>
+                                </div>
+                                <div ng-show = "selectOption == '0'" class="text-right">
+                                    <h4>
+                                        <a class="btn btn-primary btn-flat" ng-click = "(exist_userForm.$invalid) ? common_msg = true : '';
+                                            (exist_userForm.$invalid) ? myerror = true : setTab(1);">Next</a>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="form-group row">
+                                    <div class="col-sm-5">
+                                        <input type="radio" id="existing" value="0"  ng-model="selectOption" ng-click="userD = '';
+                                            myerror = false" class="regular-radio solid-blue">
+                                        <label for="existing"></label>
+                                        <label for="existing">Existing User</label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="radio" id="new" ng-click="userD = '';
+                                            myerror = false;
+                                            selected_existing_user = ''" value="1" ng-model="selectOption" class="regular-radio solid-blue">
+                                        <label for="new"></label>
+                                        <label for="new">New User</label>
+                                    </div>
+                                </div>
+
+                                <div ng-show = "selectOption == '1'">
+                                    <form name="user" ng-init = "myerror = false" novalidate  autocomplete = "off">
+                                        <div class="row form-group">
+                                            <input type="email" class="form-control" name="email" data-ng-model="userD.email" placeholder="Email" required>
+                                            <span class = "text-danger" ng-show="(user.email.$error.required) && myerror" class="error">Email is required</span>
+                                            <span class = "text-danger"  ng-show="user.email.$dirty && user.email.$error.email" >Invalid Email Address</span>
+                                        </div>
+                                        <div class="row form-group">
+                                            <input type="password" class="form-control" name="pwd" data-ng-model="userD.password" placeholder="Password" required>
+                                            <span class = "text-danger" ng-show="myerror && user.pwd.$error.required">Password is required</span>
+                                        </div>
+                                        <div class="row form-group">
+                                            <input type="text" class="form-control" name="firstName"  data-ng-model="userD.first_name"placeholder="First Name" required>
+                                            <span class = "text-danger" ng-show="(user.firstName.$error.required) && myerror">First Name is required</span>
+                                            <!-- <span class = "text-danger" ng-show="(user.firstName.$error.pattern) && myerror">First Name should have only alpahbets</span> -->
+                                        </div>
+                                        <div class="row form-group">
+                                            <input type="text" class="form-control" name="lastName"  data-ng-model="userD.last_name"placeholder="Last Name" required>
+                                            <span class = "text-danger" ng-show=" user.lastName.$error.required && myerror">Last Name is required</span>
+                                            <!--  <span class = "text-danger" ng-show=" user.lastName.$error.pattern && myerror">Last Name should have only alphabets.</span> -->
+                                        </div>
+                                        <div class="row form-group">
+                                            <input type="text" class="form-control" name="phone" data-ng-model="userD.phone_no"placeholder="Contact Number"ng-minlength="8" ng-maxlength="15" ng-pattern="/^[0-9+-]*$/" required>
+                                            <span ng-show="user.phone.$error.minlength" class="text-danger">Contact number is too short.</span>
+                                            <span ng-show="user.phone.$error.maxlength"class="text-danger">Contact number is too long.</span>
+                                            <span ng-show="user.phone.$error.pattern && !user.phone.$pristine"
+                                                  class="text-danger">Contact Number should be number only.</span>
+                                            <span class = "text-danger" ng-show="myerror && user.phone.$error.required">Contact Number is required</span>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-5 pull-right no-padding">
+                                                <input type="submit" ng-click = "(user.$invalid) ? myerror = true : register_lb(userD)" value="Next" class="btn btn-primary btn-block btn-flat">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div ng-show = "selectOption == '0'" class="form-group">
+                                    <form name="exist_userForm" class="" ng-init = "myerror = false" novalidate  autocomplete = "off">
+
+                                        <div class="form-group col-sm-10">
+                                            <select class="form-control" name="user_name" data-ng-model="selected_existing_user" required style="width: 100%;">
+                                                <option value = "">Select Username</option>
+                                                <option ng-repeat="LBusers in LBuserList" value="{{LBusers._id}}" >{{LBusers.first_name}} {{LBusers.last_name}}</option>
+                                            </select>
+                                            <span class = "text-danger" ng-show="exist_userForm.user_name.$invalid && myerror">Please Select Username</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-5 pull-left">
+                                            </div>
+                                            <div class="col-sm-5 pull-left">
+                                                <input type="submit" ng-click = "(exist_userForm.$invalid) ? common_msg = true : '';
+                                                    (exist_userForm.$invalid) ? myerror = true : setTab(1)" value="Next" class="btn btn-primary btn-block btn-flat">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(1)">
+
+                        <div class="saas-onboard-contact-info">
+                            <form role="form" name="contact_info" ng-init = "con_submit = false;
+                                    common_msg = false;" novalidate data-ng-submit="submitContactInfo(contactInfo)">
+                                <div class="form-group">
+                                    <div class="pull-right">
+                                        <h4>
+                                            <a class="btn btn-primary btn-flat mrgRt5" ng-click="routeReload()">Previous</a><button type="submit"  class="btn btn-primary btn-flat" ng-click="contact_info.$invalid ? common_msg = true : '';
+                                                contact_info.$invalid ? con_submit = true : setTab(2)">Next</button>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <h4>Contact Info</h4>
+                                <p>Please enter your contact information below.</p>
+                                <div class="contact-info col-sm-8 col-sm-offset-2">
+                                    <div ng-show="success_contact" class="alert alert-success">{{success_contact}}</div>
+                                    <div ng-show="error_contact" class="alert text-danger">{{error_contact}}</div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="firstName" data-ng-model="contactInfo.first_name" placeholder="First Name" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.firstName.$error.required" >First Name is required</span>
+                                        <!-- <span class = "text-danger" ng-show="con_submit && contact_info.firstName.$error.pattern" >First Name should have only alphabets</span> -->
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="lastName" data-ng-model="contactInfo.last_name"placeholder="Last Name" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.lastName.$error.required">Last Name is required</span>
+                                        <!-- <span class = "text-danger" ng-show="con_submit && contact_info.lastName.$error.required">Last Name should have only alphabets</span> -->
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="companyName" data-ng-model="contactInfo.company_name"placeholder="Company Name" >
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="email" class="form-control" name="email" data-ng-model="contactInfo.email" placeholder="Email" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.email.$error.required" class="error">Email is required</span>
+                                        <span class = "text-danger"  ng-show="contact_info.email.$dirty && contact_info.email.$error.email" >Invalid Email Address</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="phone" data-ng-model="contactInfo.phone_no" placeholder="Contact Number"ng-minlength="8" ng-maxlength="15" ng-pattern="/^[0-9+-]*$/" required>
+                                        <span ng-show="contact_info.phone.$error.minlength" class="text-danger">Contact number is too short.</span>
+                                        <span ng-show="contact_info.phone.$error.maxlength"class="text-danger">Contact number is too long.</span>
+                                        <span ng-show="contact_info.phone.$error.pattern && !contact_info.phone.$pristine"
+                                              class="text-danger">Contact Number should be number only.</span>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.phone.$error.required" >Contact Number is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="addLine1" data-ng-model="contactInfo.addressLine1" placeholder="Address Line 1" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.addLine1.$error.required">Address1 is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="addLine2" data-ng-model="contactInfo.addressLine2" placeholder="Address Line 2" >
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="zip" ng-blur="getCity(contactInfo.zip)" data-ng-model="contactInfo.zip" placeholder="Zip" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.zip.$error.required">Zipcode is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="city" data-ng-model="contactInfo.city" placeholder="City" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.city.$error.required">City is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="state"  data-ng-model="contactInfo.state" placeholder="State" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.state.$error.required">State is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <div class="pos-relative"> <!-- This div is imp for isteven select as per new css -->
+                                            <isteven-multi-select
+                                                input-model="countries"
+                                                output-model="contactInfo.country"
+                                                button-label="name"
+                                                item-label="name"
+                                                tick-property="ticked"
+                                                search-property="name"
+                                                selection-mode="single"
+                                                helper-elements="filter"
+                                                output-properties="name"
+                                                >
+                                            </isteven-multi-select>
+                                        </div>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.sel_con.$error.required">Please select country</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-5 pull-left">
+                                            <input type="button" ng-click="routeReload()"  value="Previous" class="btn btn-primary btn-block btn-flat">
+
+                                        </div>
+                                        <div class="col-sm-5 pull-left">
+                                            <input type="submit" ng-click="contact_info.$invalid ? common_msg = true : '';
+                                                contact_info.$invalid ? con_submit = true : setTab(2)" value="Next" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(2)">
+
+                        <div class="saas-onboard-credentials">
+                            <form name="login_val" ng-init = "log_err = false" autocomplete="off" novalidate ng-submit="changeLoginCredentials(loginInfo)">
+                                <div class="form-group">
+                                    <div class="text-right">
+                                        <h4><a class="btn btn-primary btn-flat" type="submit" ng-click="setTab(1)">Previous</a>
+                                            <button class="btn btn-primary btn-flat" type="submit" ng-click="login_val.$invalid ? common_msg = true : '';
+                                                login_val.$invalid ? log_err = true : setTab(3)" >Next</button>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <h4>Login Credentials</h4>
+                                <div class="credentials-info col-sm-8 col-sm-offset-2">
+
+                                    <div class="col-sm-10 form-group">
+                                        <input type="email" class="form-control" name="email" data-ng-model="loginInfo.loginemail" placeholder="Email" required>
+                                        <span class = "text-danger" ng-show="log_err && login_val.email.$error.required" class="error">Email is required</span>
+                                        <span class = "text-danger"  ng-show="login_val.email.$dirty && login_val.email.$error.email" >Invalid Email Address</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="password" class="form-control" name="password" data-ng-model="loginInfo.password" placeholder="Password" ng-required="loginInfo.currentpassword">
+                                        <span class = "text-danger" ng-show="log_err && login_val.password.$error.required">Password is required</span>
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="button" ng-click="setTab(1)"  value="Previous" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="login_val.$invalid ? common_msg = true : '';
+                                            login_val.$invalid ? log_err = true : setTab(3)" value="Next" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(3)">
+
+                        <div class="echeck-info">
+                            <form name="echeck_info" ng-init = "echeck_err = false" autocomplete="off" novalidate data-ng-submit="submitEcheck(echeck)">
+                                <div class="form-group">
+                                    <div class="text-right">
+                                        <h4><a class="btn btn-primary btn-flat" type="button" ng-click=" setTab(2)"  value="Previous" >Previous</a>
+                                            <button class="btn btn-primary btn-flat" type="submit" ng-click="(echeck_info.$invalid || echeck.credit_agree != true) ? common_msg = true : '';
+                                                echeck.credit_agree == true ? setTab(4) : (echeck_info.$invalid ? echeck_err = true : setTab(4));">Next</button>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <h4>eCheck Information</h4>
+                                <p>PSX software is free to use, but unfortunately affiliates and lead sellers charge for calls. If you would like to pay for calls using PSX, enter your eCheck information below. It’s free to use.</p>
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <div class="col-sm-10 form-group">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" value="ubc" ng-model="echeck.credit_agree" class="regular-checkbox solid-blue ng-valid ng-dirty" name="agreement" id="agreement"><label for="agreement" style="vertical-align: middle;"></label></td>
+                                                <td><label for="agreement">&nbsp;&nbsp;I want to use a credit card. </label></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div ng-show="!echeck.credit_agree">
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="accno" ng-pattern="/^[0-9+-]*$/" data-ng-model="echeck.acc_no" placeholder="Account Number" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.accno.$error.required">Account Number is required</span>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.accno.$error.pattern">Account Number should have number only</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="caccno" data-match ="echeck.acc_no" ng-pattern="/^[0-9+-]*$/" data-ng-model="echeck.caccno" placeholder="Confirm Account Number" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.caccno.$error.required">Account Number is required</span>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.caccno.$error.pattern">Account Number should have number only</span>
+                                            <span ng-show="!(echeck_info.caccno.$error.required || echeck_info.caccno.$error.pattern) && echeck_info.caccno.$error.match" class="text-danger">
+                                                Account Number do not match!</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" ng-pattern="/^[0-9+-]*$/" name="routingno" data-ng-model="echeck.routing_no" placeholder="Routing Number" required ng-change="populate_bankDetails()">
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.routingno.$error.required">Routing Number is required</span>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.routingno.$error.pattern">Routing Number should have number only.</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="bankname" data-ng-model="echeck.bank_name" placeholder="Bank Name" required >
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.bankname.$error.required">Bank Name is required</span>
+
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="bankphone" ng-pattern="/^[0-9+-]*$/" data-ng-model="echeck.bank_phone" placeholder="Bank Phone" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.bankphone.$error.required">Bank Phone Number is required</span>
+                                            <span ng-show="echeck_info.bankphone.$error.pattern && !echeck_info.bankphone.$pristine" class="text-danger">Bank Phone Number should be number only.</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" ng-pattern="/^[0-9+-]*$/" name="bankzip" data-ng-model="echeck.bank_zip" placeholder="Bank Zip" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.bankzip.$error.required">Bankzip is required</span>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.bankzip.$error.pattern">Bankzip should be number</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="setTab(2)"  value="Previous" class="btn btn-primary btn-block btn-flat">
+
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="(echeck_info.$invalid || echeck.credit_agree != true) ? common_msg = true : '';
+                                            echeck.credit_agree == true ? setTab(4) : (echeck_info.$invalid ? echeck_err = true : setTab(4));" value="Next" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(4)">
+
+                        <div class="add-credit-card-info">
+                            <form name="echeck_info2" ng-init = "cvv_err = false" novalidate  autocomplete = "off" data-ng-submit="submitCreditCard(cc_details)">
+                                <div class="form-group">
+                                    <div class="text-right">
+                                        <h4>
+                                            <a class="btn btn-primary btn-flat" href ng-click=" setTab(3)"  value="Previous" >Previous</a>
+                                            <button class="btn btn-primary btn-flat" type="submit" ng-click="echeck_info2.$invalid || CC_validataion_err ? common_msg = true : '';
+                                                echeck_info2.$invalid || CC_validataion_err ? cvv_err = true : setTab(5);">Next</button>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <h4>Add Credit Card</h4>
+                                <p>Again, PSX is free to use, but calls coming from lead sellers aren’t free. If you would like to pay for calls using a credit card, complete the form below.</p>
+                                <div class="col-sm-6" style="border-right: 1px solid #e0e0e0;">
+                                    <div class="col-sm-10 form-group demo">
+
+                                        <input type="number" class="form-control" ng-pattern="/^[0-9]*$/" name="cardno" id="ccNum" data-ng-model="cc_details.card_no"  ng-blur="cc_details.card_no ? validateCC(1) : validateCC(0)" autocomplete="off" ng-required="echeck.credit_agree && saved_cards.length==0" >
+                                        <span class = "text-danger log" ></span>
+
+                                        <span class = "text-danger" ng-show="cvv_err && echeck_info2.cardno.$error.required">Credit Card Number is required</span>
+                                        <span ng-show="echeck_info2.cardno.$error.pattern && !echeck_info2.cardno.$pristine" class="text-danger">Credit Card Number should be number only.</span>
+
+                                    </div>
+                                    <div class="col-sm-4 form-group">
+                                        <select class="form-control" id="exp_month" name ="exp_month" data-ng-model="cc_details.exp_month" ng-required="echeck.credit_agree && saved_cards.length==0">
+                                            <option value=""> Month</option>
+                                            <option value="Jan">Jan</option>
+                                            <option value="Feb">Feb</option>
+                                            <option value="Mar">Mar</option>
+                                            <option value="Apr">Apr</option>
+                                            <option value="May">May</option>
+                                            <option value="Jun">Jun</option>
+                                            <option value="Jul">Jul</option>
+                                            <option value="Aug">Aug</option>
+                                            <option value="Sep">Sep</option>
+                                            <option value="Oct">Oct</option>
+                                            <option value="Nov">Nov</option>
+                                            <option value="Dec">Dec</option>
+                                        </select>
+                                        <span class = "text-danger" ng-show="echeck_info2.exp_month.$invalid && cvv_err">Please Select Month</span>
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <select class="form-control" id="exp_year" name= "exp_year" data-ng-model="cc_details.exp_year" ng-required="echeck.credit_agree && saved_cards.length==0">
+                                            <option value=""> Year</option>
+                                            <option value="2015">2015</option>
+                                            <option value="2016">2016</option>
+                                            <option value="2017">2017</option>
+                                            <option value="2018">2018</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2020">2020</option>
+                                        </select>
+                                        <span class = "text-danger" ng-show="echeck_info2.exp_year.$invalid && cvv_err">Please Select Year</span>
+                                    </div>
+                                    <div class="col-sm-3 form-group" >
+                                        <input type="text" class="form-control cvv" ng-pattern="/^[0-9]*$/" name="cardccv" data-ng-model="cc_details.cvv" placeholder="CVV" ng-required="echeck.credit_agree && saved_cards.length==0">
+                                        <span class = "text-danger" ng-show="cvv_err && echeck_info2.cardccv.$error.required">Credit CVV is required</span>
+                                        <span ng-show="echeck_info2.cardccv.$error.pattern && !echeck_info2.cardccv.$pristine" class="text-danger">Credit Card Number should be number only.</span>
+                                    </div>
+
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="button" ng-click="setTab(3)"  value="Previous" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="(echeck_info2.$invalid) ? common_msg = true : '';
+                                            echeck_info2.$invalid ? cvv_err = true : setTab(5);
+                                            autorecharge = true;" value="Next" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-sm-5" style="margin-top: 3%">
+                                <h4>Saved Credit Cards</h4>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            Card Number
+                                        </td>
+                                        <td>
+                                            Exp Date
+                                        </td>
+                                        <td>
+                                            Action
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="cardslist in saved_cards">
+                                        <td>
+                                            {{cardslist.card_no}}
+                                        </td>
+                                        <td>
+                                            {{cardslist.exp_month}}/{{cardslist.exp_year}}
+                                        </td>
+                                        <td>
+                                            <span ng-if="cardslist.is_primary">Primary</span>
+                                            <a style="cursor:pointer;" ng-if="!cardslist.is_primary" ng-click="make_primary(cardslist)">Make Primary</a> | <a style="cursor:pointer;" ng-click="remove_card(cardslist._id)">Delete</a>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(5)">
+                        <form name="auto_recharge" ng-init="autorecharge = false;" data-ng-submit="submitAutorecharge(rechargeData)">
+                            <div class="form-group">
+                                <div class="text-right">
+                                    <h4>
+                                        <a class="btn btn-primary btn-flat" ng-click=" setTab(4)"  value="Previous" >Previous</a>
+                                        <button class="btn btn-primary btn-flat" type="submit" ng-click="auto_recharge.$invalid ? common_msg = true : '';
+                                            auto_recharge.$invalid ? autorecharge = true : setTab(6);
+                                            crm_err = true;">Next</button>
+                                    </h4>
+                                </div>
+                            </div>
+                            <h4>Auto Recharge</h4>
+                            <div class="auto-recharge-info col-sm-6 col-sm-offset-3">
+
+                                <div class="col-sm-10 form-group">
+
+                                    <input type="checkbox" value="true" ng-model = "rechargeData.allow" class="regular-checkbox solid-blue" name="autorecharge" id="autorecharge" ng-click="rechargeData.bal_Down = '';
+                                        rechargeData.bal_Up = '';
+                                        rechargeData.from_account = '';
+                                        auto_recharge.$invalid = true;"><label for="autorecharge" style="vertical-align: middle;"></label>
+                                    <label>When my balance goes below</label>
+
+                                    <select class="form-control" name = "bal" id = "bal" ng-model = "rechargeData.bal_Down"  ng-required="rechargeData.allow">
+                                        <option value = "" >Select balance</option>
+                                        <option value = "50">$50</option>
+                                        <option value = "100">$100</option>
+                                        <option value = "150">$150</option>
+                                    </select>
+                                    <span class = "text-danger" ng-show="auto_recharge.bal.$error.required && autorecharge">Select balance lower limit</span>
+                                </div>
+                                <div class="col-sm-10 form-group">
+                                    <label> recharge it back up to </label>
+                                    <select class="form-control" name = "balUp" id = "balUp" ng-model = "rechargeData.bal_Up" ng-required="rechargeData.allow">
+                                        <option value = "" >Select backup</option>
+                                        <option value = "50">$50</option>
+                                        <option value = "250">$250</option>
+                                        <option value = "500">$500</option>
+                                    </select>
+                                    <span class = "text-danger" ng-show="auto_recharge.balUp.$error.required && autorecharge">Select recharge amount</span>
+                                </div>
+                                <div class="col-sm-10 form-group">
+                                    <label>using</label>
+                                    <select class="form-control" ng-model="rechargeData.from_account" ng-options="v.id as v.acc_no group by v.group for v in selectCreditCards">
+                                    </select>
+                                    <span class = "text-danger" ng-show="auto_recharge.account.$error.required && autorecharge">Select your Account</span>
+                                </div>
+
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="button" ng-click="setTab(4)"  value="Previous" class="btn btn-primary btn-block btn-flat">
+
+                                </div>
+                                <div class="col-sm-5 form-group pull-left">
+
+                                    <input type="submit" ng-click="auto_recharge.$invalid ? common_msg = true : '';
+                                        auto_recharge.$invalid ? autorecharge = true : setTab(6);
+                                        crm_err = true;" value="Next" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-show="isSet(6)">
+                        <div class="crm-options">
+                            <div class="text-right">
+                                <h4> <a class="btn btn-primary btn-flat" href ng-click=" setTab(5)"  value="Previous" >Previous</a>
+                                    <a  class="btn btn-primary btn-flat" href ng-click="(crm_form.$invalid) ? common_msg = true : submitCRMoptions(crm);
+                                        crm_form.$invalid ? crm_err = true : setTab(8)" value="Next" >Next</a></h4>
+                            </div>
+                            <h4>CRM Options</h4>
+                            <form name="crm_form" ng-init = "crm_err = false;" novalidate  ng-submit="submitCRMoptions(crm)">
+
+
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <div class="col-sm-10 form-group">
+                                        <input type="radio" id = "crm_phone" value="noCaller"  ng-model="crm.crm_choice" name = "crm_pho" ng-click="crm_err = false;
+                                            crm = '';
+                                            crm.crm_choice = 'noCaller';" class="regular-radio solid-blue" required><label for="crm_phone"></label>
+                                        <label for="crm_phone">I do not want any caller data posted from the Phone Agent CRM to us.</label>
+                                    </div>
+
+                                    <div class="col-sm-10 form-group">
+                                        <input type="radio" id = "crm_phone1" value="customIntegration"  ng-model="crm.crm_choice"  name = "crm_pho" ng-click="crm_err = false;
+                                            crm = '';
+                                            crm.crm_choice = 'customIntegration';" class="regular-radio solid-blue" ><label for="crm_phone1" ></label>
+                                        <label for="crm_phone2">I want a custom integration between my CRM and PSX.</label>
+                                    </div>
+
+                                    <div class="col-sm-10 form-group">
+                                        <input type="radio" id = "crm_phone3" value="useFreeCRM"  ng-model="crm.crm_choice"  name = "crm_pho" ng-click="crm_err = false;
+                                            crm = '';
+                                            crm.crm_choice = 'useFreeCRM';" class="regular-radio solid-blue" ><label for="crm_phone3"></label>
+                                        <label for="crm_phone3">I want to use the included free basic CRM.</label>
+                                    </div>
+
+                                    <div class="col-sm-offset-1" ng-if="crm.crm_choice == 'useFreeCRM'" style="border-top: 1px solid #e0e0e0; padding:0px; margin-top: 95px;">
+                                        <div>
+                                            <div class="col-sm-10 form-group">
+                                                <input type="radio" id = "crm_phone3Opt1" value="viaHTTP"  ng-model="crm.crm_nextChoice"  name = "crm_phooneBasic" ng-click="
+                                                    crm.crm_nextChoice = 'viaHTTP';
+                                                    crm.crm_choice = 'useFreeCRM';
+                                                    crm_err = false;" class="regular-radio solid-blue" required><label for="crm_phone3Opt1"></label>
+                                                <label for="crm_phone3Opt1">Receive caller data via HTTP Post</label>
+                                            </div>
+                                            <div class="col-sm-10 form-group">
+                                                <input type="radio" id = "crm_phone3Opt2" value="viaEmail"  ng-model="crm.crm_nextChoice"  name = "crm_phooneBasic" ng-click="
+                                                    crm.crm_nextChoice = 'viaEmail';
+                                                    crm.crm_choice = 'useFreeCRM';
+                                                    crm_err = false;" class="regular-radio solid-blue" required><label for="crm_phone3Opt2"></label>
+                                                <label for="crm_phone3Opt2">Receive caller data via Email</label>
+                                            </div>
+                                            <div class="col-sm-10 form-group">
+                                                <span class = "text-danger" ng-show="crm_form.crm_phooneBasic.$error.required && crm_err">Select an Option</span>
+                                            </div>
+
+                                            <div ng-if="crm.crm_nextChoice == 'viaHTTP'">
+                                                <div class="col-sm-10 form-group">
+                                                    <input type="text" class="form-control" name="crm_url" ng-model="crm.email_url" placeholder="Enter URL" ng-required="crm.crm_nextChoice == 'viaHTTP'">
+                                                    <span class = "text-danger" ng-show="crm_form.crm_url.$error.required">Enter URL</span>
+                                                </div>
+
+                                            </div>
+
+                                            <div ng-if="crm.crm_nextChoice == 'viaEmail'">
+                                                <div class="col-sm-10 form-group" >
+                                                    <input type="email" class="form-control" name="crm_email" ng-model="crm.email_url" placeholder="Enter Email" ng-required="crm.crm_nextChoice == 'viaEmail'">
+                                                    <span class = "text-danger" ng-show="crm_form.crm_email.$error.required">Enter Email</span>
+                                                    <span class = "text-danger" ng-show="crm_form.crm_email.$error.email">Invalid Email</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="radio" id = "crm_phone4" value="saleForceSugarCRM"  ng-model="crm.crm_choice"  name = "crm_pho" ng-click="crm_err = false;
+                                            crm = '';
+                                            crm.crm_choice = 'saleForceSugarCRM';" class="regular-radio solid-blue" ><label for="crm_phone4"></label>
+                                        <label for="crm_phone4">SalesForce or SugarCRM</label>
+                                    </div>
+
+                                    <div class="col-sm-offset-1" ng-if="crm.crm_choice == 'saleForceSugarCRM'" style="border-top: 1px solid #e0e0e0; padding: 0px; margin-top: 125px;">
+                                        <div>
+                                            <div class="col-sm-10 form-group">
+                                                <input type="radio" id = "crm_saleforce" value="salesForce" ng-model="crm.crm_nextChoice"  name = "crm_saleOrSugar" ng-click="crm_error = false;" class="regular-radio solid-blue" required><label for="crm_saleforce"></label>
+                                                <label for="crm_saleforce">SalesForce</label>
+                                            </div>
+                                            <div class="col-sm-10 form-group">
+                                                <input type="radio" id = "crm_sugarcrm" value="sugarCRm" ng-model="crm.crm_nextChoice"  name = "crm_saleOrSugar" ng-click="crm_error = false;" class="regular-radio solid-blue" required ><label for="crm_sugarcrm"></label>
+                                                <label for="crm_sugarcrm">SugarCRM</label>
+                                            </div>
+                                            <div class="col-sm-10 form-group">
+                                                <span class = "text-danger" ng-show="crm_form.crm_saleOrSugar.$error.required && crm_err">Select an Option</span>
+                                            </div>
+                                            <div class="col-sm-10 form-group">
+                                                <input type="text" class="form-control" name="crm_username" ng-model="crm.email_url" placeholder="Username" required>
+                                                <span class = "text-danger" ng-show="crm_form.crm_username.$error.required && crm_err">Enter Username</span>
+                                            </div>
+                                            <div class="col-sm-10 form-group">
+                                                <input type="password" class="form-control" name="crm_password" ng-model="crm.password" placeholder="Password" required>
+                                                <span class = "text-danger" ng-show="crm_form.crm_password.$error.required && crm_err">Enter Password</span>
+                                            </div>
+                                            <div class="col-sm-10 form-group">
+                                                <input type="text" class="form-control" name="crm_api" ng-model="crm.api_key" placeholder="Api Key" required>
+                                                <span class = "text-danger" ng-show="crm_form.crm_api.$error.required && crm_err">Enter Api Key</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <span class = "text-danger" ng-show="crm_form.crm_pho.$error.required && crm_err">Select CRM Option</span>
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="button" ng-click="setTab(5)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="(crm_form.$invalid) ? crm_err = true : setTab(8);
+                                            (crm_form.$invalid) ? common_msg = true : '';" value="Next" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div ng-show="isSet(8)">
+                        <div class="custom-your-instance-info">
+                            <form name="custom_val" ng-init = "custom_err = false;
+                                    whitelabel = true;" novalidate>
+                                <div class="form-group">
+                                    <div class="text-right">
+                                        <h4>
+                                            <a class="btn btn-primary btn-flat" ng-click = "setTab(6)" >Previous</a>
+                                            <a class="btn btn-primary btn-flat" ng-click="checkSetUpLB()"> Next</a>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <h4>Customize your instance</h4>
+                                <p>Customize the look and feel of your instance and hide all mentions of PSX.io by completing the form below.</p>
+                                <div class="col-sm-8 col-sm-offset-2">
+
+                                    <div class="col-sm-10 form-group">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" value="ubc" ng-click="skipWhiteLabel();
+                                                        (!whitelabel) ? custom_val.$invalid = false : custom_val.$invalid = true;" ng-model="custom.enable_whitelabel" class="regular-checkbox solid-blue ng-valid ng-dirty" name="whitelabel" id="whitelabel"><label for="whitelabel" style="vertical-align: middle;"></label></td>
+                                                <td><label for="whitelabel">&nbsp;&nbsp;I do not want to whitelabel my network and website.</label></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div ng-show="whitelabel">
+                                        <div class="col-sm-10 form-group">
+                                            <h4>Upload logo <input ngf-select="" type="file" class="form-control" name="logo" ng-model="custom.logo" accept="image/*"  ngf-validate="{ height: {min: 70}, width: {min:300}}" required>
+                                                Minimum Size(w X h): 300px X 70px</h4>
+                                            <span class="text-danger" ng-show="custom_err && custom_val.logo.$error.required">Logo is required</span>
+                                            <span class="text-danger" ng-show="(custom_val.logo.$error.minHeight || custom_val.logo.$error.minWidth) && !custom_val.logo.$error.required">Image is too small, please upload image of minimum size(w X h)  300px X 70px </span>
+
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="domainurl" data-ng-model="custom.domain_url" placeholder="Domain or Sub-Domain URL" required>
+                                            <span class = "text-danger" ng-show="custom_err && custom_val.domainurl.$error.required">Domain URL is required</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="email" class="form-control" name="email" data-ng-model="custom.support_email" placeholder="Email" required>
+                                            <span class = "text-danger" ng-show="custom_err && custom_val.email.$error.required">Email is required</span>
+                                            <span class = "text-danger"  ng-show="custom_val.email.$dirty && custom_val.email.$error.email" >Invalid Email Address</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="ownername" data-ng-model="custom.owner_name" placeholder="Owner's Name" required>
+                                            <span class = "text-danger" ng-show="custom_err && custom_val.ownername.$error.required">Owner's name is required</span>
+                                            <!--<span class = "text-danger" ng-show="custom_err && custom_val.ownername.$error.pattern">Owner's name should contain only alphabets</span>-->
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="email" class="form-control" name="owneremail" data-ng-model="custom.owner_email" placeholder="Owner's Email" required>
+                                            <span class = "text-danger" ng-show="custom_err && custom_val.owneremail.$error.required">Owner's email is required</span>
+                                            <span class = "text-danger"  ng-show="custom_val.owneremail.$dirty && custom_val.owneremail.$error.email" >Invalid Email Address</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="ownerphoneno" ng-pattern="/^[0-9+-]*$/" data-ng-model="custom.owner_phone" placeholder="Owner's Phone Number" required>
+                                            <span class = "text-danger" ng-show="custom_err && custom_val.ownerphoneno.$error.required">Owner's Contact Number is required</span>
+                                            <span class = "text-danger" ng-show="custom_err && custom_val.ownerphoneno.$error.pattern">Owner's Contact Number should contain number only</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <div ng-controller="wysiwygeditor" style="border:3px solid #e0e0e0">
+                                                <div text-angular="text-angular" name="htmlcontent" ng-model="custom.footer_content" ta-disabled='disabled' placeholder="Footer content goes here"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <h4> Color Option</h4>
+                                            <div class="col-sm-4 padL0">
+                                                <label for="custom_black">Background</label>
+                                                <input colorpicker type="text" ng-model="custom.color_option.bgcolor" value="#ccc" class="form-control"/>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="custom_black">Font Color</label>
+                                                <input colorpicker type="text" ng-model="custom.color_option.fontcolor" class="form-control"/>
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top:18px;">
+                                                <button data-title="Preview" data-animation="am-fade-and-slide-top" content-template="LGNPreview"  bs-modal="modal" type="button" class="btn btn-primary btn-flat">
+                                                    Preview
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click = "setTab(6)" value="Previous" class="btn btn-primary btn-block btn-flat">
+
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" href ng-click="checkSetUpLB();
+                                            contracts = true;" value="Next" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(9)">
+                        <div class="LGN-contracts ">
+                            <div class="form-group">
+                                <div class="text-right">
+                                    <h4><a class="btn btn-primary btn-flat mrgRt5" ng-click = "setTab(8)" >Previous</a><a class="btn btn-primary btn-flat" ng-click="setTab(10);
+                                        media_agency = true;"> Next</a></h4>
+                                </div>
+                            </div>
+                            <h4>Contracts</h4>
+                            <p>Drag and drop any relevant files, contracts, insertion orders, etc. here to keep up with them in one central location. Only pdf, doc, txt, xls, xlsx and docx file extensions are allowed..</p>
+
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <label>Drop File:</label>
+                                        <div ngf-drop ngf-select ng-model="files" class="drop-box" ng-click ="progPercentage = 0"
+                                             ngf-drag-over-class="dragover" ngf-multiple="true" ngf-pattern="application/msword,application/pdf,text/html,text/plain,application/x-msexcel,application/vnd.*" ngf-allow-dir="true"
+                                             accept="application/msword,application/pdf,text/html,text/plain,application/x-msexcel,application/vnd.*  ">Drop file here or click to upload</div>
+                                        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                                        <ul >
+                                            <li ng-repeat="f in files" ng-show="f.$errorParam" style="font:smaller">
+                                                <span ng-show="(f.$errorParam)?true:false" class="text-danger">Invalid file pattern for {{f.name}}</span>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <label>Upload Log:</label>
+                                        <div class="progress">
+                                            <div class="progress-bar  progress-bar-success" role="progressbar" aria-valuenow="70"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width:{{progPercentage}}%">
+                                                <span class="sr-only">70% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="contracts" class="form-group">
+                                    <div class="col-sm-10">
+                                        <label>Existing Contracts:</label>
+                                        <ul style = "list-style-type: none;">
+                                            <li ng-repeat="contract in contracts" style="line-height: 2.8em;">
+                                                <span ng-if="contract.file_name.substr(contract.file_name.lastIndexOf('.') + 1)"><img ng-src="/assets/images/{{contract.file_name.substr(contract.file_name.lastIndexOf('.') + 1)}}.png">{{contract.file_name}}</img></span>
+
+                                                <span>&nbsp;&nbsp;</span>
+                                                <span class="glyphicon glyphicon-trash" style="cursor:pointer;" ng-click="deleteContracts(contract._id, contract.path)"></span>
+                                                <span>&nbsp;&nbsp;</span>
+                                                <span class="glyphicon glyphicon-download-alt" style="cursor:pointer;" ng-click="downloadContracts(contract.path)">
+                                                </span>
+
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click = "setTab(8)"  value="Previous" class="btn btn-primary btn-block btn-flat">
+
+                                </div>
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" href ng-click="setTab(10);
+                                        media_agency = true;" value="Next" class="btn btn-primary btn-block btn-flat">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(10)">
+                        <form name="mediaAgency" ng-init="mediaAgency = true;" data-ng-submit="submitLBSettings(lbSettingsData)">
+                            <div class="media_agency">
+                                <div class="text-right">
+                                    <h4><a class="btn btn-primary btn-flat" ng-click = "setTab(9)" >Previous</a>
+                                        <button type="submit" class="btn btn-primary btn-flat" ng-click="setTab(11);
+                                            payment = true;" id="top_submit">Next</button>
+                                    </h4>
+                                </div>
+                            </div>
+                            <h4>Media Agency</h4>
+                            <p>Would you like software functionality to run an In-House Media Agency for your call center? This would separate your marketing efforts from your affiliates and cost per call sellers (It’s free. Plus you’ll learn how to use it from an experienced Direct Response Consultant).</p>
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <!--<div class="form-group">-->
+                                <div class="col-sm-10 form-group">
+                                    <p>Do you want to include functionality for an In-House Media?</p>
+
+                                    <toggle-switch ng-model="lbSettingsData.allow_inhouseMedia"></toggle-switch>
+                                </div>
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click="setTab(9)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click="setTab(11);
+                                        payment = true;" value="Next" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                                <!--</div>-->
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-show="isSet(11)">
+                        <form name="pay_perCallForm" ng-init="payment_err = false;" data-ng-submit="submitLBSettings(lbSettingsData)">
+                            <div class="payment_calls">
+                                <div class="text-right">
+                                    <h4>
+                                        <a class="btn btn-primary btn-flat" ng-click = "setTab(10)" >Previous</a>
+                                        <button type="submit" class="btn btn-primary btn-flat" ng-click="setTab(12);
+                                            marketing = true;">Next</button>
+                                    </h4>
+                                </div>
+                            </div>
+                            <h4>Payment for Calls</h4>
+                            <p>How often would he like to pay for calls generated? Weekly is customary and recommended. Affiliates who get paid weekly are the happiest affiliates.</p>
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="col-sm-10 form-group">
+                                    <select class="form-control" name="payment_method" ng-model="lbSettingsData.pay_for_calls">
+                                        <option value = ''>Choose an Option</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="biweekly">Bi-Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click="setTab(10)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click="setTab(12);
+                                        marketing = true;" value="Next" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div ng-show="isSet(12)">
+                        <form name="automatedMarketingForm" data-ng-submit="submitLBSettings(lbSettingsData)">
+                            <div class="automated">
+                                <div class="text-right">
+                                    <h4>
+                                        <a class="btn btn-primary btn-flat" ng-click = "setTab(11)" >Previous</a>
+                                        <button type="submit" class="btn btn-primary btn-flat" ng-click="setTab(13);
+                                            call_recording = true;">Next</button>
+                                    </h4>
+                                </div>
+                            </div>
+                            <h4>Automated Marketing</h4>
+
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="col-sm-10 form-group">
+                                    <p>Would you like to turn on Automated Marketing?.</p>
+                                    <toggle-switch ng-model="lbSettingsData.allow_automatedMarketing"></toggle-switch>
+                                    <p>When your calls come in after business hours and go unanswered, PSX will capture the caller ID, add it to an outbound call campaign, and randomly make calls to the missed caller ID for 8 business days or until the caller opts out. You can always turn this option on later. Also, there are some more advanced options for routing and monetizing after hours calls in the IVR section.</p>
+                                </div>
+
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click="setTab(11)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click="setTab(13);
+                                        call_recording = true;" value="Next" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-show="isSet(13)">
+                        <form name="callRecordingForm" data-ng-submit="submitLBSettings(lbSettingsData)">
+                            <div class="call_recording">
+                                <div class="text-right">
+                                    <h4><a class="btn btn-primary btn-flat" ng-click = "setTab(12)" >Previous</a>
+                                        <button type="submit" class="btn btn-primary btn-flat" ng-click="setTab(14);
+                                            regapproval = true;">Next</button>
+                                    </h4>
+                                </div>
+                            </div>
+                            <h4>Call Recording</h4>
+
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="form-group">
+
+                                    <div name="call_form">
+                                        <div class="col-sm-10 form-group">
+                                            <p>Call Recording is free if you're using Plivo as your platform carrier. Twilio charges for the service.</p>
+                                            <toggle-switch ng-model="lbSettingsData.allow_callRecording"></toggle-switch>
+                                        </div>
+                                        <div class="col-sm-5 form-group pull-left">
+                                            <input type="submit" ng-click="setTab(12)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                        <div class="col-sm-5 form-group pull-left">
+                                            <input type="submit" ng-click="setTab(14);
+                                                regapproval = true;" value="Next" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-show="isSet(14)">
+                        <div class="phone-agent-usage">
+                            <div class="text-right">
+                                <h4><a class="btn btn-primary btn-flat" href ng-click = "setTab(13)" >Previous</a>
+                                    <a class="btn btn-primary btn-flat" href  ng-click="setTab(15);
+                                        save_phoneAgentInfo(phone_agents)"> Next</a></h4>
+                            </div>
+                        </div>
+                        <h4>Phone Agents</h4>
+
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <div class="form-group">
+
+                                <form name="call_form" ng-submit="save_phoneAgentInfo(phone_agents)">
+                                    <div class="col-sm-10 form-group">
+                                        <p>Approximately how many phone agents or representatives will be using the web phone concurrently?</p>
+                                        <select name="get_phoneAgentInfo" class="form-control" ng-model="phone_agents">
+                                            <option value = ''>Choose an Option</option>
+                                            <option value='LB'>I will not have any Phone Agents</option>
+                                            <option value='1_5'>1 - 5</option>
+                                            <option value='10_25'>10 - 25</option>
+                                            <option value='25_10'>25 - 1000</option>
+                                            <option value='100+'>100 or more</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-10 role-switch">
+                                        <!--                        [ If client chooses "I will not have any Phone Agents" then the role will remain Lead Buyer.  Else role becomes "ADVCC" ]-->
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="button" ng-click="setTab(13)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="setTab(15)" value="Next" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div ng-show="isSet(15)">
+                        <form name="registrationApprovalForm" ng-init="regData.method = 0" data-ng-submit="submit_registrationApproval(regData)">
+                            <div class="call_recording">
+                                <div class="text-right">
+                                    <h4><a class="btn btn-primary btn-flat" ng-click = "setTab(14)" >Previous</a>
+                                        <!-- <a class="btn btn-primary" ng-click="setTab(16)"> Submit</a> -->
+                                        <button type="submit" class="btn btn-primary btn-flat" ng-click="setTab(16);
+                                            regapproval = true;">Next</button>
+                                    </h4>
+                                </div>
+                            </div>
+                            <h4>Registration Approval</h4>
+
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="col-sm-10 form-group">
+                                    <input type="radio" id = "automatic" value="0" name="approval_method" ng-model="regData.method" class="regular-radio solid-blue" >
+                                    <label for="automatic"></label>
+                                    <label for="automatic">I want to automatically approve and accept new Lead Seller registrations. </label>
+                                </div>
+                                <div class="col-sm-10 form-group">
+                                    <input type="radio" id = "manual" value="1" name="approval_method" ng-model="regData.method" class="regular-radio solid-blue" >
+                                    <label for="manual"></label>
+                                    <label for="manual"> I want to manually approve the new Lead Seller registrations. </label>
+                                </div>
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click="setTab(14)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                                <div class="col-sm-5 form-group pull-left">
+                                    <input type="submit" ng-click="setTab(16)" value="Submit" class="btn btn-primary btn-block btn-flat">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div ng-show="isSet(16)">
+                        <div class="split-the-app">
+                            <h4>Terms and Conditions</h4>
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <!--<form name="acceptform" ng-init="form = false; acceptTermsErr = false;" autocomplete="off" novalidate ng-submit="accepttermsLB(check.value, check.e_signature1)">-->
+                                <form name="acceptform" ng-init="form = false;
+                                        acceptTermsErr = false;" autocomplete="off" novalidate>
+                                    <div class="form-group">
+                                        <div ng-bind-html="terms" class="thumbnail">{{terms}}</div>
+                                        <div>
+                                            <input id="e_check" type="checkbox" class="regular-checkbox solid-blue" name="e_check" ng-model="check.value" required>
+                                            <label style="vertical-align: middle;" for="e_check"></label>
+                                            You understand and agree that your eSignature executed in conjunction with the electronic submission of your application will be legally binding and such transaction will be considered authorized by you
+
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <input class="form-control ng-pristine ng-invalid ng-invalid-required" type="text" required="" placeholder="Full Name" name="e_signature1" ng-model="check.e_signature1">
+                                        <span class = "text-danger" ng-show="(acceptform.e_signature1.$error.required) && acceptTermsErr">This field is required</span>
+                                    </div>
+                                    <div class="col-sm-6 form-group padL0 pull-left">
+                                        <input type="button" ng-click="setTab(15)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                    <div class="col-sm-6 form-group padR0 pull-left">
+                                        <input type="submit" ng-click="acceptform.$invalid ? common_msg = true : '';
+                                            acceptform.$invalid ? plivo_err = false : '';
+                                            acceptform.$invalid ? acceptTermsErr = true : accepttermsLB(check.value, check.e_signature1);" value="Submit" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="isSet(17)">
+
+                        <div class="split-the-app">
+                            <h4>Congratulations!</h4>
+                            <div class="row">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <div class="col-sm-10">
+                                        IP_ADDRESS:  {{ip_add}}&nbsp;&nbsp;&nbsp;&nbsp;
+                                        DATE/Time:   {{current_date| date: 'MM/dd/yyyy'}}&nbsp;&nbsp;{{current_date| date:'HH:mm:ss'}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <form name="form">
+                                    <div class="col-sm-10 form-group">
+
+                                        <h5>Your information has been saved successfully. So what's next? The Lead Buyer can now log in to the system.</h5>
+
+                                    </div>
+                                    <div class="col-sm-10 form-group pull-left">
+                                        <input type="submit" href ng-click="backToBoard()" class="btn btn-primary btn-block btn-flat" value="On-board a New LB">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Inline CSS for credit card display -->
+<style>
+    .tab-content {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        float: left;
+        margin: 0;
+        min-height: 900px;
+        padding: 2%;
+/*        width: 85%;*/
+    }
+    .demo #ccNum.valid.visa {
+        background-position: 4px -156px, 260px -87px;
+    }
+    .demo #ccNum.visa {
+        background-position: 4px -156px, 260px -87px;
+    }
+    .demo #ccNum.valid.visa_electron {
+        background-position: 4px -198px, 260px -87px;
+    }
+    .demo #ccNum.visa_electron {
+        background-position: 4px -198px, 260px -61px;
+    }
+    .demo #ccNum.valid.mastercard {
+        background-position: 4px -240px, 260px -87px;
+    }
+    .demo #ccNum.mastercard {
+        background-position: 4px -240px, 260px -87px;
+    }
+    .demo #ccNum.valid.maestro {
+        background-position: 4px -282px, 260px -87px;
+    }
+    .demo #ccNum.maestro {
+        background-position: 4px -282px, 260px -87px;
+    }
+    .demo #ccNum.valid.discover {
+        background-position: 4px -324px, 260px -87px;
+    }
+    .demo #ccNum.discover {
+        background-position: 4px -324px, 260px -87px;
+    }
+    .demo #ccNum {
+        background-image: url("/assets/images/cards.png");
+        background-position: 4px -121px, 260px -61px;
+        background-repeat: no-repeat;
+        background-size: 120px 361px, 120px 361px;
+        padding-left: 54px;
+        width: 85%;
+    }
+    .demo input {
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        box-sizing: content-box;
+        color: #333;
+        display: block;
+        font-size: 18px;
+        height: 32px;
+        padding: 0 5px;
+        width: 85%;
+    }
+</style>
+
+<script type="text/ng-template" id="LGNPreview">
+    <section style="border:1px solid #e0e0e0; padding: 5px;">
+    <header style="background-color:{{custom.color_option.bgcolor}} !important; color:{{custom.color_option.fontcolor}} !important;">
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <h3 style="font-size:25px;">
+    <ul class="nav navbar-nav side-nav">
+    <li>
+    <img style="padding-bottom:6px;" ngf-src="custom.logo" width="100px" height="30px"/>
+    &nbsp
+    </li>
+    <li class="">
+    <label id="abc">
+    Header1
+    </label>
+    &nbsp|&nbsp
+    </li>
+    <li>
+    <label>
+    Header2
+    </label>
+    &nbsp|&nbsp
+    </li>
+    <li>
+    <label>
+    Header3
+    </label>
+    &nbsp|&nbsp
+    </li>
+    </ul>
+    </h3>
+    </div>
+    </header>
+    <div style="padding:30px;">
+    </div>
+    <footer style="background-color:{{custom.color_option.bgcolor}} !important; color:{{custom.color_option.fontcolor}} !important;">
+    <div class="collapse navbar-collapse navbar-ex1-collapse ">{{custom.footer_content | htmlToPlaintext}}</div>
+    </footer>
+    </section>
+</script>

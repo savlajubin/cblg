@@ -1,0 +1,16 @@
+<form name="form" ng-submit="activate_account(User)" role="form" class="loginForm vertical-form">
+    <legend>
+        <span class="logo"></span>
+        Activate your account
+    </legend>
+    <div ng-show="error" class="alert alert-danger">{{error}}</div>
+    <div ng-show="success" class="alert alert-success">{{success}}</div>
+    <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" class="form-control" ng-model="User.password" required />
+        <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+    </div>
+    <div class="form-group">
+        <input  type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary" value="Confirm">
+    </div>
+</form>

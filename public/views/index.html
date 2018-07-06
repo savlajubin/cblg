@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <% include ./elements/head.html %>
+        <!--        <style>
+                    div#ajaxLoaderDiv {
+                        position: fixed;
+                        background-color: rgba(50,50,50,0.75);
+                        bottom: 30px;
+                        right:10px;
+                        z-index: 99999;
+                        padding: 6px 10px;
+                        border-radius: 5px;
+                        border: 1px solid rgba(75,75,75,0.15);
+                        color: #fff;
+                        font-size: 20px;
+                    }
+
+                    .largeWidth, .sidebar-mini.sidebar-collapse .largeWidth {
+                        margin-left:0px !important;
+                        background: #333;
+                    }
+                </style>-->
+    </head>
+    <body ng-app="callbaseleadgenApp" ng-controller="HomesCtrl" ng-class="{'sidebar-mini skin-black':authenticated, 'hold-transition login-page':!authenticated}" ng-cloak>
+        <div ng-class="{'wrapper':authenticated}">
+            <% include ./elements/header.html %>
+            <div ng-class="{'content-wrapper':authenticated, 'largeWidthX':!authenticated}">
+                <section ng-class="{'content':authenticated}">
+                    <!--<div id="ajaxLoaderDiv" data-ng-if="xhrLoading"><i class="fa fa-circle-o-notch fa-spin"></i> Loading</div>-->
+                    <div ng-class="{'row':authenticated}">
+                        <div ng-view></div>
+                    </div>
+                </section>
+            </div>
+
+            <footer class="main-footer" ng-show="authenticated">
+                <div class="pull-right hidden-xs"></div>
+                <p class="text-center text-muted" ng-show="authenticated">© Copyright {{currentDate| date:'yyyy'}} Call based lead generation</p>
+            </footer>
+        </div>
+    <any ng-controller="styleCtrl" ng-bind-html="xxx | sanitize"> </any>
+
+</body>
+</html>
+

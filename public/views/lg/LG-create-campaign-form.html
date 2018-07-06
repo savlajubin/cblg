@@ -1,0 +1,475 @@
+<!-- Tabbed form to Create a new Campaign -->
+<div class="tabsContainer col-sm-12">
+    <div class="panel panel-default"  ng-init="setTab(2);
+            getRingToNumbers();">
+        <div class="panel-heading"><h3>Create A Campaign</h3><div class= "text-center text-danger" ng-show="common_msg">*Please complete the current tab before proceeding</div></div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+                <!-- <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(1)}"><a href ng-click="setTab(1)">Campaign Direction</a></li>
+                    <li ng-class="{active:isSet(2)}"><a href ng-click="setTab(2)">Ring To Number</a></li>
+                    <li ng-class="{active:isSet(3)}"><a href ng-click="setTab(3)">Advertising Method</a></li>
+                    <li ng-class="{active:isSet(4)}"><a href ng-click="setTab(4)">Campaign IVR</a></li>
+                    <li ng-class="{active:isSet(5)}"><a href ng-click="setTab(5)">Name Your Campaign</a></li>
+                </ul> -->
+                <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(2)}"><a href >Ring To Number</a></li>
+                    <li ng-class="{active:isSet(3)}"><a href >Web Affiliate</a></li>
+                    <li ng-class="{active:isSet(4)}"><a href >Advertising Method</a></li>
+                    <li ng-if="currentRoleCode == 'advcc'" ng-class="{active:isSet(6)}"><a href >Attribution Setup</a></li>
+                    <li ng-class="{active:isSet(5)}"><a href >Name Your Campaign</a></li>
+                </ul>
+                <div class="tab-content" ng-init="campaign_direction = 'inbound'">
+                    <div ng-show="isSet(2)">
+                        <div class="campaign-promo">
+                            <div class="col-sm-9" style="text-align: center;">
+                                <h4>{{category_name}}</h4>
+                            </div>
+                            <div class="text-right">
+                                <h4>
+                                    <!--<a href class="btn btn-primary" ng-click="setTab(1)">Previous</a>-->
+                                    <a href class="btn btn-primary btn-flat" ng-click="ringNext();">Next</a>
+                                </h4>
+                            </div>
+                            <!--this is the part where we want to create a tab system like this http://jsfiddle.net/jccrosby/eRGT8/light/  with tab content being tables.-->
+
+                            <div>
+                                <div id="tabs">
+                                    <ul class="innertab">
+                                        <li class="innertab" ng-repeat="tab in tabs"
+                                            ng-class="{active:isActiveTab(tab.url)}"
+                                            ng-click="onClickTab(tab)">{{tab.title}}</li>
+                                    </ul>
+                                    <div id="mainView">
+                                        <div ng-include="currentTab"></div>
+                                    </div>
+                                </div>
+                                <script type="text/ng-template" id="one.tpl.html">
+                                    <div class="panel panel-default">
+                                    <div class="panel-heading panel-head-padding"><h3>Local Numbers</h3> </div>
+                                    <div class="panel-body">
+                                    <div class="pull-right">
+                                    <form name="searchForm">
+                                    <input type="text" ng-model="query" class="form-control searchInput" placeholder="Area Code">
+                                    <input type="submit" class="searchSubmit btn btn-primary btn-flat" value="Search" ng-click="getNewRingToNumber(query)">
+                                    </form>
+                                    </div>
+                                    <div class="mrgtp50" ng-init="i=0;" ng-repeat="localNumber in localNumbers"> <!-- | filter:query"> -->
+                                    <div  class="{{(localNumber._id == local._id) ?'selectedNumber' : 'numberDiv' }}" ng-click="selectNumber('local',localNumber);">
+                                    <h4>{{localNumber.phone_no}}</h4>
+                                    <p ng-if="localNumber.zipcode._id">{{localNumber.zipcode.City + ', ' + localNumber.zipcode.State}}</p>
+                                    <p ng-if="localNumber.region">{{localNumber.region}}</p>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </script>
+
+                                <script type="text/ng-template" id="two.tpl.html">
+                                    <div class="panel panel-default">
+                                    <div class="panel-heading panel-head-padding"><h3>800 Numbers</h3> </div>
+                                    <div class="panel-body">
+                                    <!--<div class="vertical-form pull-right">
+                                    <form name="searchForm">
+                                    <input type="text" class="form-control searchInput" placeholder="Area Code">
+                                    <input type="submit" class="searchSubmit" value="Search">
+                                    </form>
+                                    </div>-->
+                                    <div ng-repeat="number in Numbers">
+                                    <div class="{{(number._id == second._id) ?'selectedNumber' : 'numberDiv' }}" ng-click="selectNumber('800',number);">
+                                    <h4>{{number.phone_no}}</h4>
+                                    <p ng-if="number.zipcode._id">{{number.zipcode.City + ', ' + number.zipcode.State}}</p>
+                                    <p ng-if="number.region">{{number.region}}</p>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </script>
+
+                                <script type="text/ng-template" id="three.tpl.html">
+                                    <div class="panel panel-default">
+                                    <div class="panel-heading panel-head-padding"><h3>Vanity Numbers</h3>
+                                    <div class="vanity-content">
+                                    The vanity numbers below may be available for you to lease on a month-to-month basis. PSX owns a large bank of vanity numbers, more than the few listed below. If you are interested in leasing a vanity number such as the one below, call support at 1-800-297-1778.
+                                    </div>
+                                    </div>
+                                    <div class="panel-body">
+                                    <!--<div class="vertical-form pull-right">
+                                    <form name="searchForm">
+                                    <input type="text" class="form-control searchInput" placeholder="Area Code">
+                                    <input type="submit" class="searchSubmit" value="Search">
+                                    </form>
+                                    </div>-->
+                                    <div ng-repeat="vanit in vanityNumbers">
+                                    <div  class="{{(vanit._id == vanity) ?'selectedNumber' : 'numberDiv'}}" xng-click="selectNumber('vanity',vanit._id);">
+                                    <h4>{{vanit.phone_no}}</h4>
+                                    <p ng-if="vanit.zipcode._id">{{vanit.zipcode.City + ', ' + vanit.zipcode.State}}</p>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </script>
+
+                                <!--                                <script type="text/ng-template" id="four.tpl.html">
+                                                                    <div class="panel panel-default">
+                                                                    <div class="panel-heading panel-head-padding"><h3>Web Affiliate</h3> </div>
+                                                                    <div class="panel-body pad0 formBuilderWrapper">
+                                                                    <div class="form-group row formBuilderWrapper col-sm-10">
+                                                                    <div id="formScriptDiv" ng-if="newForm" ng-model="inputData" fb-form="default" fb-form-value="newForm" fb-default="defaultValue"></div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                </script>   -->
+                                <!--<button ng-click="getHtmlCode();" class="btn btn-primary pull-right"> Get Html Code </button>-->
+                                <!--                                <script type="text/ng-template" id="htmlCode">
+                                                                    <img src="assets/images/clipboard.png" ngclipboard data-clipboard-target="#leadFormHtml" class="fltrt" width="30px" alt="Copy to clipboard">
+                                
+                                                                    <textarea id="leadFormHtml" class="form-control" rows="35">{{htmlFormElement}}</textarea>
+                                                                </script>-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="isSet(3)">
+                        <div class="campaign-direction">
+                            <div class="col-sm-9" style="text-align: center;">
+                                <h4>{{category_name}}</h4>
+                            </div>
+                            <form name="webLeadForm" autocomplete="off" ng-init= "web_err = false;" novalidate>
+                                <div class="text-right">
+                                    <h4><a href class="btn btn-primary btn-flat" ng-click = "setTab(2)" >Previous</a>
+                                        <a href class="btn btn-primary btn-flat" ng-click = "(webLeadForm.$invalid) ? web_err = true : submitWebAffiliateRedirectURL(web.thankYouPageURL);"> Next</a></h4>
+                                </div>
+                                <h4>Web Affiliate</h4>
+
+                                <!--<div class="mrgtp30" ng-if="newForm != '' && currentRoleCode == 'lg'">-->
+                                <div class="mrgtp30" ng-if="newForm != ''">
+                                    <p>This advertiser also allows for web leads to be posted into the system. Copy the HTML from the textarea box below, customize the form, and publish it to your website.</p>
+                                    <p class="mrgtp30"> Pay-Per-Call Payout: ${{payPerCall}} </p>
+                                    <p> Pay-Per-Lead Payout: ${{payPerLead}} </p>
+
+                                    <div class="form-group mrgtp30 col-sm-8 padL0">
+                                        <label> Thank you page URL </label>
+                                        <input type="text" class="form-control" name="thankYouPageURL" placeholder="http://www.yoursite.com/thanks.html" ng-model="web.thankYouPageURL" required>
+                                        <span class = "text-danger" ng-show="web_err && webLeadForm.thankYouPageURL.$error.required">Please provide URL</span>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-sm-offset-2 mrgtp30 col-sm-8">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading text-right">
+                                        <!--<button ng-if="newForm != '' && currentRoleCode == 'lg'" ng-click="getHtmlCode();" class="btn btn-primary"> Get Html Code </button>-->
+                                        <button ng-if="newForm != ''" ng-click="getHtmlCode();" class="btn btn-primary"> Get Html Code </button>
+
+                                    </div>
+                                    <div class="panel-body formBuilderWrapper">
+                                        <div class="form-group row">
+                                            <div ng-if="newForm != ''" id="formScriptDiv" fb-builder="default"></div>
+                                            <div class="row" ng-if="newForm == ''">This advertiser has elected not to run a web-based lead program. Pay-per-call is the only option.</div>
+                                            <!--<div class="row" ng-if="newForm == '' && currentRoleCode != 'lg'">This advertiser has elected not to run a web-based lead program</div>-->
+                                            <!--<div id="formScriptDiv" ng-if="newForm" ng-model="inputData" fb-form="default" fb-form-value="newForm" fb-default="defaultValue"></div>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/ng-template" id="htmlCode">
+                                <span><b>The Get HTML code will only work if the campaign setup is completed</b></span>
+
+                                <textarea readonly id="leadFormHtml" class="form-control" rows="20">{{htmlFormElement}}</textarea>
+                            </script>
+                        </div>
+                    </div>
+
+                    <div ng-show="isSet(4)">
+                        <div class="campaign-direction">
+                            <form name="adv_form" ng-init="adv_err = false;" novalidate>
+                                <div class="col-sm-9" style="text-align: center;">
+                                    <h4>{{category_name}}</h4>
+                                </div>
+                                <div class="text-right">
+
+                                    <h4><a href class="btn btn-primary btn-flat" ng-click = "setTab(3)" >Previous</a>
+                                        <a href class="btn btn-primary btn-flat" ng-click="(adv_form.$invalid) ? adv_err = true : (currentRoleCode == 'advcc') ? setTab(6) : setTab(5);"> Next</a></h4>
+                                </div>
+                                <h4>Advertising Method</h4>
+
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <div class="col-sm-10 form-group">
+                                        <input type="radio" id = "online" value="online" name="advertising_method" ng-model="advertising_method.type" class="regular-radio solid-blue" required>
+                                        <label for="online"></label>
+                                        <label for="online">Online</label>
+                                        <div class="col-sm-offset-2" ng-if="advertising_method.type == 'online'">
+                                            <select name="online_select" class="form-control" ng-model="advertising_method.value" required>
+                                                <option value=''>Select</option>
+                                                <option value="content_review" ng-show="media_restricted.indexOf('content_review', 0) == -1">Content / Review Site</option>
+                                                <option value="discount_coupon" ng-show="media_restricted.indexOf('discount_coupon', 0) == -1">Discount / Coupon Site</option>
+                                                <option value="display" ng-show="media_restricted.indexOf('display', 0) == -1">Display</option>
+                                                <option value="email" ng-show="media_restricted.indexOf('email', 0) == -1">Email</option>
+                                                <option value="rewards_incentive" ng-show="media_restricted.indexOf('rewards_incentive', 0) == -1">Rewards / Incentive</option>
+                                                <option value="leadform" ng-show="media_restricted.indexOf('leadform', 0) == -1">Lead Form / Co Reg</option>
+                                                <option value="search" ng-show="media_restricted.indexOf('search', 0) == -1">Search</option>
+                                                <option value="socialmedia" ng-show="media_restricted.indexOf('socialmedia', 0) == -1">Social Media</option>
+                                                <option value="software" ng-show="media_restricted.indexOf('software', 0) == -1">Software</option>
+                                                <option value="other" ng-show="media_restricted.indexOf('other', 0) == -1">Other</option>
+                                            </select>
+                                            <span class="text-danger" ng-show="adv_form.online_select.$error.required && adv_err">Please select one option</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-10 form-group">
+                                        <input type="radio" id = "mobile" value="mobile" name="advertising_method" ng-model="advertising_method.type" class="regular-radio solid-blue" required>
+                                        <label for="mobile"></label>
+                                        <label for="mobile">Mobile</label>
+                                        <div class="col-sm-offset-2" ng-if="advertising_method.type == 'mobile'">
+                                            <select name="mobile_select" class="form-control" ng-model="advertising_method.value" required>
+                                                <option value=''>Select</option>
+                                                <option value="apps" ng-show="media_restricted.indexOf('apps', 0) == -1">Apps</option>
+                                                <option value="display" ng-show="media_restricted.indexOf('display', 0) == -1">Display</option>
+                                                <option value="search" ng-show="media_restricted.indexOf('search', 0) == -1">Search</option>
+                                                <option value="sms" ng-show="media_restricted.indexOf('sms', 0) == -1">SMS</option>
+                                                <option value="other" ng-show="media_restricted.indexOf('other', 0) == -1">Other</option>
+                                            </select>
+                                            <span class="text-danger" ng-show="adv_form.mobile_select.$error.required && adv_err">Please select one option</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="radio" id = "offline" value="offline" name="advertising_method" ng-model="advertising_method.type" class="regular-radio solid-blue" required>
+                                        <label for="offline"></label>
+                                        <label for="offline">Offline</label>
+                                        <div class="col-sm-offset-2" ng-if="advertising_method.type == 'offline'">
+                                            <select name="offline_select" class="form-control" ng-model="advertising_method.value" required>
+                                                <option value=''>Select</option>
+                                                <option value="business" ng-show="media_restricted.indexOf('business', 0) == -1">Business Publication</option>
+                                                <option value="allCenter" ng-show="media_restricted.indexOf('allCenter', 0) == -1">All Center</option>
+                                                <option value="directMail" ng-show="media_restricted.indexOf('directMail', 0) == -1">Direct Mail</option>
+                                                <option value="directory" ng-show="media_restricted.indexOf('directory', 0) == -1">Directory</option>
+                                                <option value="newspaper" ng-show="media_restricted.indexOf('newspaper', 0) == -1">Newspaper</option>
+                                                <option value="fsi" ng-show="media_restricted.indexOf('fsi', 0) == -1">Free Standing Insert (FSI)</option>
+                                                <option value="in-call" ng-show="media_restricted.indexOf('in-call', 0) == -1">In-Call Ad</option>
+                                                <option value="magazine" ng-show="media_restricted.indexOf('magazine', 0) == -1">Magazine</option>
+                                                <option value="outdoor" ng-show="media_restricted.indexOf('outdoor', 0) == -1">Outdoor</option>
+                                                <option value="radio" ng-show="media_restricted.indexOf('radio', 0) == -1">Radio</option>
+                                                <option value="tv" ng-show="media_restricted.indexOf('tv', 0) == -1">TV</option>
+                                                <option value="other" ng-show="media_restricted.indexOf('other', 0) == -1">Other</option>
+                                            </select>
+                                            <span class="text-danger" ng-show="adv_form.offline_select.$error.required && adv_err">Please select one option</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <span class="text-danger" ng-show="adv_form.advertising_method.$error.required && adv_err">Please select one option</span>
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="setTab(3)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="(adv_form.$invalid) ? adv_err = true : (currentRoleCode == 'advcc') ? setTab(6) : setTab(5);" value="Next" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+
+
+                    </div>
+                    <div ng-show="isSet(6)">
+                        <div class="campaign-direction">
+                            <form name="attr_form" ng-init="attr_err = false;" novalidate>
+                                <div class="col-sm-9" style="text-align: center;">
+                                    <h4>{{category_name}}</h4>
+                                </div>
+                                <div class="text-right">
+
+                                    <h4><a href class="btn btn-primary btn-flat" ng-click = "(currentRoleCode == 'advcc') ? setTab(4) : setTab(3)" >Previous</a>
+                                        <a href class="btn btn-primary btn-flat" ng-click="(attr_form.$invalid) ? attr_err = true : setTab(5);"> Next</a></h4>
+                                </div>
+                                <h4>Attribution Setup</h4>
+
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <div class="form-group col-sm-10">
+                                        <div class="col-sm-6 datePickerDiv padL0">
+                                            <input type="text" name="media_week_from" ng-model="attr.media_week_from" date-format="MM/dd/yyyy" placeholder="Media Week From" class="form-control" bs-datepicker>
+                                        </div>
+                                        <div class="col-sm-6 datePickerDiv padR0">
+                                            <input type="text" name="media_week_to" ng-model="attr.media_week_to" date-format="MM/dd/yyyy" placeholder="Media Week To" class="form-control" bs-datepicker>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <div
+                                            class=""
+                                            isteven-multi-select
+                                            input-model="days"
+                                            output-model="attr.days"
+                                            button-label="name"
+                                            item-label="name"
+                                            tick-property="ticked"
+                                            output-properties="name"
+                                            max-labels="7"
+                                            disable-property="disabled"
+                                            translation="{selectAll: 'Select All', selectNone: 'Select None',reset: 'Reset', nothingSelected:'Select Days'}"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-10">
+                                        <!--                                            <div class="col-sm-10">
+                                                                                        <label for="s">Time Range</label>
+                                                                                    </div>-->
+                                        <div class="col-sm-6 padL0">
+                                            <div class="input-append">
+                                                <input class="span2 ivr_select backWhite timerange timeInput" name="time_range_from" bs-timepicker ng-model="attr.time_range_from" autoclose="true" id="appendedInput" type="text">
+                                                <span class="add-on"><i class="glyphicon glyphicon-time"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 padR0">
+                                            <div class="input-append">
+                                                <input class="span2 ivr_select backWhite timerange timeInput" name="time_range_to" bs-timepicker ng-model="attr.time_range_to" autoclose="true" id="appendedInput" type="text">
+                                                <span class="add-on"><i class="glyphicon glyphicon-time"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input type="text" name="rate" placeholder="Rate" ng-model="attr.rate" ng-keyup="attr.amount_spent = attr.spots_ordered * attr.rate" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-10">
+                                        <input type="text" name="spots" placeholder="Spots Ordered" ng-model="attr.spots_ordered" ng-keyup="attr.amount_spent = attr.spots_ordered * attr.rate" class="form-control">
+                                    </div>
+                                    <div class="form-group col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input type="text" name="amt_spent" placeholder="Amount Spent" ng-model="attr.amount_spent" class="change dollar_text form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="(currentRoleCode == 'advcc') ? setTab(4) : setTab(3)" value="Previous" class="btn btn-primary">
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="(attr_form.$invalid) ? attr_err = true : setTab(5);" value="Next" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+
+
+                    </div>
+                    <div ng-show="isSet(5)">
+                        <div class="name_campaign">
+                            <form name="name_form" ng-init="name_err = false;" ng-submit="submitCampaign(campaign_direction, advertising_method, campaign_IVR, campaign_name, testing_purpose)" novalidate>
+                                <div class="col-sm-9" style="text-align: center;">
+                                    <h4>{{category_name}}</h4>
+                                </div>
+                                <div class="text-right">
+
+                                    <h4><a href class="btn btn-primary btn-flat" ng-click = "(currentRoleCode == 'advcc') ? setTab(6) : setTab(4)" >Previous</a>
+                                        <a href class="btn btn-primary btn-flat" ng-click="(name_form.$invalid) ? name_err = true : '';"> Submit</a></h4>
+                                </div>
+                                <h4>Name Your Campaign</h4>
+
+                                Would you like to name your campaign?
+                                <div class="row mrgtp10">
+                                    <div class="col-sm-8 col-sm-offset-2">
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" name="campaign_name" class="form-control" ng-model="campaign_name" placeholder="WABC Radio Test / File123 Email Test" required>
+                                            <span class="text-danger" ng-show="name_form.campaign_name.$error.required && name_err">Enter Campaign Name</span>
+                                        </div>
+                                    </div>
+
+                                </div>                
+                                <div style="padding-top: 20px">  
+                                    Set this campaign to "Test Mode" if you are new to this vertical and would like to mark the campaign as a Test?
+                                </div>
+                                <div class="col-sm-8 col-sm-offset-2" style="padding-top: 20px">
+
+                                    <div class="col-sm-8 form-group">
+                                        <toggle-switch ng-model="testing_purpose"></toggle-switch>
+                                    </div>
+                                    <!--<div class="col-sm-4">
+                                        <input id="yes" class="regular-radio solid-blue" type="radio" ng-model="testing_purpose" value="true" name="testing_purpose">
+                                        <label for="yes"></label>
+                                        <label for="yes">Yes</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input id="no" class="regular-radio solid-blue" type="radio" ng-model="testing_purpose" value="false" name="testing_purpose">
+                                        <label for="no"></label>
+                                        <label for="no">No</label>
+                                    </div>-->
+
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="(currentRoleCode == 'advcc') ? setTab(6) : setTab(4)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                    <div class="col-sm-5 form-group pull-left">
+                                        <input type="submit" ng-click="(name_form.$invalid) ? name_err = true : submitForm();" value="Submit" class="btn btn-primary btn-block btn-flat">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <!--   <div ng-show="isSet(6)">
+
+                             <div class="split-the-app">
+                                <h4>Congratulations!</h4>
+                                <div class="col-sm-8 col-sm-offset-2">
+                                 <form name="form" class="vertical-form">
+                                     <div  class="form-group">
+
+                                         <div class="col-sm-10">
+
+                                             <h5>Your information has been saved successfully.</h5>
+
+                                         </div>
+                                     </div>
+                                      <div class="form-group">
+                                         <div class="col-sm-5 pull-left">
+                                            <input type="submit" href ng-click="backToBoard()" value="Create New Campaign">
+
+                                         </div>
+                                         <div class="col-sm-5 pull-left">
+
+                                         </div>
+                                     </div>
+
+                                 </form>
+                                    </div>
+                             </div>
+                         </div> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Tabbed form to Create a new Campaign-->
+
+
+<style>
+    .input-append .add-on, .input-prepend .add-on {
+        background-color: #777;
+        color: #fff;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: normal;
+        height: 30px;
+        line-height: 12px;
+        min-width: 16px;
+        padding: 6px;
+        text-align: center;
+        text-shadow: 0 1px 0 #ffffff;
+        width: auto;
+    }
+
+    .input-group span.input-group-addon {
+        border: 2px solid #e7e7e7;font-weight: bold;color: #777;
+    }
+    .input-group input.form-control {
+        margin: 0 0 0 -2px;
+    }
+
+</style>
+

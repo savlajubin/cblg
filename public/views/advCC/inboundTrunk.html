@@ -1,0 +1,120 @@
+<!-- Call Routing Inbound Trunk View Form -->
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3>Inbound Trunk</h3></div>
+        <div class="panel-body">
+
+            <div class="ivr-based">
+                <div class="contact-info col-sm-6 col-sm-offset-3">
+                    <form role="form" name="inbound_form" ng-init = "inbound_err = false" novalidate>
+                        <div class="input-group form-group col-md-12 mainIvr">
+                            <div class="col-xs-6 paddingLR5p marginTB7p borderRight">
+                                <select class="ivr_select" name="inbound_method" ng-model="inbound.association" required>
+                                    <option value="">Select</option>
+                                    <option ng-selected="'phone' == inbound.association" value="phone">Phone Number</option>
+                                    <option ng-selected="'offer' == inbound.association" value="offer">Offers</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-6 paddingLR5p marginTB7p">
+                                <div ng-if="inbound.association == 'offer'">
+                                    <select class="ivr_select" name="queue" ng-model="inbound.offer_id" ng-required="inbound.association=='offer'">
+                                        <option value="">Select an Offer</option>
+                                        <option ng-repeat="offer in offers" ng-if="offer.process_status && offer.active_status" ng-selected="offer._id == inbound.offer_id" value="{{offer._id}}">{{offer.vertical_category_details.title}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="inbound.association == 'phone'" class="mainIvr col-xs-12 paddingLR5p marginTB7p" style="background:#fff">
+                            <div class="panel panel-default">
+                                <div class="panel-heading panel-head-padding"><h3>Select a Number</h3></div>
+                                <div class="panel-body">
+                                    <div class="vertical-form pull-right">
+                                        <input type="text" ng-model="query" class="form-control searchInput" placeholder="Area Code">
+                                        <input type="button" class="searchSubmit" value="Search" ng-click="getNewRingToNumber(query)">
+                                    </div>
+                                    <div class="mrgtp50" ng-repeat="localNumber in localNumbers"> <!-- | filter:query"> -->
+                                        <div class="{{(localNumber._id == inbound.phone_no._id) ?'selectedNumber' : 'numberDiv' }}" ng-click="selectNumber(localNumber);">
+                                            <h4>{{localNumber.phone_no}}</h4>
+                                            <p class="jEllipsis" ng-if="localNumber.zipcode._id">{{localNumber.zipcode.City + ', ' + localNumber.zipcode.State}}</p>
+                                            <p class="jEllipsis" ng-if="localNumber.region">{{localNumber.region}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mrgtp50 text-center panel panel-danger" ng-if="phoneNoErrorMsg">
+                                        <h4>{{phoneNoErrorMsg}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <span class="text-danger" ng-show="inbound_err && inbound_form.inbound_method.$error.required">Select Action</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-danger" ng-show="inbound_err && inbound_form.phonenumber.$error.required">Enter Phone number</span>
+                                <span class="text-danger" ng-show="inbound_err && inbound_form.queue.$error.required">Select Queue</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 paddingLR5p">
+                            <div class="input-group form-group col-md-12 mainIvr pull-left">
+                                <div class="input-group-addon borderRight" style="vertical-align: top;padding-top: 18px;">
+                                    Associate IVRs
+                                </div>
+                                <div class="marginTB7p row" style="border-bottom: 1px solid #e0e0e0;" ng-repeat="(nIndex, n) in ngRepeater">
+                                    <div class="col-sm-1 text-center" style="padding: 6px 12px;font-size:16px;font-weight:500">{{nIndex + 1}}</div>
+                                    <select class="ivr_select col-sm-10" style="width: 83%" name="ivr" ng-model="inbound.ivr_id[nIndex]" ng-required="true">
+                                        <option value="">Select an IVR</option>
+                                        <option ng-repeat="ivr in ivrs" ng-if="ivr.ivr_status" ng-hide="hideOpt(ivr._id)" ng-selected="ivr._id == inbound.ivr_id[nIndex]" value="{{ivr._id}}">{{ivr.ivr_name}}</option>
+                                    </select>
+                                    <div class="col-sm-1" style="padding: 5px 12px;font-weight:500;font-size:20px;">
+                                        <a><i class="fa fa-minus-circle text-danger" ng-click="decrementCount(nIndex)"></i></a>
+                                    </div>
+                                </div>
+                                <div class="marginTB7p row" style="font-size: 16px; padding-left: 20px;">
+                                    <a ng-click="ngRepeater.push({})"><i class="fa fa-plus-circle"></i> Add More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <span class="text-danger" ng-show="inbound_err && inbound_form.ivr.$error.required">Select an IVR</span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 mrgtp30 paddingLR5p">
+                            <div class="input-group form-group col-md-12 pull-left mainIvr">
+                                <span class="input-group-addon borderRight">Agent Script </span>
+                                <div class="paddingLR5p col-xs-12">
+                                    <select ng-model="inbound.agent_script" name="agent_script" class=" ivr_select ng-pristine ng-valid" required>
+                                        <option value="">Select Agent Script</option>
+                                        <option ng-repeat="agent_script in agent_scripts" value="{{agent_script._id}}">{{agent_script.script_name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <span class="text-danger" ng-show="inbound_err && inbound_form.agent_script.$error.required">Select an Agent Script</span>
+                        </div>
+                        <div class="col-sm-12 mrgtp30 paddingLR5p">
+                            <div class="input-group form-group col-md-6 pull-left mainIvr">
+                                <span class="input-group-addon borderRight">Name </span>
+                                <div class="paddingLR5p col-xs-12">
+                                    <input type="text" ng-model="inbound.trunk_name" placeholder="Enter Name" name="trunk_name" class=" ivr_select backWhite ng-pristine ng-valid" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <span class="text-danger" ng-show="inbound_err && inbound_form.trunk_name.$error.required">Enter Name</span>
+                        </div>
+                        <div class="col-sm-12 form-group">
+                            <input type="submit" value="Submit" ng-click="(inbound_form.$invalid) ? inbound_err = true : submitForm(inbound)" class="btn btn-primary btn-flat form-control">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Call Routing Inbound Trunk View Form -->

@@ -1,0 +1,314 @@
+<div class="tabsContainer col-sm-12">
+    <div class="panel panel-default" ng-init="setTab(9);
+            auto_recharge = false;
+            payment = false;">
+        <div class="panel-heading"><h3>Add Payment Type</h3><div class= "text-center text-danger" ng-show="common_msg">*Please fill the required fields.</div></div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(9)}"><a href ng-click="setTab(9)">eCheck Information</a></li>
+                    <li ng-class="{active:isSet(10)}"><a href ng-click="setTab(10)">Credit Card Information</a></li>
+                    <li ng-class="{active:isSet(11)}"><a href ng-click="setTab(11)">Auto Recharge</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div ng-show="isSet(9)">
+
+                        <div class="echeck-info">
+                            <form name="echeck_info"  class="vertical-form" ng-init = "echeck_err = false" autocomplete="off" novalidate data-ng-submit="submitEcheck(echeck)">
+                                <!-- <div class="form-group">
+                                <div class="text-right">
+                                        <h4>
+                                        <button class="btn btn-primary" type="submit" ng-click="(echeck_info.$invalid || echeck.credit_agree != true) ? common_msg = true : ''; echeck.credit_agree == true ? setTab(10) :(echeck_info.$invalid?echeck_err =true: setTab(10))">Next</button>
+                                        </h4>
+                                    </div>
+                                </div> -->
+                                <h4>eCheck Information</h4>
+                                <p>PSX.io software is free to use, but all great software needs to be hosted somewhere. PSX is hosted on Amazon Web Servers that scale for all of our users and bill only for what throughput is used. We must recoup this expense to pay the light bill. On average, it shakes out to around $0.0006/minute.</p>
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" value="ubc" ng-model="echeck.credit_agree" class="regular-checkbox solid-blue ng-valid ng-dirty" ng-click="echeck_err = false"  name="agreement" id="agreement"><label for="agreement" style="vertical-align: middle;"></label></td>
+                                                    <td><label for="agreement">&nbsp;&nbsp;I want to use a credit card. </label></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="accno" ng-pattern="/^[0-9+-]*$/" data-ng-model="echeck.acc_no" placeholder="Account Number" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.accno.$error.required">Account Number is required</span>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.accno.$error.pattern">Account Number should have number only</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="caccno" ng-pattern="/^[0-9+-]*$/" data-match ="echeck.acc_no" data-ng-model="echeck.caccno" placeholder="Confirm Account Number" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.caccno.$error.required">Account Number is required</span>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.caccno.$error.pattern">Account Number should have number only</span>
+<!--                                            <span ng-show="!echeck_info.caccno.$error.required && echeck_info.caccno.$error.match" class="text-danger">
+                                                Account Number do not match!</span>-->
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="routingno" ng-pattern="/^[0-9+-]*$/" data-ng-model="echeck.routing_no" placeholder="Routing Number" required ng-change="populate_bankDetails()" >
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.routingno.$error.required">Routing Number is required</span>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.routingno.$error.pattern">Routing Number should have number only.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="bankname" data-ng-model="echeck.bank_name" placeholder="Bank Name" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.bankname.$error.required">Bank Name is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="bankphone" ng-pattern="/^[0-9+-]*$/" data-ng-model="echeck.bank_phone" placeholder="Bank Phone" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.bankphone.$error.required">Bank Phone Number is required</span>
+                                            <span ng-show="echeck_info.bankphone.$error.pattern && !echeck_info.bankphone.$pristine" class="text-danger">Bank Phone Number should be number only.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="bankzip" ng-pattern="/^[0-9+-]*$/" data-ng-model="echeck.bank_zip" placeholder="Bank Zip" required>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.bankzip.$error.required">Bankzip is required</span>
+                                            <span class = "text-danger" ng-show="echeck_err && echeck_info.bankzip.$error.pattern">Bankzip should be number</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-5 pull-left">
+
+
+                                        </div>
+                                        <div class="col-sm-5 pull-left">
+                                            <input type="submit" ng-click="(echeck_info.$invalid || echeck.credit_agree != true) ? common_msg = true : common_msg = false;
+                                                echeck.credit_agree == true ? '' : (echeck_info.$invalid ? echeck_err = true : '');
+                                                auto = true;" value="Submit" class="btn btn-primary">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(10)">
+
+                        <div class="add-credit-card-info">
+                            <form name="echeck_info2" class="vertical-form" ng-init = "cvv_err = false;"  novalidate  autocomplete = "off" data-ng-submit="submitCreditCard(cc_details)">
+
+                                <h4>Add Credit Card</h4>
+                                <p>PSX needs either a credit card or eCheck information on file to pass on the costs of hosting, as explained in the eCheck section.</p>
+                                <div class="col-sm-6" style="border-right: 1px solid #e0e0e0;">
+                                    <div class="form-group">
+                                        <div class="col-sm-10 demo">
+                                            <input type="number" class="form-control" ng-pattern="/^[0-9]*$/" name="cardno" id="ccNum" data-ng-model="cc_details.card_no"   ng-blur="cc_details.card_no ? validateCC(1) : validateCC(0)" autocomplete="off"autocomplete="off" ng-required="saved_cards.length==0" >
+                                            <span class = "text-danger log" ></span>
+
+                                            <span class = "text-danger" ng-show="cvv_err && echeck_info2.cardno.$error.required">Credit Card Number is required</span>
+                                            <span ng-show="echeck_info2.cardno.$error.pattern && !echeck_info2.cardno.$pristine" class="text-danger">Credit Card Number should be number only.</span>
+                                            <!-- <span ng-show="echeck_info2.cardno.$error.minlength">Credit card must be 15-19 digits</span> -->
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            <select class="form-control" id="exp_month" name ="exp_month" data-ng-model="cc_details.exp_month" ng-required="saved_cards.length==0 || cc_details.card_no">
+                                                <option value=""> Month</option>
+                                                <option value="Jan">Jan</option>
+                                                <option value="Feb">Feb</option>
+                                                <option value="Mar">Mar</option>
+                                                <option value="Apr">Apr</option>
+                                                <option value="May">May</option>
+                                                <option value="Jun">Jun</option>
+                                                <option value="Jul">Jul</option>
+                                                <option value="Aug">Aug</option>
+                                                <option value="Sep">Sep</option>
+                                                <option value="Oct">Oct</option>
+                                                <option value="Nov">Nov</option>
+                                                <option value="Dec">Dec</option>
+                                            </select>
+                                            <span class = "text-danger" ng-show="echeck_info2.exp_month.$invalid && cvv_err">Please Select Month</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-3">
+                                            <select class="form-control" id="exp_year" name= "exp_year" data-ng-model="cc_details.exp_year" ng-required="saved_cards.length==0 || cc_details.card_no">
+                                                <option value=""> Year</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                                <option value="2019">2019</option>
+                                                <option value="2020">2020</option>
+                                            </select>
+                                            <span class = "text-danger" ng-show="echeck_info2.exp_year.$invalid && cvv_err">Please Select Year</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-3" >
+                                            <input type="text" class="form-control" ng-pattern="/^[0-9]*$/" name="cardccv" data-ng-model="cc_details.cvv" placeholder="CVV" ng-required="saved_cards.length==0 || cc_details.card_no">
+                                            <span class = "text-danger" ng-show="cvv_err && echeck_info2.cardccv.$error.required">Credit CVV is required</span>
+                                            <span ng-show="echeck_info2.cardccv.$error.pattern && !echeck_info2.cardccv.$pristine" class="text-danger">Credit Card Number should be number only.</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-5 pull-left">
+
+
+                                        </div>
+                                        <div class="col-sm-5 pull-left">
+                                            <input type="submit" ng-click="echeck_info2.$invalid || CC_validataion_err ? common_msg = true : common_msg = true;
+                                                echeck_info2.$invalid || CC_validataion_err ? cvv_err = true : '';
+                                                auto = true;" value="Submit" class="btn btn-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-sm-5" style="margin-top: 3%">
+                                <h4>Saved Credit Cards</h4>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            Card Number
+                                        </td>
+                                        <td>
+                                            Exp Date
+                                        </td>
+                                        <td>
+                                            Action
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="cardslist in saved_cards">
+                                        <td>
+                                            {{cardslist.card_no}}
+                                        </td>
+                                        <td>
+                                            {{cardslist.exp_month}}/{{cardslist.exp_year}}
+                                        </td>
+                                        <td>
+                                            <span ng-if="cardslist.is_primary">Primary</span>
+                                            <a style="cursor:pointer;" ng-if="!cardslist.is_primary" ng-click="make_primary(cardslist)">Make Primary</a> | <a style="cursor:pointer;" ng-click="remove_card(cardslist._id)">Delete</a>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(11)">
+
+                        <form name="auto_recharge" class="vertical-form" ng-init="autorecharge = true;cvv_err = false;" data-ng-submit="" novalidate>
+                            <h4>Auto Recharge</h4>
+                            <div class="auto-recharge-info col-sm-8 col-sm-offset-2">
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <input type="checkbox" value="true" ng-model = "rechargeData.allow" class="regular-checkbox solid-blue" name="autorecharge" id="autorecharge" ng-click="rechargeData.bal_Down = '';
+                                            rechargeData.bal_Up = '';
+                                            rechargeData.from_account = ''"><label for="autorecharge" style="vertical-align: middle;"></label>
+                                        <label>When my balance goes below</label>
+                                        <select name = "bal" id = "bal" ng-model = "rechargeData.bal_Down"  ng-required="rechargeData.allow">
+                                            <option value = "" >Select balance</option>
+                                            <option value = "50">$50</option>
+                                            <option value = "100">$100</option>
+                                            <option value = "150">$150</option>
+                                        </select>
+                                        <span class = "text-danger" ng-show="auto_recharge.bal.$invalid && cvv_err">Select balance lower limit</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <label> recharge it back up to </label>
+                                        <select name = "balUp" id = "balUp" ng-model = "rechargeData.bal_Up" ng-required="rechargeData.allow">
+                                            <option value = "" >Select backup</option>
+                                            <option value = "50">$50</option>
+                                            <option value = "250">$250</option>
+                                            <option value = "500">$500</option>
+                                        </select>
+                                        <span class = "text-danger" ng-show="auto_recharge.balUp.$invalid && cvv_err">Select recharge amount</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <label>using</label>
+                                        <select ng-model="rechargeData.from_account" ng-options="v.id as v.acc_no group by v.group for v in selectCreditCards">
+                                        </select>
+                                        <span class="text-danger" ng-show="auto_recharge.account.$invalid && auto_err">Select your Account</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-5 pull-left">
+
+
+                                    </div>
+                                    <div class="col-sm-5 pull-left">
+                                        <input type="submit" ng-click="(auto_recharge.$invalid) ? common_msg = true : common_msg = false;
+                                            (auto_recharge.$invalid) ? cvv_err = true : submitAutorecharge(rechargeData)" value="Submit" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Inline CSS for credit card display -->
+<style>
+
+    .demo #ccNum.valid.visa {
+        background-position: 4px -156px, 260px -87px;
+    }
+    .demo #ccNum.visa {
+        background-position: 4px -156px, 260px -87px;
+    }
+    .demo #ccNum.valid.visa_electron {
+        background-position: 4px -198px, 260px -87px;
+    }
+    .demo #ccNum.visa_electron {
+        background-position: 4px -198px, 260px -61px;
+    }
+    .demo #ccNum.valid.mastercard {
+        background-position: 4px -240px, 260px -87px;
+    }
+    .demo #ccNum.mastercard {
+        background-position: 4px -240px, 260px -87px;
+    }
+    .demo #ccNum.valid.maestro {
+        background-position: 4px -282px, 260px -87px;
+    }
+    .demo #ccNum.maestro {
+        background-position: 4px -282px, 260px -87px;
+    }
+    .demo #ccNum.valid.discover {
+        background-position: 4px -324px, 260px -87px;
+    }
+    .demo #ccNum.discover {
+        background-position: 4px -324px, 260px -87px;
+    }
+    .demo #ccNum {
+        background-image: url("/assets/images/cards.png"), url("/assets/images/cards1.png");
+        background-position: 4px -114px, 260px -61px;
+        background-repeat: no-repeat;
+        background-size: 120px 361px, 120px 361px;
+        padding-left: 54px;
+        width: 85%;
+    }
+    .demo input {
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        box-sizing: content-box;
+        color: #333;
+        display: block;
+        font-size: 18px;
+        height: 32px;
+        padding: 0 5px;
+        width: 85%;
+    }
+</style>

@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<div class="abhi tabsContainer col-sm-12">
+    <div class="panel panel-default" ng-init="setTab(0);">
+        <div class="panel-heading"><h3>Onboard a Lead Gen Network</h3></div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(0)}"><a href >Get HTML</a></li>
+
+                </ul>
+                <div class="tab-content">
+                    <div ng-show="isSet(0)">
+
+                        <div class="user vertical-form">
+
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <form name="exist_userForm" class="vertical-form" ng-init = "myerror = false" novalidate  autocomplete = "off">
+                                    <div  class="form-group">
+
+
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="user_name" data-ng-model="selected_existing_user"  required>
+                                                <option value = "">Select Username</option>
+                                                <option ng-repeat="LGNusers in LGNuserList" value="{{LGNusers._id}}" >{{LGNusers.first_name}} {{LGNusers.last_name}}</option>
+                                            </select>
+                                            <!--  <span>{{selected_existing_user}}</span> -->
+                                            <span class = "text-danger" ng-show="exist_userForm.user_name.$invalid && myerror">Please Select Username</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+
+                                        <div class="col-sm-10 pull-left">
+                                            <input type="submit" ng-click = "(exist_userForm.$invalid) ? myerror = true : get_HTML(selected_existing_user)" value="Get HTML" class="btn btn-primary">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-5 ">
+                                            <span>Lead Buyer's Registration</span>
+                                            <textarea readonly style="width: 100%">{{iframecode_LB}}</textarea>
+                                        </div>
+                                        <div class="col-sm-5 ">
+                                            <span>Lead Seller's Registration</span>
+                                            <textarea readonly style="width: 100%">{{iframecode_LS}}</textarea>
+                                        </div>
+                                        <!-- <div class="col-sm-4 ">
+                                        <span>Phone Agent's Registration</span>
+                                                <textarea readonly style="width: 100%">{{iframecode_PA}}</textarea>
+                                        </div> -->
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-10 ">
+                                            <span class = "text-danger">* All the users registered from this url will come under the selected user which we select from the selection list.</span>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Inline CSS for credit card display -->

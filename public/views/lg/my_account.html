@@ -1,0 +1,240 @@
+<div class="tabsContainer col-sm-12">
+    <div class="panel panel-default" ng-init="setTab(1);
+            auto_recharge = false;
+            common_msg = false;
+            contracts = false;
+            media_agency = false;
+            payment = false;
+            marketing = false;
+            call_recording = false;">
+        <div class="panel-heading"><h3>My Account</h3><div class= "text-center text-danger" ng-show="common_msg">*Please fill the required fields.</div></div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(1)}"><a href ng-click="setTab(1)">Contact Info</a></li>
+                    <li ng-class="{active:isSet(2)}"><a href ng-click="setTab(2)">Change Password</a></li><!-- ng-click="(login_val.$invalid) ? '' : setTab(2) -->
+                    <li ng-class="{active:isSet(3)}"><a href ng-click="setTab(3)">Authentication</a></li><!-- ng-click="(login_val.$invalid) ? '' : setTab(3) -->
+                    <li ng-class="{active:isSet(6)}"><a href ng-click=" setTab(6)">Email Setup</a></li>
+                </ul>
+                <div class="tab-content">
+
+                    <div ng-show="isSet(1)">
+
+                        <div class="saas-onboard-contact-info">
+                            <!-- <div class="form-group">
+                                <div class="pull-right">
+                                    <h4><a href  ng-click="contact_info.$invalid ? common_msg = true : '';
+                                                    contact_info.$invalid ? con_submit = true : setTab(2)">Next</a></h4>
+                                </div>
+                            </div> -->
+                            <h4>Contact Info</h4>
+                            <p>Please enter your contact information below.</p>
+                            <div class="contact-info col-sm-8 col-sm-offset-2">
+                                <div ng-show="success_contact" class="alert alert-success">{{success_contact}}</div>
+                                <div ng-show="error_contact" class="alert text-danger">{{error_contact}}</div>
+                                <form class="" role="form" name="contact_info" ng-init = "con_submit = false" novalidate data-ng-submit="submitContactInfo(contactInfo)">
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="firstName" data-ng-model="contactInfo.first_name" placeholder="First Name" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.firstName.$error.required" >First Name is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="lastName" data-ng-model="contactInfo.last_name"placeholder="Last Name" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.lastName.$error.required">Last Name is required</span>
+                                    </div>
+
+                                    <div class="col-sm-10 form-group">
+                                        <input type="email" class="form-control" name="email" data-ng-model="contactInfo.email"placeholder="Email" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.email.$error.required" class="error">Email is required</span>
+                                        <span class = "text-danger"  ng-show="contact_info.email.$dirty && contact_info.email.$error.email" >Invalid Email Address</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="phone" data-ng-model="contactInfo.phone_no"placeholder="Contact Number"ng-minlength="8" ng-maxlength="15" ng-pattern="/^[0-9+-]*$/" required>
+                                        <span ng-show="contact_info.phone.$error.minlength" class="text-danger">Contact number is too short.</span>
+                                        <span ng-show="contact_info.phone.$error.maxlength"class="text-danger">Contact number is too long.</span>
+                                        <span ng-show="contact_info.phone.$error.pattern && !contact_info.phone.$pristine"
+                                              class="text-danger">Contact Number should be number only.</span>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.phone.$error.required" >Contact Number is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="companyName" data-ng-model="contactInfo.company_name" placeholder="Company Name" required>
+                                        <span class="text-danger" ng-show="con_submit && contact_info.companyName.$error.required">Company Name is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="addLine1" data-ng-model="contactInfo.addressLine1" placeholder="Address Line 1" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.addLine1.$error.required">Address1 is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="addLine2" data-ng-model="contactInfo.addressLine2" placeholder="Address Line 2" >
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="zip" ng-blur="getCity(contactInfo.zip)" data-ng-model="contactInfo.zip" placeholder="5 digit Zip Code" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.zip.$error.required">Zipcode is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="city" data-ng-model="contactInfo.city" placeholder="City" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.city.$error.required">City is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="text" class="form-control" name="state"  data-ng-model="contactInfo.state" placeholder="State" required>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.state.$error.required">State is required</span>
+                                    </div>
+
+                                    <div class="col-sm-10 form-group">
+                                        <select class="form-control" name="sel_con" id ="sel_con" data-ng-model="contactInfo.country" required>
+                                            <option value="">Select Country</option>
+                                            <option ng-repeat="country in countries" ng-selected="contactInfo.country == country.name" value="{{country.name}}">{{country.name}}</option>
+                                        </select>
+                                        <span class = "text-danger" ng-show="con_submit && contact_info.sel_con.$invalid" >Please select country</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group pull-left">
+                                        <input type="submit" ng-click="contact_info.$invalid ? common_msg = true : '';
+                                            contact_info.$invalid ? con_submit = true : ''" value="Submit" class="btn btn-primary">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(2)">
+
+                        <div class="saas-onboard-credentials">
+                            <!--  <div class="form-group">
+                                 <div class="text-right">
+                                     <h4><a href type="submit" ng-click="setTab(1)">Previous</a>
+                                         |
+                                         <a href type="submit" ng-click="login_val.$invalid ? common_msg = true : '';
+                                                     login_val.$invalid ? log_err = true : setTab(3)" >Next</a>
+                                     </h4>
+                                 </div>
+                             </div> -->
+                            <h4>Login Credentials</h4>
+                            <div class="credentials-info col-sm-8 col-sm-offset-2">
+                                <form name="login_val" ng-init = "log_err = false" autocomplete="off" novalidate >
+                                    <div class="col-sm-10 form-group">
+                                        <input type="email" class="form-control" name="email" data-ng-model="loginInfo.loginemail" placeholder="Email" required>
+                                        <span class = "text-danger" ng-show="log_err && login_val.email.$error.required" class="error">Email is required</span>
+                                        <span class = "text-danger"  ng-show="login_val.email.$dirty && login_val.email.$error.email" >Invalid Email Address</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="password" class="form-control" name="currpassword" data-ng-model="loginInfo.currentpassword" placeholder="Current Password" required>
+                                        <span class = "text-danger" ng-show="log_err && login_val.currpassword.$error.required">Current Password is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="password" class="form-control" name="password" data-ng-model="loginInfo.password" placeholder="Password" required>
+                                        <span class = "text-danger" ng-show="log_err && login_val.password.$error.required">Password is required</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group">
+                                        <input type="password" class="form-control" name="cnfpassword" data-match ="loginInfo.password" data-ng-model="loginInfo.cnfpassword" placeholder="Confirm Password" required>
+                                        <span class = "text-danger" ng-show="log_err && login_val.cnfpassword.$error.required">Confirm Password is required</span>
+                                        <span class = "text-danger" ng-show="!login_val.cnfpassword.$error.required && login_val.cnfpassword.$error.match">Password do not match</span>
+                                    </div>
+                                    <div class="col-sm-10 form-group pull-left">
+                                        <input type="submit" ng-click="login_val.$invalid ? common_msg = true : '';
+                                            login_val.$invalid ? log_err = true : changeLoginCredentials(loginInfo)" value="Submit" class="btn btn-primary">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="isSet(3)">
+                        <div class="saas-onboard-credentials">
+                            <h4>Authentication</h4>
+                            <div class="credentials-info col-sm-10 col-sm-offset-2 mrgtp30">                                
+                                <p><span class="label label-info">User Token</span> : {{encryptedUserId}}</p>
+                                <p><span class="label label-info">Auth Token</span> : {{webApiToken ? webApiToken : "No Auth Token Found"}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="isSet(6)">
+                        <div class="saas-onboard-credentials">
+                            <h4>Email Setup</h4>
+                            <div class="credentials-info col-sm-8 col-sm-offset-2">
+                                <!--<p><span class="label label-info">Already Verified Email</span> : {{aws_verified_email ? aws_verified_email + '  Status :- ' + aws_verified_email_status : 'N/A'}}</p>-->
+
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+
+                                <form class="mrgtp30" name="verifyEmail" ng-init="verify_err = false;" autocomplete="off" novalidate >
+                                    <div class="form-group input-group">
+                                        <input type="email" class="form-control" name="email" data-ng-model="emailAddress" placeholder="Email" required aria-describedby="sizing-addon">
+
+                                        <span ng-if="!aws_verified_email_status && aws_verified_email" bs-tooltip data-title="Resend Verification Mail" data-placement="left" data-animation="am-flip-x" class="input-group-addon actionBtn alert-info" ng-click="verifyEmail.$invalid ? verify_err = true : awsEmailVerification(emailAddress)" id="sizing-addon">
+                                            <i class="fa fa-refresh"></i>
+                                        </span>
+
+                                        <span ng-ifX="aws_verified_email" bs-tooltip data-title="{{aws_verified_email_status?'Verified':'Verification Pending'}}" data-placement="right" data-animation="am-flip-x" class="input-group-addon actionBtn" ng-class="{'alert-success':aws_verified_email_status,'alert-warning':!aws_verified_email_status}" id="sizing-addon1">
+                                            <i class="fa" ng-class="{'fa-check':aws_verified_email_status,'fa-exclamation-circle':!aws_verified_email_status}"></i>
+                                        </span>
+
+
+                                        <span class="text-danger" ng-show="verify_err && verifyEmail.email.$error.required">Email is required</span>
+                                        <span class="text-danger"  ng-show="verifyEmail.email.$dirty && verifyEmail.email.$error.email">Invalid Email Address</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <!--<div class="col-sm-10 pull-left">-->
+                                            <input type="submit" ng-click="verifyEmail.$invalid ? verify_err = true : awsEmailVerification(emailAddress)" value="Verify" class="btn btn-primary btn-block btn-lg">
+                                        <!--</div>-->
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inline CSS for credit card display -->
+    <style>
+
+        .demo #ccNum.valid.visa {
+            background-position: 4px -156px, 260px -87px;
+        }
+        .demo #ccNum.visa {
+            background-position: 4px -156px, 260px -87px;
+        }
+        .demo #ccNum.valid.visa_electron {
+            background-position: 4px -198px, 260px -87px;
+        }
+        .demo #ccNum.visa_electron {
+            background-position: 4px -198px, 260px -61px;
+        }
+        .demo #ccNum.valid.mastercard {
+            background-position: 4px -240px, 260px -87px;
+        }
+        .demo #ccNum.mastercard {
+            background-position: 4px -240px, 260px -87px;
+        }
+        .demo #ccNum.valid.maestro {
+            background-position: 4px -282px, 260px -87px;
+        }
+        .demo #ccNum.maestro {
+            background-position: 4px -282px, 260px -87px;
+        }
+        .demo #ccNum.valid.discover {
+            background-position: 4px -324px, 260px -87px;
+        }
+        .demo #ccNum.discover {
+            background-position: 4px -324px, 260px -87px;
+        }
+        .demo #ccNum {
+            background-image: url("/assets/images/cards.png"), url("/assets/images/cards1.png");
+            background-position: 4px -114px, 260px -61px;
+            background-repeat: no-repeat;
+            background-size: 120px 361px, 120px 361px;
+            padding-left: 54px;
+            width: 85%;
+        }
+        .demo input {
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            box-sizing: content-box;
+            color: #333;
+            display: block;
+            font-size: 18px;
+            height: 32px;
+            padding: 0 5px;
+            width: 85%;
+        }
+    </style>

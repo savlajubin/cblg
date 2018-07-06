@@ -1,0 +1,21 @@
+
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <form method="POST" class="vertical-form ng-pristine ng-valid" style="padding:20px" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="file"  class="form-control" ng-model="myFile" name="myFile" ngf-select accept=".csv" style="padding: 0px;">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-flat" ng-click="importContactList(myFile)">Import</button>
+                    <button type="button" class="btn btn-primary btn-flat" ng-click="$hide()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

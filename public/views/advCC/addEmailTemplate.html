@@ -1,0 +1,38 @@
+<!-- start send invite page -->
+<div class="animate-repeat col-sm-12" ng-init="template_Info()" >
+    <div class="panel panel-default" >
+        <div class="panel-heading">
+            <h3>
+                <span>{{name}}</span> Email Template
+            </h3>
+        </div>
+        <div class="panel-body pad0">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <form name="attr_form" class="vertical-form" ng-init="attr_err = false;" novalidate>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <input type="text" ng-model="contact.template_name" name="template_name" placeholder="Name" required>
+                            </div>
+                            <div class="col-sm-10">
+                                <span class="text-danger" ng-show="attr_err && attr_form.name.$error.required">Please enter Name</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10" text-angular="text-angular" ta-text-editor-class="border-around" ta-html-editor-class="border-around" name="template" ng-model="contact.template" ></div>
+                            <div ng-hide="true"><textarea ng-model="contact.template" style="width: 100%;"></textarea></div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-5 pull-left">
+                                    <input type="button" ng-click="previoustab()" value="Back" class="btn btn-primary">
+                                </div>
+                                <div class="col-sm-5 pull-left">
+                                    <input type="submit" value="Save Template" class="btn btn-primary" ng-click="(attr_form.$invalid) ? attr_err = true : saveEmailTemplate(contact)">
+                                </div>
+                            </div>
+                       </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+<div class="col-sm-12">
+    <div class="col-sm-8 col-sm-offset-2" ng-show="addForm">
+        <section class="content-header">
+            <h1>
+                User Agreements
+            </h1>
+            <!--      <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a href="#">Tables</a></li>
+                    <li class="active">Simple</li>
+                  </ol>-->
+        </section>
+        <section class="content">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <!--<h3>User Agreement</h3>-->
+                </div>
+                <div class="box-body">
+                    <form role="form" class="" name="vertical_form">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="form-group">
+                                <div class="form-group col-sm-12">
+                                    <select class="form-control" name="esignSelect" id="esignSelect" ng-model="e_sign_role" required>
+                                        <option value="" ng-show="authenticatedUser.role_id.code == 'LGN'">SELECT ROLE</option>
+                                        <option value="LG" ng-if="authenticatedUser.role_id.code == 'LGN'">Lead Seller</option>
+                                        <option value="LB" ng-if="authenticatedUser.role_id.code == 'LGN'">Lead Buyer</option>
+                                        <option value="ADVCC" ng-if="authenticatedUser.role_id.code == 'LGN'">ADVCC</option>
+                                        <option value="PA">Phone Agent</option>
+                                        <option value="LGN" ng-selected="true" ng-if="authenticatedUser.role_id.code == 'ADMIN'">Lead Generator Network</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-12" text-angular="text-angular" ta-text-editor-class="border-around" ta-html-editor-class="border-around" name="htmlcontent" ng-model="htmlcontent"></div>
+
+                                <div ng-hide="true"><textarea ng-model="htmlcontent" style="width: 100%"></textarea></div>
+
+                                <div ta-bind="text" ng-model="htmlcontenttwo" ta-readonly='disabled'></div>
+                            </div>
+                            <div class="form-group col-sm-12 margin12p">
+                                <div class="col-sm-6 padL0">
+                                    <button class="btn btn-primary btn-block btn-flat" ng-click="closeForm();">Back</button>
+                                </div>
+                                <div class="col-sm-6 padR0">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit" data-ng-disabled="vertical_form.$invalid" data-ng-click="createEsign(htmlcontent, e_sign_role)">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-sm-8 col-sm-offset-2" ng-show="editForm">
+        <section class="content-header">
+            <h1>
+                User Agreements
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <!--<h3>Edit User Agreement</h3>-->
+                </div>
+                <div class="box-body">
+                    <form role="form" name="editvertical_form">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="form-group">
+                                <div class="form-group col-sm-12">
+                                    <select class="form-control" name="esignSelect" id="esignSelect" ng-model="e_sign_role">
+                                        <option value="LG" ng-show="e_sign_role == 'LG'">Lead Seller</option>
+                                        <option value="LGN" ng-show="e_sign_role == 'LGN'">Lead Generator Network</option>
+                                        <option value="LB" ng-show="e_sign_role == 'LB'">Lead Buyer</option>
+                                        <option value="ADVCC" ng-show="e_sign_role == 'ADVCC'">ADVCC</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-12" text-angular="text-angular" ta-text-editor-class="border-around" ta-html-editor-class="border-around" name="htmlcontent1" ng-model="htmlcontent1" ></div>
+
+                                <div ng-hide="true"><textarea ng-model="htmlcontent1" style="width: 100%"></textarea></div>
+                            </div>
+                            <div class="form-group col-sm-12 margin12p">
+                                <div class="col-sm-6 padL0">
+                                    <button class="btn btn-primary btn-block btn-flat" type="button" ng-click="closeForm();">Back</button>
+                                </div>
+                                <div class="col-sm-6 padR0">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit" data-ng-disabled="editvertical_form.$invalid" data-ng-click="editEsign(_id, e_sign_role, htmlcontent1)">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div ng-show="esignListDiv">
+        <section class="content-header">
+            <div class="box-header">
+                <h3 class="box-title">User Agreements</h3>
+
+                <div class="box-tools">
+                    <button class="btn btn-primary btn-flat pull-right" ng-click='getAddEsignForm();'>Add</button>
+                    <div class="input-group input-group-sm pull-left tableSearchBox">
+                        <input type="text" name="table_search" ng-model="query" ng-change="tableParams.filter(query)" class="form-control pull-right" placeholder="Search">
+
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body" col-show-hide>
+                    <div class="table-responsive">
+                        <table class="table table-condensed ng-table-responsive" ng-table="tableParams" export-csv="csv">
+                            <tbody>
+                                <tr ng-class="$even? 'oddcolor' : 'evencolor'" ng-repeat="vertical in $data" ng-if= "dataPresent">
+                                    <td data-title="'#'"><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                                    <td ng-show="showCol[0]" sortable="'vertical_name'" data-title="'Role'" data-title-text="Role">{{vertical.role}}</td>
+                                    <td ng-show="showCol[1]" sortable="'created'" data-title="'Added'" data-title-text="Added">{{vertical.created| date:'MMM dd, yyyy'}}</td>
+                                    <!--<td ng-show="showCol[2]" sortable="'created'" data-title="' E-Sign'" data-title-text="E-sign">{{vertical.body| showEsignText}}</td>-->
+                                    <td ng-show="showCol[2]" sortable="'status'" data-title="'Status'" data-title-text="Status" ng-click="statusEsign(vertical._id, !vertical.status, vertical.role);" class="actionBtn">
+                                        <span ng-if="vertical.status" title="Active" class="glyphicon text-success glyphicon-ok-sign"></span>
+                                        <span ng-if="!vertical.status" title="Deactive" class="glyphicon text-danger glyphicon-remove-sign"></span>
+                                    </td>
+                                    <td data-title="'Action'" data-title-text="Action">
+                                        <span class="glyphicon glyphicon-edit actionBtn" title="Edit" ng-click="getEditEsignForm(vertical._id, vertical.body, vertical.role)"></span>
+                                        <span class="glyphicon glyphicon-trash actionBtn" title="Delete" ng-click="deleteEsign(vertical._id)"></span>
+                                    </td>
+                                    <td header="'headerSettingGear.html'"></td>
+                                </tr>
+                                <tr ng-if="!dataPresent">
+                                    <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row pull-right downloadCsvLink">Download as <a href="javascript:void(0)" ng-click='hideDropDown();
+                        csv.generate($event, "Verticals" + currentDate + ".csv");'>CSV</a></div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </section>
+    </div>
+</div>
+
+
+<style>
+    .textbox{
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        height: 450px;
+    }
+</style>
+<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[0] = !showCol[0]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[0]]"></i> User Role</a></li>
+    <li><a ng-click="showCol[1] = !showCol[1]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[1]]"></i> Date Added</a></li>
+    <li><a ng-click="showCol[2] = !showCol[2]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[2]]"></i> Status</a></li>
+    </ul>
+    </div>
+</script>
+
+
+

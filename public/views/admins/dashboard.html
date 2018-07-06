@@ -1,0 +1,202 @@
+<div class="animate-repeat col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h2>Welcome to the SAAS Dashboard</h2></div>
+        <div class="panel-body pad0">
+            <div class="row" ng-init="getSAASDashboardData()">
+
+                <div class="col-md-6">
+                    <div class="box box-primary ">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Top 10 Money Makers</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body table-responsive">
+                            <table class="table table-bordered table-striped cf">
+                                <thead class="cf">
+                                    <!-- <tr class="tablehead"> -->
+                                    <tr class="">
+                                        <th ng-click="sortType = 'first_name+last_name';
+                                            sortReverseMoney = !sortReverseMoney">Name
+                                            <span ng-show="sortType == 'first_name+last_name' && !sortReverseMoney" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'first_name+last_name' && sortReverseMoney" class="fa fa-caret-up"></span>
+                                        </th>
+                                        <th ng-click="sortType = 'email';
+                                            sortReverseMoney = !sortReverseMoney">Email
+                                            <span ng-show="sortType == 'email' && !sortReverseMoney" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'email' && sortReverseMoney" class="fa fa-caret-up"></span>
+                                        </th>
+                                        <th>Active Categories</th>
+                                        <th ng-click="sortType = 'lgamount';
+                                            sortReverseMoney = !sortReverseMoney">Amount
+                                            <span ng-show="sortType == 'lgamount' && !sortReverseMoney" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'lgamount' && sortReverseMoney" class="fa fa-caret-up"></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-class="$even ? 'oddcolor' : 'evencolor'" ng-repeat="top10MoneyMakers in top10MoneyMakers| orderBy:sortType:sortReverseMoney | filter:searchKeyword" ng-if="top10MoneyMakers">
+                                        <td>{{top10MoneyMakers.first_name}} {{top10MoneyMakers.last_name}}</td>
+                                        <td>{{top10MoneyMakers.email}}</td>
+                                        <td>
+                                            <span class="glyphicon glyphicon-eye-open actionBtn" data-html="true" data-title="{{top10MoneyMakers.category| listLSTooltip}}" data-placement="right" data-animation="am-flip-x" bs-tooltip></span>
+                                        </td>
+                                        <!-- <td>{{top10MoneyMakers.category}}</td> -->
+                                        <td>${{top10MoneyMakers.lgamount}}</td>
+                                    </tr>
+                                    <tr ng-if="!top10MoneyMakers">
+                                        <td colspan="4"><center>No Data Found</center></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" ng-init="getSAASDashboardData()">
+                    <div class="box box-primary ">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Top 10 Buyers</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body table-responsive">
+                            <table class="table table-bordered table-striped cf">
+                                <thead class="cf">
+                                    <!-- <tr class="tablehead"> -->
+                                    <tr class="">
+                                        <th ng-click="sortType = 'first_name+last_name';
+                                            sortReverseBuy = !sortReverseBuy">Name
+                                            <span ng-show="sortType == 'first_name+last_name' && !sortReverseBuy" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'first_name+last_name' && sortReverseBuy" class="fa fa-caret-up"></span>
+                                        </th>
+                                        <th ng-click="sortType = 'email';
+                                            sortReverseBuy = !sortReverseBuy">Email
+                                            <span ng-show="sortType == 'email' && !sortReverseBuy" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'email' && sortReverseBuy" class="fa fa-caret-up"></span>
+                                        </th>
+                                        <th>Active Categories</th>
+                                        <th ng-click="sortType = 'lbamount';
+                                            sortReverseBuy = !sortReverseBuy">Amount
+                                            <span ng-show="sortType == 'lbamount' && !sortReverseBuy" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'lbamount' && sortReverseBuy" class="fa fa-caret-up"></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-class="$even ? 'oddcolor' : 'evencolor'" ng-repeat="top10Buyers in top10Buyers| orderBy:sortType:sortReverseBuy | filter:searchKeyword" ng-if="top10Buyers">
+                                        <td>{{top10Buyers.first_name}} {{top10Buyers.last_name}}</td>
+                                        <td>{{top10Buyers.email}}</td>
+                                        <td>
+                                            <span class="glyphicon glyphicon-eye-open actionBtn" data-html="true" data-title="{{top10Buyers.category| listLSTooltip}}" data-placement="right" data-animation="am-flip-x" bs-tooltip></span>
+                                        </td>
+                                        <!-- <td>{{top10Buyers.category}}</td> -->
+                                        <td>${{top10Buyers.lbamount}}</td>
+                                    </tr>
+                                    <tr ng-if="!top10Buyers">
+                                        <td colspan="4"><center>No Data Found</center></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-init="getSAASDashboardData()">
+                    <div class="box box-primary ">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Top 10 Networks</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body table-responsive">
+                            <table class="table table-bordered table-striped cf">
+                                <thead class="cf">
+                                    <!-- <tr class="tablehead"> -->
+                                    <tr class="">
+                                        <th ng-click="sortType = 'first_name+last_name';
+                                            sortReverseNet = !sortReverseNet">Name
+                                            <span ng-show="sortType == 'first_name+last_name' && !sortReverseNet" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'first_name+last_name' && sortReverseNet" class="fa fa-caret-up"></span>
+                                        </th>
+                                        <th ng-click="sortType = 'email';
+                                            sortReverseNet = !sortReverseNet">Email
+                                            <span ng-show="sortType == 'email' && !sortReverseNet" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'email' && sortReverseNet" class="fa fa-caret-up"></span>
+                                        </th>
+                                        <th>Active Categories</th>
+                                        <th ng-click="sortType = 'lgnamount';
+                                            sortReverseNet = !sortReverseNet">Amount
+                                            <span ng-show="sortType == 'lgnamount' && !sortReverseNet" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'lgnamount' && sortReverseNet" class="fa fa-caret-up"></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-class="$even ? 'oddcolor' : 'evencolor'" ng-repeat="top10Networks in top10Networks| orderBy:sortType:sortReverseNet | filter:searchKeyword" ng-if="top10Networks">
+                                        <td>{{top10Networks.first_name}} {{top10Networks.last_name}}</td>
+                                        <td>{{top10Networks.email}}</td>
+                                        <td>
+                                            <span class="glyphicon glyphicon-eye-open actionBtn" data-html="true" data-title="{{top10Networks.category| listLSTooltip}}" data-placement="right" data-animation="am-flip-x" bs-tooltip></span>
+                                        </td>
+                                        <!-- <td>{{top10Networks.category}}</td> -->
+                                        <td>${{top10Networks.lgnamount}}</td>
+                                    </tr>
+                                    <tr ng-if="!top10Networks">
+                                        <td colspan="4"><center>No Data Found</center></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6" ng-init="getSAASDashboardData()">
+                    <div class="box box-primary ">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Top 10 Hottest Categories</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body table-responsive">
+                            <table class="table table-bordered table-striped cf">
+                                <thead class="cf">
+                                    <!-- <tr class="tablehead"> -->
+                                    <tr class="">
+                                        <th ng-click="sortType = 'category';
+                                            sortReverseCat = !sortReverseCat">Name
+                                            <span ng-show="sortType == 'category' && !sortReverseCat" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'category' && sortReverseCat" class="fa fa-caret-up"></span>
+                                        </th>
+                                        <th ng-click="sortType = 'lgCatAmountSum';
+                                            sortReverseCat = !sortReverseCat">Amount
+                                            <span ng-show="sortType == 'lgCatAmountSum' && !sortReverseCat" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'lgCatAmountSum' && sortReverseCat" class="fa fa-caret-up"></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-class="$even ? 'oddcolor' : 'evencolor'" ng-repeat="top10Categories in top10Categories| orderBy:sortType:sortReverseCat | filter:searchKeyword" ng-if="top10Categories">
+                                        <td>{{top10Categories.category}}</td>
+                                        <td>${{top10Categories.lgCatAmountSum}}</td>
+                                    </tr>
+                                    <tr ng-if="!top10Categories">
+                                        <td colspan="2"><center>No Data Found</center></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+        </div>
+    </div>
+</div>

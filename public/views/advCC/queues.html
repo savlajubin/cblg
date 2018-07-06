@@ -1,0 +1,107 @@
+<!-- start lsit the user -->
+<div ng-show="showListView" class="animate-repeat col-sm-12">
+    <section class="content-header">
+        <div class="box-header">
+            <h1 class="box-title-new">Queue List</h1>
+            <div class="box-tools">
+                <div class="input-group input-group-sm pull-left tableSearchBox">
+                    <input type="text" name="table_search" ng-model="query" ng-change="tableParams.filter(query)" class="form-control pull-right" placeholder="Search">
+
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <button class="btn google-add-btn pull-right" ng-click='getAddPhoneForm();'><i class="fa fa-plus"></i> Queue</button>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body" col-show-hide>
+                <div class="table-responsive">
+                    <table  class="table table-condensed ng-table-responsive" ng-table="tableParams" export-csv="csv">
+                        <tbody>
+                            <tr ng-class="$even? 'oddcolor' : 'evencolor'" ng-repeat="queue in $data" ng-if= "dataPresent">
+                                <td data-title="'#'"  ><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                                <td ng-show="showCol[0]" sortable="'queue_name'" data-title="'Queue Name'" data-title-text="Queue Name">{{queue.queue_name}}</td>
+                                <td ng-show="showCol[1]" data-title="'Associated Agents'" data-title-text="Associated Agents">
+                                    <span class="glyphicon glyphicon-eye-open actionBtn" data-html="true" data-title="{{queue.associated_agents| associatedPATooltip}}" data-placement="right" data-animation="am-flip-x" bs-tooltip></span>
+                                    <!--<a href="javascript:void(0)" data-html="true" data-title="{{queue.associated_agents| associatedPATooltip}}" data-placement="right" data-animation="am-flip-x" bs-tooltip>View</a>-->
+                                </td>
+                                <td data-title="'Action'" data-title-text="Action">
+                                    <span class="glyphicon glyphicon-edit actionBtn" title="Edit" ng-click="getEditForm(queue._id)"></span>
+                                    <span class="glyphicon glyphicon-trash actionBtn" title="Delete" ng-click="deleteQueue(queue._id)"></span>
+                                </td>
+                                <td header="'headerSettingGear.html'"></td>
+                            </tr>
+                            <tr ng-if="!dataPresent">
+                                <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row pull-right downloadCsvLink">Download as <a href="javascript:void(0)" ng-click='hideDropDown();
+                    csv.generate($event, "Queues" + currentDate + ".csv");'>CSV</a></div>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[0] = !showCol[0]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[0]]"></i> Queue Name</a></li>
+    <li><a ng-click="showCol[1] = !showCol[1]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[1]]"></i> Associated Agents</a></li>
+    </ul>
+    </div>
+</script>
+<!-- End list the user -->
+
+<!-- start ADD phone number -->
+<div ng-show="showAddPhone">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><span ng-show="add">Add a New</span><span ng-show="!add">Edit</span> Queue</h3></div>
+            <div class="panel-body">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <form role="form" name="queueForm" ng-submit="createQueue(formData, add)">
+                        <div class="col-sm-10 form-group">
+                            <input type="text" class="form-control" name="queue_name" data-ng-model="formData.queue_name" placeholder="Queue Name" required>
+                            <span ng-show="queueForm.queue_name.$dirty && queueForm.queue_name.$error.required" class="error">Queue Name is required<br></span>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <div class="form-control panel-heading" style="margin:5px auto;border: 2px solid #e7e7e7;height: auto;">
+                                <h4 class="panel-title">Associate Agents</h4>
+
+                                <isteven-multi-select
+                                    input-model="PAList"
+                                    output-model="formData.associated_agents"
+                                    button-label="first_name last_name"
+                                    item-label="first_name last_name"
+                                    tick-property="ticked"
+                                    search-property="first_name last_name"
+                                    >
+                                </isteven-multi-select>
+
+                                <!--                                    <select multiple="true" class="form-control" name="associated_agents" data-ng-model="formData.associated_agents" placeholder="Associated Phone Agents" required>
+                                                                        <option value='{{PA._id}}' ng-repeat="PA in PAList">{{PA.first_name}} {{PA.last_name}}</option>
+                                                                    </select>-->
+                                <span ng-show="queueForm.associated_agents.$dirty && queueForm.associated_agents.$error.required" class="error">Associated Phone Agents is required</span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5 form-group">
+                            <input type="button" value="Cancel" ng-click="back();" class="btn btn-primary btn-flat form-control">
+                        </div>
+                        <div class="col-sm-5 form-group">
+                            <input type="submit" ng-disabled="queueForm.$invalid" value="Submit" class="btn btn-primary btn-flat form-control">
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

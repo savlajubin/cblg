@@ -1,0 +1,26 @@
+<!-- start View the offer -->
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tr><td><b>Vertical Name:</b></td><td>  {{offerView.vertical_category_details.vertical_name}}</td></tr>
+                    <tr><td><b>Category Name:</b></td><td>  {{offerView.vertical_category_details.category_name}}</td></tr>
+                    <tr><td><b>Title:</b></td><td>  {{offerView.vertical_category_details.title}}</td></tr>
+                    <tr><td><b>Description:</b></td><td>  {{offerView.vertical_category_details.description}}</td></tr>
+                    <tr><td><b>State Restricted:</b></td><td>  {{offerView.state_restricted.toString()}}</td></tr>
+                    <tr><td><b>Created:</b></td><td> {{offerView.created| date:'medium'}}</td></tr>
+                    <tr><td><b>Modified:</b> </td><td>{{offerView.modified| date:'medium'}}</td></tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-flat" ng-click="$hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end View the user -->

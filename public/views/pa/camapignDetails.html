@@ -1,0 +1,22 @@
+<div class="panel panel-default" ng-controller="webPhoneCtrl">
+    <div class="panel-heading"><h3 >Campaign Information</h3></div>
+    <div class="panel-body" data-ng-init="isSoftPhone=false;isIncoming=true;">
+        <div class="tab"></div>
+        <div class="row">
+                <div  class="col-sm-8 col-sm-offset-2">
+             <input type="text" class="form-control" ng-model="phone_no"  placeholder="Enter Ring to Phone No" autofocus>
+              <button type="button" class="btn btn-primary" ng-click="campaignDetails(phone_no)"> <b>Submit</b> </button>   
+              </div>
+              <div ng-repeat = "campaign in campaignsData" class="col-sm-8 col-sm-offset-2">
+                    <table class="table">
+                        <tr><td><b>Campaign Creator:</b></td><td>  {{campaign.user_id.first_name}} {{campaign.user_id.last_name}} </td></tr>
+                        <tr><td><b>Campaigns Name:</b></td><td> {{campaign.campaigns[0].campaign_name}}</td></tr>
+                         <tr><td><b>Vertical Name:</b></td><td> {{campaign.campaigns[0].offer_id.vertical_category_details.vertical_name}}</td></tr>
+                         <tr><td><b>Campaigns Name:</b></td><td> {{campaign.campaigns[0].offer_id.vertical_category_details.category_name}}</td></tr>
+                         <tr><td><b>State Restricted:</b></td><td> {{campaign.campaigns[0].offer_id.state_restricted.toString()}}</td></tr>
+                    </table>
+                </div>
+              
+    </div>
+</div>    
+<!-- this is the end of top div that will hide when Hold or Next is clicked -->

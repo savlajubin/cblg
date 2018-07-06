@@ -1,0 +1,535 @@
+/******************************** New Css By Mustafa **************************/
+
+.error{
+    color: #a94442;
+}
+
+.button-new{
+    background: none repeat scroll 0 0 #fff;
+    border: 2px dotted #3190e7;
+    border-radius: 3px;
+    color: #3190e7;
+    cursor: pointer;
+    display: block;
+    font-size: 18px;
+    font-weight: 500;
+    height: auto;
+    margin: 20px auto;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+.width-30{
+    /*this class applying to search input boxes needs to be set at 10%*/
+    width:10%;
+}
+
+.invite{
+    margin-top: 15px;
+    font-size: 15px;
+}
+
+.link:hover{
+    text-decoration: none !important;
+    color: #fff !important;
+}
+/*.link{
+    color: #3190e7 !important;
+}*/
+
+/*CSS for tabs in LG-create-campaign-form -------- start*/
+ul.innertab {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+li.innertab {
+    float: left;
+    border: 1px solid #e0e0e0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-width: 0;
+    margin: 3px 3px 0px 3px;
+    padding: 5px 20px;
+    background-color: #CCC;
+    color: #696969;
+    cursor: pointer;
+    list-style: none;
+}
+#mainView {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    clear: both;
+    padding: 0 1em;
+}
+/*li.active {
+    background-color: #FFF;
+    color: #000;
+    cursor: text;
+}*/
+
+/*CSS for tabs in LG-create-campaign-form -------- end*/
+
+
+/*Css for Calendar Filter ------start*/
+
+td.borderTopNone{
+    border-top: none !important;
+}
+
+.div4Filter{
+    width:105% !important;
+    padding:5px !important;
+    margin-top:280px !important;
+}
+
+.div2Filter{
+    width: 45% !important;
+    float:left !important;
+}
+.div3Filter{
+    width: 45% !important;
+    float:right !important;
+}
+.div1Filter{
+    width:105% !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+    background: #fff !important;
+    margin-right:-10px !important;
+}
+.divFilter{
+    width:550px !important; height:420px !important; background:#fff !important; border: 1px solid #e0e0e0 !important;
+    padding-left: 10px !important;
+    padding-right: 40px !important;
+}
+.filterTable{
+    margin-bottom: 0px !important;
+}
+
+.btn.btn-default.btn-primary {
+    background: none repeat scroll 0 0 black !important;
+    color: white;
+}
+
+.filterTable a{
+    color: black;
+}
+
+.gearboxFilter{
+    background-color:#616161;display:block;padding: 10px 0; -webkit-box-shadow:0 6px 12px rgba(0,0,0,.175);box-shadow:0 6px 12px rgba(0,0,0,.175); min-width: 130px;
+}
+.gearboxFilter li a:hover{
+    opacity: 0.7;
+    text-decoration: underline #000;
+}
+/*Css for Calendar Filter ------ end*/
+
+
+/*Css for IVR-Based Call Routing Form ---- start*/
+
+.ivr_select{
+    background: none repeat scroll 0 0 transparent !important;
+    border: 0 solid #ccc !important;
+    margin: 0 !important;
+    color: #555555;
+    font-size: 15px !important;
+}
+.dial-plus{
+    /*border: 1px dotted #3190e7;*/
+    /*border-radius: 5px;*/
+    /*color: #555555;*/
+    float: left;
+    font-size: 22px;
+    height: 40px;
+    margin: 0px 4px;
+    padding: 1px 14px;
+    text-align: center;
+    width: 5%;
+}
+.backgrndGrey{
+    background: #f5f5f5; border-radius: 4px;
+    margin-bottom: 10px;
+    border: 1px dotted #3190E7 ! important;
+}
+.greyColor{
+    color: #555555;
+}
+
+.dialInput{
+    width:200px !important; height:30px !important; display:inline !important;
+    padding: 5px !important;
+}
+.dialInputSec{
+    width:83px !important;
+    height:30px !important;
+    display:inline !important;
+    padding: 5px !important;
+    margin: 0 auto !important
+}
+
+.queue{
+    /*border: 0px none ! important;*/
+    padding: 0px 1px;
+}
+.mainIvr{
+    border-radius: 4px;
+    background: none repeat scroll 0px 0px #f5f5f5;
+    border: 1px dotted #3190E7 ! important;
+    padding: 0px 1px;
+}
+
+.ivr_select{
+    background: none repeat scroll 0 0 transparent !important;
+    /*border: 1px solid #ccc !important;*/
+    margin: 4px 0 4px 0 !important;
+    color: #555555;
+    font-size: 15px !important;
+    /*padding: 5px !important;*/
+    height: 30px;
+}
+.paddingLR5p{
+    padding-left: 0px !important;
+    padding-right: 5px !important;
+}
+.borderRight{
+    border-right: 1px dotted #3190E7 ! important;
+}
+.borderLeft{
+    border-left: 1px dotted #3190E7 ! important;
+}
+
+.backWhite{
+    background: #fff !important;
+}
+
+/*.input-group-addon{
+    height: 40px;
+    font-size: 15px;
+}*/
+
+.borderSelect{
+    border: 1px solid #e0e0e0 !important
+}
+
+.paddingTB11{
+    padding: 11px 0px;
+}
+
+.plus-btn{
+    border: 1px dotted #3190e7 !important;
+    font-size: 20px !important;
+    height: 40px !important;
+    color: #555555;
+}
+
+.redBack{
+    background: none repeat scroll 0 0 #f32c1e !important;
+    color: #fff !important;
+}
+.greenBack{
+    background: none repeat scroll 0 0 #449d48 !important;
+    color: #fff !important;
+}
+/*Css for IVR-Based Call Routing Form ---- end*/
+
+/*Css for Hours of operation Call Routing Form ---- start*/
+
+.width54p{
+    width: 54% !important;
+}
+
+.width40p{
+    width: 40%;
+}
+
+.iconPlus{
+    font-size: 20px; padding-left: 10%
+}
+
+.border{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 1px dotted #3190e7;
+}
+
+.dial-plus-pad10{
+    margin: 0px 10px !important;
+}
+
+.borderbtm{
+    border-bottom: 1px dotted #3190e7;
+    margin: 5px 0;
+}
+/*Css for Hours of operation Call Routing Form ---- end*/
+
+
+/*Css for Ring to Number Tab in Add Campaign Form --- start*/
+
+.numberDiv{
+    background: none repeat scroll 0 0 #f0f3fd;
+    float: left;
+    height: 70px;
+    margin: 1%;
+    padding: 4px 0 3px 20px;
+    /*text-align: center;*/
+    width: 31%;
+    color: #303F52;
+    cursor: pointer;
+}
+.selectedNumber{
+    background: none repeat scroll 0 0 #3190e7 !important;
+    /*border: 2px solid !important;*/
+    color: #fff !important;
+    float: left;
+    height: 70px;
+    margin: 1%;
+    padding: 1px 0 3px 17px;
+    width: 31%;
+    cursor: pointer;
+}
+.searchInput{
+    float:left !important;
+    width:40% !important;
+    padding:0 15px !important;
+    margin:0 !important;
+    height:34px !important;
+}
+.searchSubmit{
+    float:left !important;
+    width:40% !important;
+    padding:0 !important;
+    margin:0 0 0 5px !important;
+    height:34px !important;
+}
+.panel-head-padding{
+    padding: 1px 15px !important;
+}
+
+.margin7p{
+    margin-top: 7px;
+}
+.margin12p{
+    margin-top: 12px;
+}
+
+/*Css for Ring to Number Tab in Add Campaign Form --- end*/
+
+
+/*.pagination{
+    margin: 0px !important;
+}*/
+
+
+.color-dark{
+    color: #616161;
+}
+
+/*.input-group-addon{
+    padding: 1px 12px;
+    border: none;
+}*/
+.graybr {
+    /*border: 2px dotted #3190e7;*/
+    padding: 10px 0;
+    margin-top: 20px;
+}
+.dashCallDetails{
+    background: #fff none repeat scroll 0 0;
+    border-radius: 4px;
+    color: #000;
+    border: 2px dotted #3190e7;
+    outline-offset: initial;
+    padding: 15px 20px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+.dashCalltitle{
+    font-size: 16px;
+}
+.glyicon{
+    float: right;
+    font-size: 20px !important;
+}
+.panel-info > .panel-black{
+    background-color: #000;
+    color: #fff;
+    border-bottom: 2px solid #dddddd;
+    vertical-align: bottom;
+    line-height: 1.42857;
+    padding: 8px;
+    vertical-align: bottom;
+    font-weight: bold;
+}
+.black{
+    border-color : #666;
+    min-height: 300px;
+}
+.dmleft .dropdown-menu {
+    left: 0;
+    right: inherit;
+}
+.dmright .dropdown-menu {
+    right: 0;
+    left: inherit;
+}
+.black .panel-body {
+    padding: 15px;
+}
+.graph_nodata{
+    height: 217px;padding-top: 50px; text-align: center;
+}
+
+.marginTB7p{
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.marginDialTB{
+    margin-top: -1px !important;
+    margin-bottom: -3px !important;
+}
+
+/*Specific for Firefox browser*/
+@-moz-document url-prefix() {
+    .margin7p{
+        margin-top: 1px;
+    }
+
+    .margin12p{
+        margin-top: 3px;
+    }
+
+    .marginTB7p{
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+
+    .marginDialTB {
+        margin-bottom: -1px !important;
+        margin-top: 4px !important;
+    }
+}
+
+/* Specific for Safari Browser */
+
+@media screen and (min-color-index:0) and(-webkit-min-device-pixel-ratio:0) {
+    @media {
+        _:-webkit-full-screen, .cvv {
+            height: 25px !important;
+            padding: 3px 10px !important;
+        }
+    }
+
+    /* Css for Call Routing - Prompts Page --- start */
+
+    .activePrompts {
+        background-color: #3190e7 !important;
+        border-color: #adadad;
+        color: #fff !important;
+    }
+
+
+    .borderBlue{
+        border: 1px dotted;
+        border-color: #3190e7 ;
+        border-radius: 5px;
+    }
+
+    /* Css for Call Routing - Prompts Page ---end */
+
+    a{
+        cursor: pointer;
+    }
+
+
+
+    /*----------------Timepicker CSS----------------------------*/
+    .input-append, .input-prepend {
+        display: inline-block;
+        font-size: 0;
+        /*margin-bottom: 10px;*/
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    .input-append .add-on, .input-prepend .add-on {
+        background-color: #777;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: normal;
+        height: 36px;
+        line-height: 12px;
+        min-width: 16px;
+        padding: 9px;
+        text-align: center;
+        text-shadow: 0 1px 0 #ffffff;
+        width: auto;
+        color: #fff;
+    }
+    @-moz-document url-prefix() {
+        .input-append .add-on, .input-prepend .add-on {
+            font-size: 14px !important;
+        }
+    }
+    .timepicker{
+        background: none repeat scroll 0 0 white;
+        width: 150px !important;
+        height: auto !important;
+        overflow: hidden !important;
+        border: 1px solid #777 !important;
+        border-radius: 0px !important;
+    }
+    .timeInput{
+        border: 1px solid #777 !important;
+        border-radius: 0px !important;
+        height: 36px !important;
+    }
+    .days{
+        width:110px !important;
+        margin-top: 3px !important;
+    }
+    .states{
+        width:150px !important;
+    }
+
+    .timerange{
+        width:175px !important;
+        height:30px !important;
+        display:inline !important;
+        padding: 5px !important;
+        margin: 0 auto !important
+    }
+    /*----------------Timepicker CSS----------------------------*/
+
+
+    /*-----------new CSS-------------*/
+    th label {
+        line-height: 20px !important;
+    }
+    /*-----------new CSS-------------*/
+
+
+    .mrg10p{
+        margin: 10px;
+        font-weight: normal;
+    }
+
+
+    select.compose_select{
+        height: 37px !important; 
+        margin: 3px !important; 
+        padding:5px !important;
+    }
+
+    .partfix {height:150px; padding:0;margin:5px;}
+    .partfix textarea {resize:none;overflow:hidden; border:none;width:100%;margin:0}
+    .down {height: 120px; margin-top : -2px;}
+    .up {height: 20px; margin-top : -2px;}
+
+    .emailPreview{
+        border: 1px solid #e0e0e0;
+        padding: 5px;
+        border-radius: 5px;
+    }
+}

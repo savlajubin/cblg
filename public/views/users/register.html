@@ -1,0 +1,58 @@
+<form  class="loginForm vertical-form form-validation" name="registartion_form" role="form" class="">
+    <legend>
+        <span class="logo"></span>
+        Sign Up
+    </legend>
+    <div class="form-group" ng-class="{ 'has-error': registartion_form.email.$dirty && registartion_form.email.$error.required }">
+        <div class="row">
+            <div class="col-sm-4 col-xs-4">
+                <label for="lgn">User type</label>
+            </div>
+            <div class="col-sm-2 col-xs-2">
+                <label for="lgn">LGN</label>
+                <div><input type="radio" id="lgn" required name="userRole" data-ng-model="role" class="regular-radio big-radio" value="LGN" title="select user type as lead generator network" tabindex="1"><label for="lgn"></label></div>
+            </div>
+            <div class="col-sm-2 col-xs-2">
+                <label for="lb">&nbsp;LB</label>
+                <div><input type="radio" id="lb" required name="userRole" data-ng-model="role" class="regular-radio big-radio" value="LB" title="select user type as lead buyer"><label for="lb"></label></div>
+            </div>
+            <div class="col-sm-2 col-xs-2">
+                <label for="lg">&nbsp;LG</label>
+                <div><input type="radio" id="lg" required name="userRole" data-ng-model="role" class="regular-radio big-radio" ng-class="{ 'has-error': registartion_form.email.$dirty && registartion_form.email.$error.required }" value="LG" title="select user type as lead generator"><label for="lg"></label></div>
+            </div>
+            <div class="col-sm-2 col-xs-2">
+                <label for="pa">&nbsp;PA</label>
+                <div><input type="radio" id="pa" required name="userRole" data-ng-model="role" class="regular-radio big-radio" value="PA" title="select user type as phone agent"><label for="pa"></label></div>
+            </div>
+            <span ng-show="registartion_form.userRole.$dirty && registartion_form.userRole.$error.required" class="help-block">Email is required</span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartion_form.email.$dirty && registartion_form.email.$error.required }">
+        <input type="email" class="form-control" required data-ng-model="registerInfo.email" placeholder="Email address" title="Please fill the email address" tabindex="2" name="email">
+        <span ng-show="registartion_form.email.$dirty && registartion_form.email.$error.required" class="help-block">Email is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartion_form.password.$dirty && registartion_form.password.$error.required }" >
+        <input type="password" class="form-control" data-ng-minlength="6" required data-ng-model="registerInfo.password" placeholder="Password" title="Please fill the password" tabindex="3" name="password">
+        <span ng-show="registartion_form.password.$dirty && registartion_form.password.$error.required" class="help-block">Password is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartion_form.firstname.$dirty && registartion_form.firstname.$error.required }" >
+        <input type="text" class="form-control" id="firstName" data-ng-model="registerInfo.fname" placeholder="First name" required title="Please fill the first name" tabindex="4" name="firstname">
+        <span ng-show="registartion_form.firstname.$dirty && registartion_form.firstname.$error.required" class="help-block">First name is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartion_form.lastname.$dirty && registartion_form.lastname.$error.required }" >
+        <input type="text" class="form-control" id="lastName" data-ng-model="registerInfo.lname" placeholder="Last name" required title="Please fill the last name" tabindex="5" name="lastname">
+        <span ng-show="registartion_form.lastname.$dirty && registartion_form.lastname.$error.required" class="help-block">Last name is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': registartion_form.zip.$dirty && registartion_form.zip.$error.required }" >
+        <input type="text" class="form-control" id="zip" data-ng-model="registerInfo.zip" placeholder="Zip code" required title="Please fill the zip code" tabindex="6" name="zip">
+        <span ng-show="registartion_form.zip.$dirty && registartion_form.zip.$error.required" class="help-block">Zip code is required</span>
+    </div>
+    <div class="form-actions">
+        <!-- <input class="btn btn-primary" type="submit" value="Sign Up" tabindex="7" data-ng-disabled="registartion_form.$invalid || dataLoading" data-ng-click="register(registerInfo)" title="Sign Up"> -->
+        <button type="submit" data-ng-click="register(registerInfo)" class="btn btn-primary bigButtonForLoad" busy='<i class="fa fa-spinner fa-pulse"></i> Please Wait....'>
+            <!--<busy-message><i class="fa fa-spinner fa-pulse"></i> Please wait...</busy-message>-->
+            Sign Up
+        </button>
+    </div>
+</form>
+<div class="footer"><p>Already have an account?<a href="#!/login" title="Sign In"> Sign In</a></p></div>

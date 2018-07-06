@@ -1,0 +1,52 @@
+<div class="tabsContainer col-sm-12">
+    <div class="panel panel-default" ng-init="setTab(20);
+            auto_recharge = false;
+            common_msg = false;
+            contracts = false;
+            media_agency = false;
+            payment = false;
+            marketing = false;
+            call_recording = false;">
+        <div class="panel-heading"><h3>Add New Offer</h3><div class= "text-center text-danger" ng-show="common_msg">*Please complete the current tab before proceeding</div></div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(20)}"><a href ng-click="setTab(20)">Create Offer</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div ng-show="isSet(20)">
+
+                        <div class="user">
+
+                            <div class="col-sm-8 col-sm-offset-2">
+
+                                <label style="padding-left: 4%;">Please choose an offer template from the selection and customize  it.</label>
+                                <div  class="form-group">
+
+                                    <form name="exist_userForm" ng-init = "myerror = false" novalidate  autocomplete = "off">
+                                        <div class="col-sm-10 mrgtp30">
+                                            <select class="form-control" name="user_name" data-ng-model="selected_offer_template"  required>
+                                                <option value = "">Select Offer Template</option>
+                                                <option ng-repeat="LBoffer in existOfferTemplate" value="{{LBoffer._id}}" >{{LBoffer.vertical_category_details.vertical_id.vertical_name}} ({{LBoffer.vertical_category_details.category_id.category_name}})</option>
+                                            </select>
+                                            <span class = "text-danger" ng-show="exist_userForm.user_name.$invalid && myerror">Please Select Offer Template</span>
+                                        </div>
+                                        <div class="col-sm-5 form-group pull-left">
+                                        </div>
+                                        <div class="col-sm-5 form-group pull-left mrgtp30">
+                                            <input type="submit" ng-click = "(exist_userForm.$invalid) ? common_msg = true : '';
+                                                (exist_userForm.$invalid) ? myerror = true : addOfferTemplate(selected_offer_template)" value="Next" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+
+                                    </form>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

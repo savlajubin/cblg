@@ -1,0 +1,312 @@
+<div >
+    <div class="row">
+        <div class="col-lg-4 col-sm-offset-10">
+            <!--<i class="fa  fa-eye fa-2x action actionBtn" title="Invoice Preview" data-animation="am-fade-and-slide-top" content-template  ="/views/accounting/invoiceTemplatePreview.html" ng-click="showPreview('onetime', invoice.record)" bs-modal="modal"></i>-->
+            <i class="fa fa-print fa-2x action actionBtn" print-avoid-break print-btn></i>
+            <i class="fa fa-file-pdf-o fa-2x action actionBtn"  ng-click="pdfGenerate(invoice)"></i>
+            <i class="fa fa-envelope fa-2x action actionBtn" title="Invoice Preview" data-animation="am-fade-and-slide-top" content-template="sendInvoice.html"  bs-modal="modal"></i>
+        </div>
+        <div class="col-lg-12" print-section>
+            <hr>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                <h4 class="from"> From</h4>
+
+                <form role="form">
+
+                    <div class="form-group">
+                        <input disabled type="text" class="form-control name"  placeholder="Name" ng-model="invoice.from_name">
+                        <input disabled type="text" class="form-control name"  placeholder="Address" ng-model="invoice.from_address">
+                        <input disabled type="text" class="form-control name"  placeholder="City, State, Zip" ng-model="invoice.from_city">
+                        <input disabled type="text" class="form-control name"  placeholder="Country" ng-model="invoice.from_country">
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+
+                    <h4 class="from">To</h4>
+
+                    <form role="form">
+
+                        <div class="form-group details">
+                            <input disabled type="text" class="form-control name"  placeholder="Name" ng-model="invoice.to_name">
+                            <input disabled type="text" class="form-control name"  placeholder="Address" ng-model="invoice.to_address">
+                            <input disabled type="text" class="form-control name"  placeholder="City, State, Zip" ng-model="invoice.to_city">
+                            <input disabled type="text" class="form-control name"  placeholder="Country" ng-model="invoice.to_country">
+                        </div>
+
+                    </form>
+            </div>
+
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+
+                <h1 class="invoice">Invoice </h1>
+
+                <div class="clearfix"></div>
+
+                <form class="form-horizontal invoice-form" role="form">
+                    <div class="form-group invoice-bottom">
+                        <label style="float:left" class="control-label invoice-align" for="pwd"><b>Invoice #</b></label>
+                        <div style="float:right;">
+
+                            <input disabled type="text" class="form-control name2"  placeholder="INV-0001" ng-model="invoice.invoice_number">
+                        </div>
+                    </div>
+                    <div class="form-group invoice-bottom">
+                        <label style="float:left" class="control-label invoice-align" for="pwd"><b>Invoice Date</b></label>
+                        <div class="" style="float:right;">
+                            <input disabled type="text" class="form-control name2"  placeholder="" ng-model="invoice.invoice_date">
+                        </div>
+                    </div>
+                    <div class="form-group invoice-bottom">
+                        <label style="float:left" class="control-label invoice-align" for="pwd"><b>Due Date</b></label>
+                        <div class="" style="float:right;">
+                            <input disabled type="text" class="form-control name2"  placeholder="" ng-model="invoice.payment_due_date">
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered vat ">
+                    <thead >
+                        <tr class="item-border">
+                            <th>Item</th>
+                            <th>Description</th>
+                            <th>Lead/Call Price</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-init="amount = []">  
+                        <tr class="item-row" ng-if="invoiceType == 'onetime'" ng-repeat="invoiceDetails in invoice.record">
+                            <td class="item"><input disabled type="text" class="form-control name"  placeholder="Item name/description"  ng-model="invoiceDetails.item"></td>
+                            <td><textarea disabled  class="form-control name"  placeholder="Description" rows="1" cols="40" ng-model="invoiceDetails.description"></textarea></td>
+                            <td><input disabled type="text" class="form-control name"  placeholder="0.00" ng-init="amount[$index] = invoiceDetails.unit_price * invoiceDetails.qty" ng-model="invoiceDetails.unit_price"></td>
+                            <td><input disabled type="text" class="form-control name"  placeholder="0.00" ng-model="invoiceDetails.qty"></td>
+                            <td><input disabled type="text" class="form-control name"  placeholder="0.00" ng-model="amount[$index]"></td>
+                        </tr>
+
+                        <tr class="item-row" ng-if="invoiceType == 'autogenerated'">
+                            <td class="item"><input disabled type="text" class="form-control name"  placeholder="Item name/description"  ng-model="invoice.item"></td>
+                            <td><textarea disabled  class="form-control name"  placeholder="Description" rows="1" cols="40" ng-model="invoice.description"></textarea></td>
+                            <td><input disabled type="text" class="form-control name"  placeholder="0.00" ng-model="invoice.unit_price"></td>
+                            <td><input disabled type="text" class="form-control name"  placeholder="0.00" ng-model="invoice.qty"></td>
+                            <td><input disabled type="text" class="form-control name"  placeholder="0.00" value="{{(invoice.unit_price * invoice.qty)| number}}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <!--<span>Characters left: {{300 - invoice.notes.length}}</span>-->
+                        <span>Invoice Notes: </span>
+                        <textarea placeholder="This section will be automatically populated with the eCheck Information of the invoice sender" name="invoice_notes" id="invoice_notes" rows=6 cols=60 style="width:430px; overflow:auto; outline:none; padding:5px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" ng-model="invoice.notes" readonly disabled></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                </div>
+
+
+                <table id="table_sums" border=0 cellpadding=0 cellspacing=0>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="width:15px; border-top:2px solid #eaedee;">&nbsp;</td>
+                        <td style="width:200px; border-top:2px solid #eaedee;font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;padding-top:6px;padding-bottom:3px;">
+                            Subtotal
+                        </td>
+                        <td ng-if="invoiceType == 'autogenerated'" style="text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid white;padding-top:6px;padding-bottom:3px;">
+                            <!-- <input style="border:0px solid white;text-align:right; width:100px; padding-right:5px; font-weight:normal; font-family:verdana;font-size:13px;color:#3c3c3c;" readonly type=text id="sum_subtotal" name="sum_subtotal" value="0.00"> -->
+                            ${{(invoice.unit_price * invoice.qty) ? (invoice.unit_price * invoice.qty) : 0 | number:2}}
+                        </td>
+                        <td ng-if="invoiceType == 'onetime'" style="text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid white;padding-top:6px;padding-bottom:3px;">
+                            ${{amount ? amount : 0| totalAmt | number :2}}
+                        </td>
+                    </tr>
+                    <!--                    <tr id="sum_blankSubtotalTR" style="height:3px;display:none;">
+                                            <td></td>
+                                        </tr>
+                                        <tr id="sum_discountTR" style="display:none;">
+                                            <td style="width:0px;">&nbsp;</td>
+                                            <td style="width:200px; font-family:verdana; font-size:11px; color:#3c3c3c; padding-left:10px;padding-bottom:1px;"> - Discount </td>
+                                            <td align=right><table border=0 cellpadding=0 cellspacing=0 style="width:70px;">
+                                                    <tr>
+                                                        <td>&nbsp;</td>
+                                                        <td class="invoiceForm_fromNameTD" id ="sum_discountTD" style="text-align:right;padding-right:4px;padding-bottom:1px;"><input id="sum_discount" autocomplete=off style="outline:none; border:0px solid white;text-align:right; width:70px; padding-right:5px; font-family:verdana;font-size:13px;color:silver;" type=text name="sum_discount" value="0.00"></td>
+                                                    </tr>
+                                                </table></td>
+                                        </tr>
+                                        <tr id="sum_blankAfterDiscountOrTaxTR" style="height:7px;">
+                                            <td></td>
+                                        </tr>-->
+                    <tr>
+                        <td style="width:15px; border-top:2px solid #eaedee;">&nbsp;</td>
+                        <td style="border-top:2px solid #eaedee;font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;padding-top:7px;">
+                            Total
+                        </td>
+                        <td ng-if="invoiceType == 'autogenerated'" style="padding-top:7px; text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid white;">
+                            {{invoiceData.amount| number:2}}
+                        </td>
+                        <td ng-if="invoiceType == 'onetime'" style="padding-top:7px; text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid white;">
+                            ${{amount ? amount : 0| totalAmt | number :2}}
+                        </td>
+                    </tr>
+
+                    <!-- amount paid -->
+                    <tr>
+                        <td style="width:15px; border-top:0px solid #eaedee;">&nbsp;</td>
+                        <td style="border-top:0px solid #eaedee;font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;">
+                            Amount Paid
+                        </td>
+                        <td style="padding-bottom:7px;text-align:right;padding-right:4px;border-right:1px solid white;border-top:0px solid #eaedee;border-left:1px solid white;">
+                            ${{ 0 | number:2}}
+                        </td>
+                    </tr>
+
+                    <!-- balance due -->
+                    <tr style="background-color:#FBFF9E;">
+                        <td style="background-color:#FBFF9E;width:15px; border-top:2px solid #eaedee;">&nbsp;</td>
+                        <td style="background-color:#FBFF9E;width:200px; border-top:2px solid #eaedee;font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:bold;padding-top:7px;padding-bottom:7px;">
+                            Balance Due&nbsp;<span id="currency_code_output" style="font-family:verdana; font-size:13px; color:#3c3c3c; font-weight:normal;"></span>
+                        </td>
+                        <td ng-if="invoiceType == 'autogenerated'" style="background-color:#FBFF9E;text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid #FBFF9E;">
+                            ${{(invoice.unit_price * invoice.qty) ? (invoice.unit_price * invoice.qty) : 0 | number:2}}
+                        </td>
+                        <td ng-if="invoiceType == 'onetime'" style="background-color:#FBFF9E;text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid #FBFF9E;">
+                            ${{amount ? amount : 0| totalAmt | number
+                                                :2}}
+                        </td>
+                    </tr>
+
+                    <!-- TB 5 -->
+                </table>
+
+                <!--                <div class="col-lg-2 margin3">
+                                    <p><strong>Subtotal </strong> </p>
+                                    <p><strong>Amount Paid</strong> </p>
+                                    <p><strong>Balance Due</strong></p>
+                                    <p><strong>Total</strong></p>
+                                </div>
+                                <div class="col-lg-1 margin3">
+                
+                                    <p>${{(invoice.unit_price * invoice.qty) ? (invoice.unit_price * invoice.qty) : 0 | number
+                                                        :2}}</p>
+                                    <p>${{ 0 | number:2}}</p>
+                                    <p>${{(invoice.unit_price * invoice.qty) ? (invoice.unit_price * invoice.qty) : 0 | number:2}}</p>
+                                    <p style="background-color:#FBFF9E;text-align:right;padding-right:4px;border-right:1px solid white;border-top:2px solid #eaedee;border-left:1px solid #FBFF9E;">${{(invoice.unit_price * invoice.qty) ? (invoice.unit_price * invoice.qty) : 0 | number
+                                                        :2}}</p>
+                
+                                </div>-->
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->
+
+<script type="text/ng-template" id="sendInvoice.html">
+ 
+    <div class="panel-body pad0 margin3  ">
+        <form id="sendmail_form" name="sendmail_form" style="padding:0;" class="col-sm-6 col-sm-offset-3" ng-init="errEmail = false;">
+
+        <div class="col-sm-12">
+        <div class="form-group">                        
+        <input class="form-control" required type="email" ng-model="formData.email" name="email" placeholder="Email">
+        <span ng-show="errEmail && sendmail_form.email.$error.required" class="text-danger">Please provide email</span>
+        <span ng-show="errEmail && sendmail_form.email.$error.email" class="text-danger">Please enter valid email</span>
+        </div>
+        </div>
+        <div class="col-sm-6">
+        <div class="form-group">
+            <input class="topbutton btn btn-primary" type="button" ng-click="(sendmail_form.$invalid) ? errEmail = true : sendMailInvoiceListing(formData, invoice)" value="Send Mail">
+        </div>
+        </div>
+        <div class="col-sm-6">
+        <div class="form-group">
+        <!--<input class="topbutton btn btn-primary" type="button" value="Cancel">-->
+        </div>
+        </div>
+        </form>
+    </div>
+         
+</script>
+<style type="text/css" media="screen">
+    .from {font-weight:bold; color:#000000; margin-left: 12px; font-size:14px;}
+    .details {text-align:left;}
+    .container { border: 1px solid;}
+    .vat{width:100% !important;}
+    .name {
+        border: medium none;
+        border-radius: 0px;
+        box-shadow: none;
+        height:30px;
+        margin-top: 3px;
+    }
+    .name2 {
+        border: medium none;
+        border-radius: 0px;
+        box-shadow: none;
+        height:30px;
+        margin-top:3px;
+
+    }
+    .name:focus {border-color: none;box-shadow: none;}
+    .name2:focus {border-color: none;box-shadow: none;}
+    input::-webkit-input-placeholder {
+        color: #000000 !important;
+    }
+
+    input:-moz-placeholder { /* Firefox 18- */
+        color: #000000 !important;
+    }
+
+    input::-moz-placeholder {  /* Firefox 19+ */
+        color: #000000 !important;
+    }
+
+    input:-ms-input-placeholder {
+        color: #000000 !important;
+    }
+    .invoice {text-transform:uppercase; font-size:3em; color:#000000; margin-bottom: 189px; margin-top:0px;
+              padding-left:30px; float:Right;}
+    .invoice-text{float:right;}
+    .space {margin-right:10px;}
+    .item-row {background-color: #FFFFFD !important;}
+    .item {width: 35%;}
+    .item-border {background-color: rgb(66, 139, 202);color: white !important;}
+    .invoice-form {float:right;}
+    .invoice-bottom {margin-bottom:0px !important;}
+    .invoice-align {text-align:end;}
+    .action{ opacity: 0.4; }
+    .action:hover{ opacity: 1; color:rgb(66, 139, 202); }
+    .margin3{ margin-top: 3% }
+    .modal-dialog {
+        width: 70%;
+    }
+
+    /* Different color for placehlder and to hide input boxes background */
+    .form-control::-webkit-input-placeholder{color:    #FFFFFF !important;}
+    .form-control:-moz-placeholder {color:    #FFFFFF !important;}
+    .form-control::-moz-placeholder {color:    #FFFFFF !important;}
+    .form-control:-ms-input-placeholder {color:    #FFFFFF !important;}
+    textarea.form-control { border: none;}
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {background-color: white;opacity: 1;}
+</style>

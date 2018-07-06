@@ -1,0 +1,422 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<div class="tabsContainer col-sm-12">
+    <div class="panel panel-default"  ng-init="setTab(0);
+            common_err = false;
+            state = false;">
+        <div class="panel-heading"><h3>{{form_type}} Original Offer</h3>
+            <div class= "text-danger text-center"><span ng-show="common_err">*Please complete the current tab before proceeding</span></div>
+        </div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+<!--                 <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(0)}"><a href="javascript:void(0)" ng-click="setTab(0)">Verticals/Category</a></li>
+                    <li ng-class="{active:isSet(1)}"><a href="javascript:void(0)" ng-click="setTab(1)">Pay Per Call</a></li>
+                    <li ng-class="{active:isSet(2)}"><a href="javascript:void(0)" ng-click="setTab(2)">State Restrictions</a></li>
+                    <li ng-class="{active:isSet(5)}"><a href="javascript:void(0)" ng-click="setTab(5)">Duration</a></li>
+                    <li ng-class="{active:isSet(6)}"><a href="javascript:void(0)" ng-click="setTab(6)">Daily Cap</a></li>
+                 </ul>-->
+               
+                <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(0)}"><a href="javascript:void(0)" >Verticals / Category</a></li>
+                    <li ng-class="{active:isSet(1)}"><a href="javascript:void(0)" >Pay Per Call</a></li>
+                    <li ng-class="{active:isSet(2)}"><a href="javascript:void(0)" >State Restrictions</a></li>
+                    <li ng-class="{active:isSet(5)}"><a href="javascript:void(0)" >Duration</a></li>
+                    <li ng-class="{active:isSet(6)}"><a href="javascript:void(0)" >Daily Cap</a></li>
+                </ul>
+                <div class="tab-content" ng-init= "ver_err = false">
+                    <div ng-show="isSet(0)">
+                        <div class="user">
+                            <div class="form-group">
+                                <div class="text-right">
+                                    <h4>
+                                        <a class="btn btn-primary btn-flat" href="javascript:void(0)" ng-click = "(cat_form.$invalid) ? common_err = true : submitVerticalCatInfo(catVert);
+                                            (cat_form.$invalid) ? ver_err = true : setTab(1)">Next</a></h4>
+                                </div>
+                            </div>
+                            <h4>Vertical/Category</h4>
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="saas-create-offer-verticals">
+                                    <form name="cat_form" ng-init= "ver_err = false" novalidate ng-submit="submitVerticalCatInfo(catVert)">
+                                        <div class="form-group row">
+                                            <div class="col-sm-10">
+                                                <select type="text" required name="vertical" id="vertical" class="form-control" placeholder="Category" ng-change="showCategoriesByVertical(catVert.vertical_id)" ng-model="catVert.vertical_id" tabindex="1">
+                                                    <option value="">Select Vertical</option>
+                                                    <option ng-repeat="vertical in verticalList" value="{{vertical._id}}" >{{vertical.vertical_name}}</option>
+                                                </select>
+                                                <span class = "text-danger" ng-show="cat_form.select1.$invalid && ver_err">Please select vertical</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="form-group">
+                                                <div class="col-sm-10">
+                                                    <select name="select2" class="form-control" ng-model="catVert.category_id"  required>
+                                                        <option value="">Select Category</option>
+                                                        <option ng-repeat="category in categoryList" ng-selected = "catVert.category_id == category._id" value="{{category._id}}" >{{category.category_name}}</option>
+                                                    </select>
+                                                    <span class = "text-danger" ng-show="cat_form.select2.$invalid && ver_err">Please select category</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="title" placeholder="Title" ng-model="catVert.title" autocomplete="off" >
+                                            </div>
+
+
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="description" ng-model="catVert.description" placeholder="Description">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row col-sm-12">
+                                            <div class="col-sm-5 padL0"></div>
+                                            <div class="col-sm-5 padR0">
+                                                <input type="submit" ng-click = "(cat_form.$invalid) ? common_err = true : '';
+                                                    (cat_form.$invalid) ? ver_err = true : ''" value="Next" class="btn btn-primary btn-block btn-flat">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(1)">
+                        <div class="saas-pay-calls">
+                            <form name="pp_form" ng-init= "pp_err = false" novalidate ng-submit="submitpayPerCallInfo(pp)">
+                                <div class="form-group">
+                                    <div class="text-right">
+                                        <h4><a class="btn btn-primary btn-flat" href="javascript:void(0)" ng-click="setTab(0)">Previous</a>
+                                            <a class="btn btn-primary btn-flat" href="javascript:void(0)"  ng-click="(pp_form.$invalid) ? common_err = true : submitpayPerCallInfo(pp);
+                                                (pp_form.$invalid) ? pp_err = true : setTab(2)" >Next</a></h4>
+                                    </div>
+                                </div>
+                                <h4>Pay Per Call</h4>
+                                <div class=" col-sm-8 col-sm-offset-2" >
+                                    <div class="form-group row">
+                                        <div class="col-sm-10">
+                                            <p><label for="lbamount">Lead Buyer</label></p>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="number" class="form-control" id="lbamount" name="lbamount" placeholder="Enter Amount"  ng-change="pp.lgnamount = pp.lbamount - pp.lgamount;" ng-model="pp.lbamount" autocomplete="off" ng-required="true">
+                                                <span class="input-group-addon">.00</span>
+                                            </div>
+                                            <span class = "text-danger" ng-show="pp_err && pp_form.lbamount.$error.required">Amount is Required in Lead Buyer</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10">
+                                            <p><label for="lgamount">Lead Generator</label></p>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="number" class="form-control" name="lgamount" placeholder="Enter Amount" ng-change="pp.lgnamount = pp.lbamount - pp.lgamount;" ng-model="pp.lgamount" id ="lgamount"  autocomplete="off" ng-required="true">
+                                                <!--<span class="input-group-addon">.00</span>-->
+                                            </div>
+                                            <span class = "text-danger" ng-show="pp_err && pp_form.lgamount.$error.required" >Amount is Required in Lead Generator</span>
+                                            <span class = "text-danger" ng-show="pp_err && pp_form.$error.min" >LG amount should be less than  LB </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10">
+                                            <p><label for="lgnamount">Lead Gen Network </label></p>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input class="form-control" type="number" name="lgnamount" placeholder="" min='0' ng-model="pp.lgnamount" id ="lgnamount" readonly="true">
+                                                <!--<span class="input-group-addon">.00</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row col-sm-12">
+                                        <div class="col-sm-5 padL0">
+                                            <input type="button" ng-click = "setTab(0)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                        <div class="col-sm-5 padR0">
+                                            <input type="submit" ng-click = "(pp_form.$invalid) ? common_err = true : '';
+                                                (pp_form.$invalid) ? pp_err = true : setTab(2)" value="Next" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(2)">
+                        <div class="saas-state-restrict" >
+                            <div class="form-group">
+                                <div class="text-right">
+                                    <h4><a class="btn btn-primary btn-flat" href="javascript:void(0)" ng-click="setTab(1);">Previous</a>
+                                        <a class="btn btn-primary btn-flat" href="javascript:void(0)" ng-click="setTab(5);
+                                        submitstateRestrictInfo(pp)">Next</a></h4>
+                                </div>
+
+                            </div>
+                            <h4>State Restrictions</h4> <br>
+                            <div class="col-sm-8 col-sm-offset-2">
+
+                                <div class="saas-state-restrict-input">
+                                    <form name="sr_form" ng-init= "sr_err = false;(restricted_states) ? stateTable=true : stateTable = false;" novalidate ng-submit="submitstateRestrictInfo(pp)">
+                                        <div style="" class="form-group row">
+                                            <div class="col-sm-10">
+                                                <table ng-show="stateTable" class="table">
+                                                    <tr >
+                                                        <td>Number</td>
+                                                        <td>State Name</td>
+                                                        <td>Action</td>
+                                                    </tr>
+                                                    <tr ng-repeat="states in restricted_states">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{states}}</td>
+                                                        <td><span class="glyphicon glyphicon-trash" title="Delete" style="cursor:pointer;" ng-click="deleteState($index)" ></td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-10">
+                                                States(s) <br>
+                                                <angucomplete-alt id="ex1"
+                                                                  placeholder="Search States"
+                                                                  pause="100"
+                                                                  selected-object="result2"
+                                                                  local-data="preStates"
+                                                                  search-fields="name_long"
+                                                                  title-field="name_long"
+                                                                  minlength="1"
+                                                                  input-class="form-control form-control-small">
+                                                </angucomplete-alt>
+                                                <div class="col-md-4">
+                                                    <label>&nbsp;</label>
+                                                    <button class="btn  btn-primary btn-block btn-flat" type="button" tabindex="12" ng-click="addResState(result2.title);
+                                                    result2.title = '';">Add State</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-12">
+                                            <div class="col-sm-5 padL0">
+                                                <input type="button" ng-click = "setTab(1)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                            </div>
+                                            <div class="col-sm-5 padR0">
+                                                <input type="submit" ng-click = "setTab(5);" value="Next" class="btn btn-primary btn-block btn-flat">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(5)">
+
+                        <div class="form-group">
+                            <div class="text-right">
+                                <h4><a class="btn btn-primary btn-flat" href="javascript:void(0)" ng-click="setTab(2)">Previous</a>
+                                    <a class="btn btn-primary btn-flat" href="javascript:void(0)" ng-click="(duration_form.$invalid) ? common_err = true : submitDurationInfo(duration);
+                                    (duration_form.$invalid) ? dur_err = true : (duration.billable_callsecs == 0) ? dur_err = true : setTab(6);">Next</a></h4>
+                            </div>
+                        </div>
+                        <h4>Duration</h4><br>
+                        <div class="exporting-call-data col-sm-8 col-sm-offset-2 duration-margin" ng-init="dur_err = false" >
+                            <div class="saas-routing-settings">
+                                <form name="duration_form" novalidate ng-submit="submitDurationInfo(duration)"> <br><br>
+                                    <div class="form-group col-sm-10">
+                                        <div class="row">
+                                            <div class="col-sm-12">A call is deemed to be a billable call
+                                                <input type="text" class="change" name="dur_sec" placeholder="seconds" ng-pattern="/^\d*[1-9]\d*/" ng-model="duration.billable_callsecs" autocomplete="off" required>
+                                                <span>seconds
+                                                </span>
+                                                <p ng-show="duration_form.dur_sec.$error.pattern && !duration_form.dur_sec.$pristine" class="text-danger">Numbers Please.
+                                                </p>
+                                                <p ng-show=" duration_form.dur_sec.$error.required && dur_err"
+                                                   class="text-danger">Please fill Seconds .
+                                                </p>
+                                                <p ng-show = "duration.billable_callsecs == 0 && !duration_form.dur_sec.$error.required"
+                                                   class="text-danger">Please Enter valid Seconds.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table">
+                                        <tr>
+                                            <td width="40">
+                                                <input type="radio" class="regular-radio big-radioX solid-blue" name="reps1" value="caller_connected" id="acpa" ng-model="duration.duration_activity" ng-required="true"><label for="acpa"></label>
+                                            </td>
+                                            <td>
+                                                <span for="acpa">A caller is connected to a phone agent</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="radio" class="regular-radio big-radioX solid-blue" name="reps1" value="IVR_completed" id="aic" ng-model="duration.duration_activity" ng-required="true"><label for="aic"></label>
+                                            </td>
+                                            <td>
+                                                <span for="acpa"> After an IVR is completed</span>
+                                                <p ng-show="duration_form.reps1.$error.required && dur_err" class="text-danger">Please select an option.</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="form-group row col-sm-12">
+                                        <div class="col-sm-4">
+                                            <p>Make my call billable for every 30 days</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="radio" id = "existing" name="gross_uni" value="0"  ng-model="duration.gross_unique"  class="regular-radio big-radioX solid-blue" required >
+                                            <label for="existing"></label>
+                                            <label for="basiccrm">Gross</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="radio" id = "new" name="gross_uni"  value="1" ng-model="duration.gross_unique" class="regular-radio big-radioX solid-blue" required>
+                                            <label for="new"></label>
+                                            <label for="new">Unique</label>
+                                        </div>
+                                        <p ng-show="duration_form.gross_uni.$error.required && dur_err" class="text-danger col-sm-12">Please select an option.</p>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <div class="col-sm-5 padL0">
+                                            <input type="button" ng-click="setTab(2)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                        <div class="col-sm-5 padR0">
+                                            <input type="submit" ng-click = "(duration_form.$invalid) ? common_err = true : '';
+                                            (duration_form.$invalid) ? dur_err = true : (duration.billable_callsecs == 0) ? dur_err = true : setTab(6);" value="Next" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div ng-show="isSet(6)">
+                        <div class="text-right">
+                            <h4><a class="btn btn-primary btn-flat" href="javascript:void(0)" ng-click="setTab(5)">Previous</a>
+                        </div>
+                        <center><span class="text-danger" ng-show="dc_form.reps.$error.required && commmon_err">Please select option</span></center>
+                        <h4>Daily Caps</h4>
+                        <p> The daily cap for this offer is calls. If the daily cap is exceeded</p>
+                        <div class="saas-pay-calls col-sm-8 col-sm-offset-2">
+                            <div class="form-group">
+                                <form name="dc_form" ng-init="ver_err = false;
+                                    msg_err = true;" novalidate ng-submit="submitDailyCapInfo(dc)">
+                                    <table class="table">
+                                        <tr>
+                                        <div class="form-group row">
+                                            <div class="dc-left">
+                                                <input type="checkbox" id="dc_payls" class="regular-checkbox big-checkboxX solid-blue" ng-model="dc.is_reduce_rate" name="dc_check" ng-click="ver_err = '';"/>
+                                                <label for="dc_payls"></label> Pay the Lead Seller a reduced rate of
+                                                <span class="input-symbol-doll"><input type="text" class="change dollar_text" name="dc_sec" placeholder="" autocomplete="off" ng-required ="dc.is_reduce_rate" ng-pattern="/^\d*[1-9]\d*/" ng-model="dc.reduced_rate" ng-disabled="!dc.is_reduce_rate" >
+                                                    <span>per call.</span>
+                                                </span>
+                                                <p ng-show="dc_form.dc_sec.$error.pattern && !dc_form.dc_sec.$error.required" class="text-danger">Numbers only.</p>
+                                                <p ng-show="dc_form.dc_sec.$error.required && ver_err" class="text-danger">Please Enter the Value.</p>
+                                            </div>
+                                        </div>
+                                        </tr>
+                                        <!--                                        <tr>
+                                                                                    <td>
+                                                                                        <input type="radio" class="regular-radio big-radio" name="reps" value="dial_ifNoResponse" id="dial" ng-click="dc.value = '';
+                                                                                        dc.extra_field = '';
+                                                                                        dc.values = '';
+                                                                                        dc.extra_fields = '';
+                                                                                        ver_err = '';" ng-required="true" ng-model="dc.setting_option"><label for="dial"></label>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        Dial <input type="text" class="change1" name="dc_dail" placeholder="Contact number" ng-model="dc.value" ng-pattern="/^[0-9+-]*$/" autocomplete="off" ng-required="dc.setting_option   =='dial_ifNoResponse'">
+                                                                                        <span>If no answer after<input type="text" class="change" name="dc_dail1" placeholder="seconds"  autocomplete="off" ng-pattern="/^\d*[1-9]\d*/" ng-model="dc.extra_field" ng-required="dc.setting_option   =='dial_ifNoResponse'">&nbsp seconds,ring&nbsp{{dc.xyz}}
+                                                                                        </span>
+                                                                                        <span ng-show="msg_err">
+                                                                                            <p ng-show="dc_form.dc_dail.$error.pattern && !dc_form.dc_dail.$error.required" class="text-danger">Numbers only.</p>
+                                                                                            <p ng-show="dc_form.dc_dail.$error.required && ver_err" class="text-danger">Please Enter Contact Number.</p>
+                                                                                            <p ng-show="dc_form.dc_dail1.$error.pattern && !dc_form.dc_dail1.$error.required" class="text-danger">Numbers only.</p>
+                                                                                            <p ng-show="dc_form.dc_dail1.$error.required && ver_err" class="text-danger">Please Enter Seconds.</p>
+                                                                                        </span>
+                                                                                    </td>
+                                                                                </tr>-->
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" class="regular-checkbox big-checkboxX solid-blue" name="reps" value="use_marketing" id="marketing" ng-model="dc.setting_option"><label for="marketing"></label>
+                                            </td>
+                                            <td>
+                                                <label for="marketing">Use Marketing Automation to capture the caller ID and automatically add to your MA Outbound Campaign</label>
+                                            </td>
+                                        </tr>
+                                        <!--                                        <tr>
+                                                                                    <td>
+                                                                                        <input type="radio" class="regular-radio big-radio" ng-click="dc.value = '';
+                                                                                    dc.extra_field = '';
+                                                                                    msg_err = false;
+                                                                                    ver_err = '';" name="reps" value="leave_message" id="message1" ng-required="true" ng-model="dc.setting_option"><label for="message1"></label>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <label for="message1"> Leave a Message</label><br><br>
+                                                                                        <div class="form-group" ng-if="dc.setting_option == 'leave_message'">
+                                                                                            <div class="col-sm-10">
+                                                                                                <span>After<input type="text" class="change " name="dc_sec1" placeholder="seconds" ng-pattern="/^[0-9+-]*$/" ng-model="dc.extra_fields" autocomplete="off" required>seconds of ringing
+                                                                                                    <p ng-show="dc_form.dc_sec1.$error.pattern && !dc_form.dc_sec1.$error.required" class="text-danger">Numbers only.
+                                                                                                    </p>
+                                                                                                    <p ng-show="dc_form.dc_sec1.$error.required && ver_err" class="text-danger">Please Enter the Value.</p>
+                                                                                                </span>
+                                                                                                <p ng-show = "dc.extra_fields == 0 && !dc_form.dc_sec1.$error.required"
+                                                                                                   class="text-danger">Please Enter valid Seconds.
+                                                                                                </p>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-sm-3 col-md-3 col-md-offset-0">
+                                                                                                        <label for="inputEmail3" class="control-label">Set a greeting mp3 for your voicemail</label>
+                                                                                                    </div>
+                                                                                                    <div class="col-sm-6 col-md-4 col-md-offset-0">
+                                                                                                        <div ng-show="success_msg" class="chkbox"><img alt="right" src="assets/images/simple-blue-tick-md.png" width="25"></div>
+                                                                                                        <input type="file" title="Choose Contract File"  name="greeting_audio_dc" id="greeting_audio_dc" class="btn-primary" data-ng-model="dc.values"  ngf-select="" ngf-pattern="audio/*" accept="audio/*" required/>
+                                                                                                        <p ng-show="dc_form.greeting_audio_dc.$error.required && ver_err"
+                                                                                                           class="text-danger">Please Select Audio Greeting.</p>
+                                                                                                        <p class = "text-danger" ng-show="(dc_form.greeting_audio_dc.$error.pattern && !dc_form.greeting_audio_dc.required) && ver_err">File format error</p>
+                                                                                                    </div>
+                                        
+                                                                                                </div>
+                                                                                                <div class="row" ng-show="showAudio2">
+                                                                                                    <div class="col-sm-12 col-md-offset-3">
+                                                                                                        <div>Current Voicemail Greeting: </div>
+                                                                                                        <div><a href="javascript:void(0);" class="btn btn-primary" ng-click='get_greeting_audio2.paused ? get_greeting_audio2.play() : get_greeting_audio2.pause()' >{{get_greeting_audio.paused ? 'Play' : 'Pause'}}</a><a href="javascript:void(0);" class="btn btn-primary" ng-click='get_greeting_audio2.restart()' data-ng-show="!get_greeting_audio2.paused">Stop</a><p></p></div>
+                                                                                                    </div>
+                                                                                                </div>
+                                        
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>-->
+                                    </table>
+                                    <div class="form-group col-sm-12">
+                                        <div class="col-sm-5 padL0">
+                                            <input type="button" ng-click="setTab(5)" value="Previous" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                        <div class="col-sm-5 padR0">
+                                            <input type="submit" ng-click = "(dc_form.$invalid) ? common_err = true : '';
+                                            (dc_form.$invalid) ? ver_err = true : setTab(7);" value="Submit" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(7)">
+
+                        <div class="split-the-app">
+                            <h4>Congratulations!</h4>
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <form name="form" class="vertical-form">
+                                    <div  class="form-group">
+                                        <div class="col-sm-10">
+                                            <h5>Your information has been saved successfully.</h5>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <div class="col-sm-5">
+                                            <input type="submit" href="javascript:void(0)" ng-click="backToBoard()" value="Add New Original-Offer">
+                                        </div>
+                                        <div class="col-sm-5"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

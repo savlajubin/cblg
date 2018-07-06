@@ -1,0 +1,68 @@
+<div class="col-sm-12" ng-init="cronList()">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>
+                Cron Lists
+
+<!--                <div class="tableHeadBtnDiv">
+                    <button data-title="Create Contact List" data-animation="am-fade-and-slide-top" template="/views/advCC/addContactList.html"  bs-modal="modal" type="button" class="btn btn-primary pull-right">
+                        Add List
+                    </button>
+                    <a class="btn btn-primary pull-right" ng-href="/#!/advcc/contacts/add-contact">Add Contact</a>
+                    <input type="text" class="form-control width-30 pull-right" ng-model="query" ng-change="tableParams.filter(query)" placeholder="Search..." autofocus>
+                </div>-->
+            </h3>
+        </div>
+        <div class="panel-body pad0" col-show-hide>
+            <table class="table table-condensed" ng-table="tableParams" export-csv="csv">
+                <tbody>
+                    <tr ng-class="$even? 'oddcolor' : 'evencolor'" ng-repeat="data in $data" ng-if="dataPresent">
+                        
+                        <td data-title="'#'"><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                        <td ng-show="showCol[0]" sortable="'Frequency'" data-title="'Frequency'" data-title-text="'Script Name'">{{data.method | capitalize}}</td>
+                        <td ng-show="showCol[1]" data-title="'Time'" data-title-text="'Time '"><div ng-if="data.hours < 12 && data.hours != 0">{{data.hours | append}} : {{data.minutes === 0?'00':data.minutes }}AM</div><div ng-if="data.hours > 12">{{data.hours - 12 | append}} : {{data.minutes === 0?'00':data.minutes }}PM</div><div ng-if="data.hours == 0 ">12 : {{data.minutes}} AM</div><div ng-if="!data.hours && !data.minutes">--</div></td>
+<!--                        <td ng-show="showCol[1]" data-title="'Time'" data-title-text="'Time '"><div ng-if"data.hours < 12">{{data.hours}} : {{data.minutes}} PM</div></td>-->
+                        <td ng-show="showCol[2]" data-title="'Day of Week'" data-title-text="'Day of Week '">{{data.day | capitalize }}<div ng-if="!data.day">--</div></td>
+<!--                        status-->
+                        <td ng-show="showCol[2]" data-title="'Status'" sortable="'status'"  ng-click="changestatus(data._id, data.status);" class="actionBtn">
+                        <span ng-if="data.status == true"  class="glyphicon text-success glyphicon-ok-sign"></span>
+                        <span ng-if="data.status == false"  class="glyphicon text-danger glyphicon-remove-sign"></span>
+<!--                        <span ng-if="user.status == 'Pending'" title="{{user.status}}" class="glyphicon text-warning glyphicon-warning-sign"></span>-->
+                       
+                        </td>
+                        
+                        <td  ng-show="showCol[3]" data-title="'Month Date'" data-title-text="'Month Date '">{{data.date}}<div ng-if="!data.date">--</div> </td>
+                        <td ng-show="showCol[4]" data-title="'Type'" data-title-text="'Type '">{{data.mode | capitalize}}</td>
+                        <td data-title="'Action'" data-title-text="Action">
+                            
+                             <!--<span data-title="View Contacts" data-animation="am-fade-and-slide-top" ng-click="cronView(data._id)" template-url="/views/advcc/viewcron.html"  bs-modal="modal" class="glyphicon glyphicon-eye-open actionBtn"></span>-->
+                             <span data-title="View Contacts" data-animation="am-fade-and-slide-top" ng-click="cronView(data._id)" template-url="/views/advCC/viewcron.html"  bs-modal="modal" class="glyphicon glyphicon-eye-open actionBtn"></span>
+<!--                            <span data-title="View Contacts" ng-click="goToNewLink('/' + currentRoleCode + '/contacts/view-contacts/' + list._id)" class="glyphicon glyphicon-eye-open actionBtn" bs-tooltip></span>-->
+                            <span class="glyphicon glyphicon-trash actionBtn" title="Delete" ng-click="deleteCronList(data._id)" bs-tooltip></span>
+                        </td>
+                        <td header="'headerSettingGear.html'" ></td>
+                        
+                    </tr>
+                    <tr ng-if="!dataPresent">
+                        <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row pull-right downloadCsvLink">Download as <a href="javascript:void(0)" ng-click='hideDropDown();
+                csv.generate($event, "AgentScripts" + currentDate + ".csv");'>CSV</a></div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[0] = !showCol[0]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[0]]"></i> List Name</a></li>
+    <li><a ng-click="showCol[1] = !showCol[1]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[1]]"></i> No of Contacts</a></li>
+    </ul>
+    </div>
+</script>
+
+

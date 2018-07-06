@@ -1,0 +1,115 @@
+<div class="animate-repeat" ng-init="getCallerLeadByID();addNote = false">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>
+                Lead Details
+            </h3>
+        </div>
+        <div class="panel-body">
+           <div class="col-sm-8 col-sm-offset-2">
+                    <form class="vertical-form col-sm-offset-1" role="form" name="contact_info" ng-submit="submitCRM(crm)">
+                            <input type="hidden" id = "callUUID" class="form-control">
+                            <input type="hidden"  id = "caller_id"  class="form-control">
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="firstName" data-ng-model="crm.first_name" placeholder="First Name *" required>
+                                    <span class = "text-danger" ng-show="contact_info.firstName.$dirty && contact_info.firstName.$error.required" >First Name is required</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="lastName" data-ng-model="crm.last_name"placeholder="Last Name *" required>
+                                    <span class = "text-danger" ng-show="contact_info.lastName.$dirty && contact_info.lastName.$error.required">Last Name is required</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="email" class="form-control" name="email" data-ng-model="crm.email"placeholder="Email *" required>
+                                    <span class = "text-danger" ng-show="contact_info.email.$dirty && contact_info.email.$error.required" class="error">Email is required</span>
+                                    <span class = "text-danger"  ng-show="contact_info.email.$dirty && contact_info.email.$error.email" >Invalid Email Address</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="phone" data-ng-model="crm.phone_no"placeholder="Contact Number *"ng-minlength="8" ng-maxlength="15" ng-pattern="/^[0-9+-]*$/" required>
+                                    <span ng-show="contact_info.phone.$error.minlength" class="text-danger">Contact number is too short.</span>
+                                    <span ng-show="contact_info.phone.$error.maxlength"class="text-danger">Contact number is too long.</span>
+                                    <span ng-show="contact_info.phone.$error.pattern && !contact_info.phone.$pristine"
+                                    class="text-danger">Contact Number should be number only.</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="addLine1" data-ng-model="crm.addressLine1" placeholder="Address Line 1 *" required>
+                                    <span class = "text-danger" ng-show="contact_info.addLine1.$dirty && contact_info.addLine1.$error.required">Address1 is required</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="addLine2" data-ng-model="crm.addressLine2" placeholder="Address Line 2">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="zip" ng-blur="getCity(crm.zip)" data-ng-model="crm.zip" placeholder="Zip *" required>
+                                    <span class = "text-danger" ng-show="contact_info.zip.$dirty && contact_info.zip.$error.required">Zipcode is required</span>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="city" data-ng-model="crm.city" placeholder="City *" required>
+                                    <span class = "text-danger" ng-show="contact_info.city.$dirty && contact_info.city.$error.required">City is required</span>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="state"  data-ng-model="crm.state" placeholder="State *" required>
+                                    <span class = "text-danger" ng-show="contact_info.state.$dirty && contact_info.state.$error.required">State is required</span>
+                                </div>
+                                <div class="col-sm-5">
+                                    <select ng-model="crm.lead_status">
+                                        <option value="">Select lead status</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                    <!-- these options are a priority category -->
+                                </div>
+                                
+                            </div>
+                            <div class="form-group">
+                              <div class="col-sm-10">
+                                <p><b>Existing Notes</b></p>
+                                <div ng-repeat="note in leadDetail.notes" class="alert alert-info alert-dismissible" role="alert">
+                                    <button type="button" ng-click="removeNote(note)" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{note}}
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="form-group" >
+                                <div class="col-sm-10">
+                                    <button ng-show ="!addNote" ng-click="addNote=true">Add Note</button>
+                                    <textarea class="form-control" ng-show ="addNote" data-ng-model="newNote" placeholder="Add Note"></textarea> 
+                                    <button  ng-if ="newNote" ng-click="pushNote(newNote);">Add</button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-sm-10 ">
+                                    <input type="submit" ng-disabled="contact_info.$invalid" value="Submit" ng-click="contact_info.$invalid ? '':saveCallerDetails(crm)" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </form> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style type="text/css">
+    .noteDiv {
+  background: none repeat scroll 0 0 #8AE2FF;
+  float: left;
+  margin: 1%;
+  padding: 4px 20px 3px 20px;
+  color: #303F52;
+  cursor: pointer;
+}
+</style>

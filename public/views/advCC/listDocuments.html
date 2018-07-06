@@ -1,0 +1,70 @@
+<!-- start lsit the user -->
+<div class="col-sm-12" ng-init="listAllDocuments()">
+    <section class="content-header">
+        <a href="#!/{{currentRoleCode}}/list-caller-leads" class="btn  btn-primary btn-flat">Back</a>
+        <div class="box-header">
+            <h3 class="box-title-new">Documents List</h3>
+            <div class="box-tools">
+                <div class="input-group input-group-sm pull-left tableSearchBox">
+                    <input type="text" name="table_search" ng-model="query" ng-change="tableParams.filter(query)" class="form-control pull-right" placeholder="Search">
+
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="box box-primary">
+
+            <div class="box-body" col-show-hide>
+                <div class="table-responsive">
+                    <table  class="table table-condensed ng-table-responsive" ng-table="tableParams" export-csv="csv">
+                        <tbody>
+                            <tr ng-class="$even ? 'oddcolor' : 'evencolor'" ng-repeat="document in $data" ng-if= "dataPresent">
+                                <td data-title="'#'"  ><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                                <td ng-show="showCol[0]" sortable="'name'" data-title="'Document Name'" data-title-text="Document Name">{{document.name}}</td>
+                                <td ng-show="showCol[1]" sortable="'leademail'" data-title="'Associated Lead Email'" data-title-text="Associated Lead Email">{{document.lead_id.isWebLead ? document.lead_id.webLeadDetails.email : document.lead_id.email}}</td>
+                                <td ng-show="showCol[2]" sortable="'Description'" data-title="'Description'" data-title-text="Description">{{document.description}}</td>
+                                <td ng-show="showCol[3]" data-title="'Files'" data-title-text="Files">
+                                    <span data-title="Uploaded Documents List" data-animation="am-fade-and-slide-top" ng-click="viewFileDocuments(document._id)" template-url="/views/advCC/viewFileDocuments.html"  bs-modal="modal" class="glyphicon glyphicon-eye-open actionBtn"></span>
+                                </td>
+
+                                <td data-title="'Action'" data-title-text="Action">
+                                    <span class="glyphicon glyphicon-trash" style="cursor:pointer;" ng-click="deleteFullDocument(document._id)"></span>
+                                </td>
+                                <!--<td header="'headerSettingGear.html'"></td>-->
+                            </tr>
+                            <tr ng-if="!dataPresent">
+                                <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script type="text/ng-template" id="AssignIVR.html">
+    <p>Hello..!!</p>
+
+</script>
+
+
+<!--<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[0] = !showCol[0]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[0]]"></i> Full Name</a></li>
+    <li><a ng-click="showCol[1] = !showCol[1]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[1]]"></i> Extension</a></li>
+    <li><a ng-click="showCol[2] = !showCol[2]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[2]]"></i> Queues</a></li>
+    <li><a ng-click="showCol[3] = !showCol[3]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[3]]"></i> Current Status</a></li>
+    </ul>
+    </div>
+</script>-->
+<!-- End list the user -->

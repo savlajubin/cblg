@@ -1,0 +1,44 @@
+<div class="col-sm-12" ng-init="getAttrList()">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>
+                Attribution Campaigns
+
+                <div class="tableHeadBtnDiv">
+                    <a class="btn btn-primary pull-right" ng-href="/#!/advcc/attribution-campaign/add">Add</a>
+                    <input type="text" class="form-control width-30 pull-right" ng-model="query" ng-change="tableParams.filter(query)" placeholder="Search..." autofocus>
+                </div>
+            </h3>
+        </div>
+        <div class="panel-body pad0" col-show-hide>
+            <table class="table table-condensed" ng-table="tableParams" export-csv="csv">
+                <tbody>
+                    <tr ng-class="$even? 'oddcolor' : 'evencolor'" ng-repeat="attr in $data" ng-if="dataPresent">
+                        <td data-title="'#'"><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                        <td ng-show="showCol[0]" sortable="'name'" data-title="'Name'" data-title-text="'Name'">{{attr.name}}</td>
+                        <td data-title="'Action'" data-title-text="Action">
+                            <a href="#!/advcc/attribution-campaign/edit/{{attr._id}}"><span class="glyphicon glyphicon-edit actionBtn" title="Edit"></span></a>
+                            <a><span class="glyphicon glyphicon-trash actionBtn" title="Delete" ng-click="deleteAttr(attr._id)"></span></a>
+                        </td>
+                        <td header="'headerSettingGear.html'" ></td>
+                    </tr>
+                    <tr ng-if="!dataPresent">
+                        <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row pull-right downloadCsvLink">Download as <a href="javascript:void(0)" ng-click='hideDropDown();
+                csv.generate($event, "AgentScripts" + currentDate + ".csv");'>CSV</a></div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[0] = !showCol[0]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[0]]"></i> Name</a></li>
+    </ul>
+    </div>
+</script>

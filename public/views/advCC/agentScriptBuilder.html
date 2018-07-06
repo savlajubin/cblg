@@ -1,0 +1,57 @@
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h2>Agent Script</h2></div>
+        <div class="panel-body pad0 formBuilderWrapper">
+            <div class="col-md-3">
+                <div fb-components></div>
+            </div>
+            <form name="scriptForm" ng-submit="submitEverything(form, faqs, formData)">
+                <div class="col-md-6 panel panel-default" style="border-radius:0;background-color:#f1f4f6">
+                    <h4 class="col-md-12 panel-heading">
+                        <input name="scriptName" ng-model="formData.script_name" placeholder="Script Name" class="form-control" required />
+                        <span class="text-danger control-label" style="font-size: 13px;" ng-if="scriptForm.scriptName.$dirty && scriptForm.scriptName.$error.required">This Field is required</span>
+                    </h4>
+                    <div fb-builder="default"></div>
+                    <div>
+                        <input type="submit" class="btn btn-primary btn-flat btn-block btn-lg faqBtn" value="Save" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">FAQ</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="faq-group" ng-class="{faqEditMode:isEdit[fIndex]}" ng-repeat="(fIndex, faq) in faqs">
+                                <div class="faqView" ng-if="!isEdit[fIndex]" ng-click="editFaq(fIndex)">
+                                    <h4>{{faq.que}}</h4>
+                                    <p>{{faq.ans}}</p>
+                                </div>
+                                <div class="faqEdit" ng-if="isEdit[fIndex]">
+
+                                    <div class="btn-group formBuilderCloseBtn faqCloseBtn">
+                                        <button class="btn btn-xs btn-success" bs-tooltip data-title="Save Changes" ng-click="saveFaq(fIndex)"><i class="fa fa-save"></i></button>
+                                        <button class="btn btn-xs btn-danger" bs-tooltip data-title="Delete" ng-click="deleteFaq(fIndex)"><i class="fa fa-trash"></i></button>
+                                        <button class="btn btn-xs btn-info" bs-tooltip data-title="Cancel" ng-click="cancelFaq(fIndex)"><i class="fa fa-close"></i></button>
+                                    </div>
+
+                                    <div class="row">
+                                        <label>Question:</label>
+                                        <textarea class="form-control" ng-model="tempFaqs[fIndex].que"></textarea>
+                                    </div>
+                                    <div class="row">
+                                        <label>Answer:</label>
+                                        <textarea class="form-control" ng-model="tempFaqs[fIndex].ans"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-click="addFaq();" class="btn btn-block btn-flat btn-primary faqBtn">
+                                <i class="fa fa-plus-circle"></i> Add FAQ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

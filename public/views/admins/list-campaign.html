@@ -1,0 +1,67 @@
+<!-- start lsit the campaign -->
+<div  ng-init="listCampaignForAdmin()" class="animate-repeat col-sm-12" >
+    <section class="content-header">
+        <h1>
+            Campaign List
+        </h1>
+        <!--              <ol class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href="#">Verticals</a></li>
+                        <li class="active">List</li>
+                      </ol>-->
+    </section>
+    <section class="content">
+
+        <div class="box box-primary">
+            <div class="box-header">
+
+                <h3 class="box-title"></h3>
+
+                <div class="box-tools">
+                    <!--<button class="btn btn-primary pull-right" ng-click='getAddCampaignForm();'>Add</button>-->
+                    <div class="input-group input-group-sm pull-left tableSearchBox">
+                        <input type="text" name="table_search" ng-model="query" ng-change="tableParams.filter(query)" class="form-control pull-right" placeholder="Search">
+
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-body" col-show-hide>
+                <table ng-table ="tableParams"  class="table table-condensed ng-table-responsive" export-csv="csv">
+                    <tr ng-class="$even ? 'oddcolor' : 'evencolor'" ng-repeat="campaign in $data" ng-if="dataPresent">
+                        <td data-title="'#'"><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                        <td ng-show="showCol[1]" data-title="'Title'" sortable="'campaign[0].campaignData.campaign_name'" >{{campaign[0].campaignData.campaign_name}} </td>
+                        <td ng-show="showCol[2]" data-title="'Direction'" sortable="'campaign[0].campaignData.campaign_direction'" >{{campaign[0].campaignData.campaign_direction}} </td>
+                        <td ng-show="showCol[3]" data-title="'IVR Present?'" sortable="'campaign[0].campaignData.campaign_IVR.choice'" >{{(campaign[0].campaignData.campaign_IVR.choice == 'yes') ? 'Yes' : 'No' }}</td>
+                        <td ng-show="showCol[4]" data-title="'Excluded States'" sortable="'campaign[0].campaignData.campaign_id.state_restricted'" >{{campaign[0].campaignData.offer_id.state_restricted.toString()}}</td>
+                        <td ng-show="showCol[5]" data-title="'Number Of Calls'" sortable="'campaign.length'" >{{campaign.length}}</td>
+                        <td header="'headerSettingGear.html'"></td>
+                    </tr>
+                    <tr ng-if="!dataPresent">
+                        <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                    </tr>
+                </table>
+                <div class="row pull-right downloadCsvLink">Download as <a href="javascript:void(0)" ng-click='hideDropDown();
+                    csv.generate($event, "Current-Campaign" + currentDate + ".csv");'>CSV</a></div>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[1] = !showCol[1]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[1]]"></i> Title</a></li>
+    <li><a ng-click="showCol[2] = !showCol[2]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[2]]"></i> Direction</a></li>
+    <li><a ng-click="showCol[3] = !showCol[3]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[3]]"></i> IVR Present?</a></li>
+    <li><a ng-click="showCol[4] = !showCol[4]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[4]]"></i> Excluded States</a></li>
+    <li><a ng-click="showCol[5] = !showCol[5]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[5]]"></i> Number Of Calls</a></li>
+    </ul>
+    </div>
+</script>
+<!-- End list the campaign -->

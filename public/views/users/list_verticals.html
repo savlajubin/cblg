@@ -1,0 +1,70 @@
+<section class="panel panel-default" ng-show="addForm">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span>Add New Vertical</strong></div>
+
+        <div class="panel-body">
+            <div ng-show="error" class="alert alert-danger">{{error}}</div>
+            <div ng-show="success" class="alert alert-success">{{success}}</div>
+            <form role="form" class="form-inline ng-pristine ng-valid" name="vertical_form">
+                <div class="form-group">
+                    <input type="text" placeholder="Vertical Name" id="vertical_name" data-ng-model="vertical_name" class="form-control" required>
+                </div>
+                <button class="btn btn-info" type="submit" data-ng-disabled="vertical_form.$invalid " data-ng-click="createVertical(vertical_name)">Submit</button>
+            </form>              
+        </div>
+    </section>
+    <section class="panel panel-default" ng-show="editForm">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span>Edit Vertical</strong><span data-ng-click="closeEditForm()" style="cursor:pointer;" class="pull-right" alt="close">Close</span></div>
+
+        <div class="panel-body">
+            <div ng-show="error" class="alert alert-danger">{{error}}</div>
+            <div ng-show="success" class="alert alert-success">{{success}}</div>
+            <form role="form" class="form-inline ng-pristine ng-valid" name="editvertical_form">
+                <div class="form-group">
+                    <input type="text" placeholder="Vertical Name" id="Editvertical_name" data-ng-model="Editvertical_name" class="form-control" required>
+                </div>
+                <button class="btn btn-info" type="submit" data-ng-disabled="editvertical_form.$invalid " data-ng-click="editVertical(_id,Editvertical_name)">Submit</button>
+            </form>              
+        </div>
+    </section>
+    <!-- Form -->
+
+<section class="panel panel-default">
+        <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Verticals Listing</strong> 
+        <span><form class="navbar-right">
+        <input type="text" class="form-control" ng-model="searchKeyword" placeholder="Search..." autofocus>
+        </form></span>
+                    </div>
+        <div class="panel-body">
+            <section class="table-flip-scroll">
+                <table class="table table-bordered table-striped cf">
+                    <thead class="cf">
+                        <tr>
+                            <th>Sr.no</th>
+                            <th ng-click="sortType = 'vertical_name'; sortReverse = !sortReverse">Vertical
+                            <span ng-show="sortType == 'vertical_name' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'vertical_name' && sortReverse" class="fa fa-caret-up"></span>
+                            </th>
+                            <th ng-click="sortType = 'created'; sortReverse = !sortReverse">Date Added
+                            <span ng-show="sortType == 'created' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'created' && sortReverse" class="fa fa-caret-up"></span>
+                            </th>
+                            <th ng-click="sortType = 'vertical_status'; sortReverse = !sortReverse">Active
+                            <span ng-show="sortType == 'vertical_status' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'vertical_status' && sortReverse" class="fa fa-caret-up"></span>
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="verticals in verticalList | orderBy:sortType:sortReverse | filter:searchKeyword">
+                            <td>{{$index+1}}</td>
+                            <td>{{verticals.vertical_name}}</td>
+                            <td>{{verticals.created | date:'medium'}}</td>
+                            <td style="cursor:pointer;" ng-click="statusVertical(verticals._id,!verticals.vertical_status);">{{verticals.vertical_status}}</td>
+                            <td><img style="cursor:pointer;" ng-click="getEditVerticalForm(verticals._id,verticals.vertical_name)" src="/assets/images/edit_icon.png"  width="30" height="30"/>&nbsp;&nbsp;&nbsp;<img style="cursor:pointer;" ng-click="deleteVertical(verticals._id)" src="/assets/images/del_icon.png" width="30" height="30" /></td>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </section>
+   

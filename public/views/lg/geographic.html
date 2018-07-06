@@ -1,0 +1,773 @@
+<!-- Call Routing - Geographic View Form -->
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3>Geographic</h3></div>
+        <div class="panel-body">
+
+            <div class="hours-of-operation">
+                <div class="contact-info col-sm-9 col-sm-offset-2">
+                    <div ng-show="success" class="alert alert-success">{{success}}</div>
+                    <div ng-show="error" class="alert text-danger">{{error}}</div>
+                    <form class="vertical-form" role="form" name="geo_form" ng-init = "geo_err = false;
+                          " novalidate>
+                        <div class="col-sm-11 borderbtm">
+                            <div class="pull-left input-group form-group col-md-10 mainIvr">
+                                <div class="col-xs-4 paddingLR5p">
+                                    <span class="input-group-addon" style="background:none;"> If a call comes in from area code </span>
+                                </div>
+                                <div class="col-xs-2 paddingLR5p margin7p">
+                                    <input type="text" class="borderLeft borderRight ivr_select backWhite marginDialTB" ng-model="geo.operations[0].area_code" placeholder="Area Code">
+                                </div>
+                                <div class="col-xs-1 paddingLR5p">
+                                    <span class="input-group-addon" style="background:none;">or from</span>
+                                </div>
+                                <div class="col-xs-3 margin7p">
+
+                                    <angucomplete-alt id="ex1"
+                                                      placeholder="State"
+                                                      pause="100"
+                                                      selected-object="states[0]"
+                                                      local-data="preStates"
+                                                      search-fields="name_long"
+                                                      title-field="name_long"
+                                                      minlength="1"
+                                                      ng-model="geo.operations[0].state"
+                                                      initial-value="geo.operations[0].state"
+                                                      input-class="borderLeft borderRight ivr_select backWhite marginDialTB">
+                                    </angucomplete-alt>
+                                </div>
+                                <div class="col-xs-1 paddingLR5p">
+                                    <span class="input-group-addon" style="background:none;">then</span>
+                                </div>
+                            </div>
+                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                <button type="button" ng-click="incrementMainCount()" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                            </div>
+                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor:not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                            </div>
+                            <div class="input-group form-group col-md-10 mainIvr">
+                                <div class="col-xs-6 paddingLR5p marginTB7p borderRight">
+                                    <select class="ivr_select" name="cc_method" ng-model="geo.operations[0].pressed_action" ng-change="resetInitialCount(geo.operations[0]);"> 
+                                        <option value="">Select</option>
+                                        <option ng-repeat="option in optionarr" ng-selected="option.value==geo.operations[0].pressed_action" value="{{option.value}}">{{option.display}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-6 paddingLR5p marginTB7p">
+                                    <div ng-if="geo.operations[0].pressed_action == 'dial' || geo.operations[0].pressed_action == 'reps'">
+                                        <input type="text" class="ivr_select backWhite marginDialTB" ng-model="geo.operations[0].dial_schema[0].dial_to" name="phonenumber" placeholder="Enter Phone Number" phone-input>
+                                    </div>
+                                    <div ng-if="geo.operations[0].pressed_action == 'prompt'">
+                                        <select class="ivr_select" ng-model="geo.operations[0].prompt_schema[0].prompt_id">
+                                            <option value="">Select Prompt</option>
+                                            <option ng-repeat="prompt in prompts" ng-selected="prompt._id==geo.operations[0].prompt_schema[0].prompt_id" value="{{prompt._id}}">{{prompt.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div ng-if="geo.operations[0].pressed_action == 'queue'">
+                                        <select class="ivr_select" name="cc_queue" ng-model="geo.operations[0].sendToQueue_schema[0].queue_id">
+                                            <option value="">Select Queue</option>
+                                            <option ng-repeat="queue in queues" ng-selected="queue._id==geo.operations[0].sendToQueue_schema[0].queue_id" value="{{queue._id}}">{{queue.queue_name}}</option>
+                                        </select>
+                                    </div>
+                                    <div ng-if="geo.operations[0].pressed_action == 'extension'">
+                                        <select name="cc_pa" class="ivr_select" ng-model="geo.operations[0].ring_schema[0].phone_agent_id">
+                                            <option value="">Select Phone Agent</option>
+                                            <option ng-repeat="pa in pas" ng-selected="pa._id==geo.operations[0].ring_schema[0].phone_agent_id" value="{{pa._id}}">{{pa.first_name}} {{pa.last_name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group" ng-if="geo.operations[0].pressed_action == 'dial' || geo.operations[0].pressed_action == 'reps'">
+
+                                    <div class="col-sm-10 backgrndGrey">
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" name="ivr_noanswer" ng-model="geo.operations[0].dial_schema[0].is_next_dial" class="regular-checkbox solid-blue" id='ivr_noanswer'><label for="ivr_noanswer"></label>
+
+                                            <label for="ivr_noanswer" class="greyColor">If no answer after </label> <input type="text" class="borderRight borderLeft ivr_select backWhite dialInputSec" ng-model="geo.operations[0].dial_schema[0].wait_time" ng-pattern="/^[0-9+-]*$/" name="cc_seconds" placeholder="Seconds"> <span class="greyColor">seconds, then ring </span>
+                                        </div>
+                                        <div class="col-sm-4"><input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno" ng-model="geo.operations[0].dial_schema[1].dial_to" placeholder="Enter Phone Number" style="display:inline;" phone-input>
+                                        </div>
+                                    </div>
+
+                                    <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                        <button type="button" ng-click="incrementDialCount();" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                    </div>
+                                    <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                        <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor: not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                    </div>
+
+                                    <div ng-repeat="n in []| range:dialcount">
+                                        <div ng-init="show[$index] = true;" ng-show="show[$index]">
+                                            <div class="col-sm-10 backgrndGrey">
+                                                <div class="col-sm-8" >
+                                                    <input type="checkbox" name="cc_noanswer_{{$index}}" ng-model="geo.operations[0].dial_schema[$index + 1].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswer_{{$index}}'><label for="cc_noanswer_{{$index}}"></label>
+
+                                                    <label for="cc_noanswer_{{$index}}" class="greyColor">If no answer after </label> 
+                                                    <input type="text" class="borderLeft borderRight ivr_select backWhite dialInputSec" ng-pattern="/^[0-9+-]*$/" name="cc_seconds_{{$index}}" ng-model="geo.operations[0].dial_schema[$index + 1].wait_time" placeholder="Seconds" ><span class="greyColor"> seconds, then ring </span>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno_{{$index}}" ng-model="geo.operations[0].dial_schema[$index + 2].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                </div>
+                                            </div>
+                                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                <button type="button" ng-click="incrementDialCount();" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                            </div>
+                                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                <button type="button" ng-click="show[$index] = false;
+                                                        removeItem(geo.operations[0].dial_schema, $index + 2)" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="geo.operations[0].pressed_action == 'queue'">
+                                    <div class="input-group form-group col-md-10 backgrndGrey queue">
+                                        <span class="input-group-addon" style="background:none;"> If no agents are available or if no answer after <input type="text" class="ivr_select backWhite dialInputSec" ng-model="geo.operations[0].sendToQueue_schema[0].wait_time" name="ivr_seconds" placeholder="Seconds"> seconds, then, </span>
+                                        <div class="col-xs-12 marginTB7p">
+                                            <select class="ivr_select" name="cc_queueOptions" ng-model="geo.operations[0].sendToQueue_schema[0].pressed_action" ng-change="resetInitialCount(geo.operations[0].sendToQueue_schema[0]);">
+                                                <option value="">Select</option>
+                                                <option ng-repeat="option in optionarr" ng-selected="option.value==geo.operations[0].sendToQueue_schema[0].pressed_action" value="{{option.value}}">{{option.display}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div ng-if="geo.operations[0].sendToQueue_schema[0].pressed_action == 'dial' || geo.operations[0].sendToQueue_schema[0].pressed_action == 'reps'">
+                                        <div class="col-sm-6 backgrndGrey">
+                                            <input type="text" class="ivr_select backWhite" ng-model="geo.operations[0].sendToQueue_schema[0].dial_schema[0].dial_to" name="phonenumber" placeholder="Enter Phone Number" phone-input>
+                                        </div>
+                                        <div class="col-sm-10 backgrndGrey">
+                                            <div class="col-sm-8">
+                                                <input type="checkbox" name="cc_noanswerdf" ng-model="geo.operations[0].sendToQueue_schema[0].dial_schema[0].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswerdf'><label for="cc_noanswerdf"></label>
+
+                                                <label for="cc_noanswerdf" class="greyColor">If no answer after </label> <input type="text" class="borderLeft borderRight ivr_select backWhite dialInputSec" ng-model="geo.operations[0].sendToQueue_schema[0].dial_schema[0].wait_time" ng-pattern="/^[0-9+-]*$/" name="cc_seconds" placeholder="Seconds"> <span class="greyColor">seconds, then ring </span>
+                                            </div>
+                                            <div class="col-sm-4"><input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno" ng-model="geo.operations[0].sendToQueue_schema[0].dial_schema[1].dial_to" placeholder="Enter Phone Number" style="display:inline;" phone-input>
+                                            </div>
+                                        </div>
+                                        <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                            <button type="button" ng-click="incrementQueueDialCount();" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                        </div>
+                                        <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                            <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor: not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                        </div>
+
+                                        <div ng-repeat="n in []| range:queuedialcount">
+                                            <div ng-init="show[$index] = true;" ng-show="show[$index]">
+                                                <div class="col-sm-10 backgrndGrey">
+                                                    <div class="col-sm-8" >
+                                                        <input type="checkbox" name="cc_noanswer_{{$index}}" ng-model="geo.operations[0].sendToQueue_schema[0].dial_schema[$index + 1].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswer_{{$index}}'><label for="cc_noanswer_{{$index}}"></label>
+
+                                                        <label for="cc_noanswer_{{$index}}" class="greyColor">If no answer after </label> 
+                                                        <input type="text" class="ivr_select borderLeft borderRight backWhite dialInputSec" ng-pattern="/^[0-9+-]*$/" name="cc_seconds_{{$index}}" ng-model="geo.operations[0].sendToQueue_schema[0].dial_schema[$index + 1].wait_time" placeholder="Seconds" ><span class="greyColor"> seconds, then ring </span>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="ivr_select backWhite dialInput" name="cc_phoneno_{{$index}}" ng-model="geo.operations[0].sendToQueue_schema[0].dial_schema[$index + 2].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                    <button type="button" ng-click="incrementQueueDialCount();" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                </div>
+                                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                    <button type="button" ng-click="show[$index] = false;
+                                                            removeItem(geo.operations[0].sendToQueue_schema[0].dial_schema, $index + 2)" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="geo.operations[0].sendToQueue_schema[0].pressed_action == 'prompt'">
+                                        <div class="col-sm-5 backgrndGrey">
+                                            <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].sendToQueue_schema[0].prompt_schema[0].prompt_id">
+                                                <option value="">Select Prompt</option>
+                                                <option ng-repeat="prompt in prompts" ng-selected="prompt._id==geo.operations[0].sendToQueue_schema[0].prompt_schema[0].prompt_id" value="{{prompt._id}}">{{prompt.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div ng-if="geo.operations[0].sendToQueue_schema[0].pressed_action == 'queue'">
+                                        <div class="col-sm-5 backgrndGrey">
+                                            <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].sendToQueue_schema[0].sendToQueue_schema[0].queue_id">
+                                                <option value="">Select Queue</option>
+                                                <option ng-repeat="queue in queues" ng-selected="queue._id==geo.operations[0].sendToQueue_schema[0].sendToQueue_schema[0].queue_id" value="{{queue._id}}">{{queue.queue_name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div ng-if="geo.operations[0].sendToQueue_schema[0].pressed_action == 'extension'">
+                                        <div class="col-sm-5 backgrndGrey">
+                                            <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].sendToQueue_schema[0].ring_schema[0].phone_agent_id">
+                                                <option value="">Select Phone Agent</option>
+                                                <option ng-repeat="pa in pas" ng-selected="pa._id==geo.operations[0].sendToQueue_schema[0].ring_schema[0].phone_agent_id" value="{{pa._id}}">{{pa.first_name}} {{pa.last_name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="geo.operations[0].pressed_action == 'prompt'">
+                                    <div class="input-group form-group col-sm-10 backgrndGrey" >
+                                        <div class="col-sm-1 paddingLR5p">
+                                            <span style="" class="input-group-addon borderRight">Then</span>
+                                        </div>
+                                        <div class="col-sm-5 paddingLR5p marginTB7p borderRight">
+                                            <select class="ivr_select" name="cc_promptOptions" ng-model="geo.operations[0].prompt_schema[0].pressed_action" ng-change="resetInitialCount(geo.operations[0].prompt_schema[0]);">
+                                                <option value="">Select Prompt Option</option>
+                                                <option ng-repeat="option in optionarr" ng-selected="option.value==geo.operations[0].prompt_schema[0].pressed_action" value="{{option.value}}">{{option.display}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-6 paddingLR5p marginTB7p">
+                                            <div ng-if="geo.operations[0].prompt_schema[0].pressed_action == 'dial' || geo.operations[0].prompt_schema[0].pressed_action == 'reps'">
+                                                <input type="text" class="ivr_select backWhite marginDialTB" ng-model="geo.operations[0].prompt_schema[0].dial_schema[0].dial_to" name="phonenumber" placeholder="Enter Phone Number" phone-input>
+                                            </div>
+                                            <div ng-if="geo.operations[0].prompt_schema[0].pressed_action == 'prompt'">
+                                                <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].prompt_schema[0].prompt_schema[0].prompt_id">
+                                                    <option value="">Select Prompt</option>
+                                                    <option ng-repeat="prompt in prompts" ng-selected="prompt._id==geo.operations[0].prompt_schema[0].prompt_schema[0].prompt_id" value="{{prompt._id}}">{{prompt.name}}</option>
+                                                </select>
+                                            </div>
+                                            <div ng-if="geo.operations[0].prompt_schema[0].pressed_action == 'queue'">
+                                                <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].prompt_schema[0].sendToQueue_schema[0].queue_id">
+                                                    <option value="">Select Queue</option>
+                                                    <option ng-repeat="queue in queues" ng-selected="queue._id==geo.operations[0].prompt_schema[0].sendToQueue_schema[0].queue_id" value="{{queue._id}}">{{queue.queue_name}}</option>
+                                                </select>
+                                            </div>
+                                            <div ng-if="geo.operations[0].prompt_schema[0].pressed_action == 'extension'">
+                                                <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].prompt_schema[0].ring_schema[0].phone_agent_id">
+                                                    <option value="">Select Phone Agent</option>
+                                                    <option ng-repeat="pa in pas" ng-selected="pa._id==geo.operations[0].prompt_schema[0].ring_schema[0].phone_agent_id" value="{{pa._id}}">{{pa.first_name}} {{pa.last_name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="geo.operations[0].prompt_schema[0].pressed_action == 'dial' || geo.operations[0].prompt_schema[0].pressed_action == 'reps'">
+                                        <div class="col-sm-10 backgrndGrey">
+                                            <div class="col-sm-8">
+                                                <input type="checkbox" name="cc_noanswers" ng-model="geo.operations[0].prompt_schema[0].dial_schema[0].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswers'><label for="cc_noanswers"></label>
+
+                                                <label for="cc_noanswers" class="greyColor">If no answer after </label> <input type="text" class="borderLeft borderRight ivr_select backWhite dialInputSec" ng-model="geo.operations[0].prompt_schema[0].dial_schema[0].wait_time" ng-pattern="/^[0-9+-]*$/" name="cc_seconds" placeholder="Seconds"> <span class="greyColor">seconds, then ring </span>
+                                            </div>
+                                            <div class="col-sm-4"><input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno" ng-model="geo.operations[0].prompt_schema[0].dial_schema[1].dial_to" placeholder="Enter Phone Number" style="display:inline;" phone-input>
+                                            </div>
+                                        </div>
+                                        <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                            <button type="button" ng-click="incrementPromptDialCount();" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                        </div>
+                                        <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                            <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor: not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                        </div>
+
+                                        <div ng-repeat="n in []| range:promptdialcount">
+                                            <div ng-init="show[$index] = true;" ng-show="show[$index]">
+                                                <div class="col-sm-10 backgrndGrey">
+                                                    <div class="col-sm-8" >
+                                                        <input type="checkbox" name="cc_noanswers_{{$index}}" ng-model="geo.operations[0].prompt_schema[0].dial_schema[$index + 1].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswers_{{$index}}'><label for="cc_noanswers_{{$index}}"></label>
+
+                                                        <label for="cc_noanswers_{{$index}}" class="greyColor">If no answer after </label> 
+                                                        <input type="text" class="ivr_select borderLeft borderRight backWhite dialInputSec" ng-pattern="/^[0-9+-]*$/" name="cc_seconds_{{$index}}" ng-model="geo.operations[0].prompt_schema[0].dial_schema[$index + 1].wait_time" placeholder="Seconds" ><span class="greyColor"> seconds, then ring </span>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="ivr_select backWhite dialInput" name="cc_phoneno_{{$index}}" ng-model="geo.operations[0].prompt_schema[0].dial_schema[$index + 2].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                    <button type="button" ng-click="incrementPromptDialCount();" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                </div>
+                                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                    <button type="button" ng-click="show[$index] = false;
+                                                            removeItem(geo.operations[0].prompt_schema[0].dial_schema, $index + 2);" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group" ng-if="geo.operations[0].pressed_action == 'extension'">
+                                    <!--                                    <div class="col-sm-6 backgrndGrey">
+                                                                            <select name="cc_pa" class="ivr_select" ng-model="cc.ext_pa">
+                                                                                <option value="">Select Phone Agent</option>
+                                                                                <option value="1">Phone Agent 1</option>
+                                                                                <option value="2">Phone Agent 2</option>
+                                                                            </select>
+                                                                        </div>-->
+                                    <div class="col-sm-12">
+                                        <input type="checkbox" name="cc_noanswerExt" ng-model="geo.operations[0].ring_schema[0].is_next_action" class="regular-checkbox solid-blue" id='cc_noanswerExt'><label for="cc_noanswerExt"></label>
+                                        <label for="cc_noanswerExt">If no answer after </label><input type="text" class="dialInputSec" name="cc_seconds" ng-model="cc.ext_seconds" placeholder="Seconds"> seconds.
+                                        <div ng-show="geo.operations[0].ring_schema[0].is_next_action">
+                                            <div class="col-sm-10" >
+                                                <input type="radio" value="true" name="cc_message" ng-model="geo.operations[0].ring_schema[0].leave_message" class="regular-radio big-radio" id='cc_message_allow'><label for="cc_message_allow"></label>
+                                                <label for="ivr_message">Allow the user to leave a message for the Phone Agent</label>
+                                            </div>
+                                            <div class="col-sm-10" >
+                                                <input type="radio" value="false" name="cc_message" ng-model="geo.operations[0].ring_schema[0].leave_message" class="regular-radio big-radio" id='cc_message_dropdown'><label for="cc_message_dropdown"></label>
+                                                <label for="cc_message">Select From Dropdown</label>
+                                            </div>
+                                            <div class="col-sm-5 col-sm-offset-1 backgrndGrey" ng-show="geo.operations[0].ring_schema[0].leave_message == 'false'">
+                                                <select class="ivr_select" name="cc_promptOptions" ng-model="geo.operations[0].ring_schema[0].pressed_action" ng-change="resetInitialCount(geo.operations[0].ring_schema[0]);">
+                                                    <option value="">Select Option</option>
+                                                    <option ng-repeat="option in optionarr" ng-selected="option.value==geo.operations[0].ring_schema[0].pressed_action" value="{{option.value}}">{{option.display}}</option>
+                                                </select>
+                                            </div>
+
+                                            <div ng-if="geo.operations[0].ring_schema[0].pressed_action == 'dial' || geo.operations[0].ring_schema[0].pressed_action == 'reps'">
+                                                <div class="col-sm-5 backgrndGrey" style="margin-left: 5px;">
+                                                    <input type="text" class="ivr_select backWhite" ng-model="geo.operations[0].ring_schema[0].dial_schema[0].dial_to" name="phonenumber" placeholder="Enter Phone Number" phone-input>
+                                                </div>
+                                                <div class="col-sm-10 backgrndGrey">
+                                                    <div class="col-sm-8">
+                                                        <input type="checkbox" name="cc_noanswervb" ng-model="geo.operations[0].ring_schema[0].dial_schema[0].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswervb'><label for="cc_noanswervb"></label>
+
+                                                        <label for="cc_noanswervb" class="greyColor">If no answer after </label> <input type="text" class="borderLeft borderRight ivr_select backWhite dialInputSec" ng-model="geo.operations[0].ring_schema[0].dial_schema[0].wait_time" ng-pattern="/^[0-9+-]*$/" name="cc_seconds" placeholder="Seconds"> <span class="greyColor">seconds, then ring </span>
+                                                    </div>
+                                                    <div class="col-sm-4"><input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno" ng-model="geo.operations[0].ring_schema[0].dial_schema[1].dial_to" placeholder="Enter Phone Number" style="display:inline;" phone-input>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                    <button type="button" ng-click="incrementExtDialCount();" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                </div>
+                                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                    <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor: not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                </div>
+
+                                                <div ng-repeat="n in []| range:extdialcount">
+                                                    <div ng-init="show[$index] = true;" ng-show="show[$index]">
+                                                        <div class="col-sm-10 backgrndGrey">
+                                                            <div class="col-sm-8" >
+                                                                <input type="checkbox" name="cc_noanswervb_{{$index}}" ng-model="geo.operations[0].ring_schema[0].dial_schema[$index + 1].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswervb_{{$index}}'><label for="cc_noanswervb_{{$index}}"></label>
+
+                                                                <label for="cc_noanswervb_{{$index}}" class="greyColor">If no answer after </label> 
+                                                                <input type="text" class="ivr_select borderLeft borderRight backWhite dialInputSec" ng-pattern="/^[0-9+-]*$/" name="cc_seconds_{{$index}}" ng-model="geo.operations[0].ring_schema[0].dial_schema[$index + 1].wait_time" placeholder="Seconds" ><span class="greyColor"> seconds, then ring </span>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <input type="text" class="ivr_select backWhite" name="cc_phoneno_{{$index}}" ng-model="geo.operations[0].ring_schema[0].dial_schema[$index + 2].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                            <button type="button" ng-click="incrementExtDialCount();" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                        </div>
+                                                        <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                            <button type="button" ng-click="show[$index] = false;
+                                                                    removeItem(geo.operations[0].ring_schema[0].dial_schema, $index + 2)" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="geo.operations[0].ring_schema[0].pressed_action == 'prompt'">
+                                                <div class="col-sm-5 backgrndGrey" style="margin-left: 5px;">
+                                                    <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].ring_schema[0].prompt_schema[0].prompt_id">
+                                                        <option value="">Select Prompt</option>
+                                                        <option ng-repeat="prompt in prompts" ng-selected="prompt._id==geo.operations[0].ring_schema[0].prompt_schema[0].prompt_id" value="{{prompt._id}}">{{prompt.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div ng-if="geo.operations[0].ring_schema[0].pressed_action == 'queue'">
+                                                <div class="col-sm-5 backgrndGrey" style="margin-left: 5px;">
+                                                    <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].ring_schema[0].sendToQueue_schema[0].queue_id">
+                                                        <option value="">Select Queue</option>
+                                                        <option ng-repeat="queue in queues" ng-selected="queue._id==geo.operations[0].ring_schema[0].sendToQueue_schema[0].queue_id" value="{{queue._id}}">{{queue.queue_name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div ng-if="geo.operations[0].ring_schema[0].pressed_action == 'extension'">
+                                                <div class="col-sm-5 backgrndGrey" style="margin-left: 5px;">
+                                                    <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[0].ring_schema[0].ring_schema[0].phone_agent_id">
+                                                        <option value="">Select Phone Agent</option>
+                                                        <option ng-repeat="pa in pas" ng-selected="pa._id==geo.operations[0].ring_schema[0].ring_schema[0].phone_agent_id" value="{{pa._id}}">{{pa.first_name}} {{pa.last_name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-repeat="n in []| range:maincount">
+                            <span ng-init="c = $index"></span>
+                            <div ng-init="main[$index] = true;" ng-show="main[$index]" class="col-sm-11 borderbtm">
+                                <div class="pull-left input-group form-group col-md-10 mainIvr">
+                                    <div class="col-xs-4 paddingLR5p">
+                                        <span class="input-group-addon" style="background:none;"> If a call comes in from area code </span>
+                                    </div>
+                                    <div class="col-xs-2 paddingLR5p margin7p">
+                                        <input type="text" ng-model="geo.operations[c + 1].area_code" class="borderLeft borderRight ivr_select backWhite marginDialTB" placeholder="Area Code">
+                                    </div>
+                                    <div class="col-xs-1 paddingLR5p">
+                                        <span class="input-group-addon" style="background:none;">or from</span>
+                                    </div>
+                                    <div class="col-xs-3 margin7p">
+                                        <angucomplete-alt id="ex1"
+                                                          placeholder="State"
+                                                          pause="100"
+                                                          selected-object="states[c+1]"
+                                                          local-data="preStates"
+                                                          search-fields="name_long"
+                                                          title-field="name_long"
+                                                          minlength="1"
+                                                          ng-model="geo.operations[c + 1].state"
+                                                          initial-value="geo.operations[c + 1].state"
+                                                          input-class="borderLeft borderRight ivr_select backWhite marginDialTB">
+                                        </angucomplete-alt>
+                                    </div>
+                                    <div class="col-xs-1 paddingLR5p">
+                                        <span class="input-group-addon" style="background:none;">then</span>
+                                    </div>
+                                </div>
+                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                    <button type="button" ng-click="incrementMainCount()" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                </div>
+                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                    <button type="button" ng-click="main[$index] = false" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                </div>
+                                <div class="input-group form-group col-md-10 mainIvr">
+                                    <div class="col-xs-6 paddingLR5p marginTB7p borderRight">
+                                        <select class="ivr_select" name="cc_method" ng-model="geo.operations[c + 1].pressed_action" ng-change="resetCount(c, geo.operations[c + 1]);"> 
+                                            <option value="">Select</option>
+                                            <option ng-repeat="option in optionarr" ng-selected="option.value==geo.operations[c + 1].pressed_action" value="{{option.value}}">{{option.display}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-6 paddingLR5p marginTB7p">
+                                        <div ng-if="geo.operations[c + 1].pressed_action == 'dial' || geo.operations[c + 1].pressed_action == 'reps'">
+                                            <input type="text" class="ivr_select backWhite marginDialTB" ng-model="geo.operations[c + 1].dial_schema[0].dial_to" name="phonenumber" placeholder="Enter Phone Number" phone-input>
+                                        </div>
+                                        <div ng-if="geo.operations[c + 1].pressed_action == 'prompt'">
+                                            <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].prompt_schema[0].prompt_id">
+                                                <option value="">Select Prompt</option>
+                                                <option ng-repeat="prompt in prompts" ng-selected="prompt._id==geo.operations[c + 1].prompt_schema[0].prompt_id" value="{{prompt._id}}">{{prompt.name}}</option>
+                                            </select>
+                                        </div>
+                                        <div ng-if="geo.operations[c + 1].pressed_action == 'queue'">
+                                            <select class="ivr_select" name="cc_queue" ng-model="geo.operations[c + 1].sendToQueue_schema[0].queue_id">
+                                                <option value="">Select Queue</option>
+                                                <option ng-repeat="queue in queues" ng-selected="queue._id==geo.operations[c + 1].sendToQueue_schema[0].queue_id" value="{{queue._id}}">{{queue.queue_name}}</option>
+                                            </select>
+                                        </div>
+                                        <div ng-if="geo.operations[c + 1].pressed_action == 'extension'">
+                                            <select name="cc_pa" class="ivr_select" ng-model="geo.operations[c + 1].ring_schema[0].phone_agent_id">
+                                                <option value="">Select Phone Agent</option>
+                                                <option ng-repeat="pa in pas" ng-selected="pa._id==geo.operations[c + 1].ring_schema[0].phone_agent_id" value="{{pa._id}}">{{pa.first_name}} {{pa.last_name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+
+                                    <div class="form-group" ng-if="geo.operations[c + 1].pressed_action == 'dial' || geo.operations[c + 1].pressed_action == 'reps'">
+
+                                        <div class="col-sm-10 backgrndGrey" ng-init="(update)?'':initDialCount(c)">
+                                            <div class="col-sm-8">
+                                                <input type="checkbox" name="ivr_noanswer_{{c}}" ng-model="geo.operations[c + 1].dial_schema[0].is_next_dial" class="regular-checkbox solid-blue" id='ivr_noanswer_{{c}}'><label for="ivr_noanswer_{{c}}"></label>
+
+                                                <label for="ivr_noanswer_{{c}}" class="greyColor">If no answer after </label> <input type="text" class="borderRight borderLeft ivr_select backWhite dialInputSec" ng-model="geo.operations[c + 1].dial_schema[0].wait_time" ng-pattern="/^[0-9+-]*$/" name="cc_seconds" placeholder="Seconds"> <span class="greyColor">seconds, then ring </span>
+                                            </div>
+                                            <div class="col-sm-4"><input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno" ng-model="geo.operations[c + 1].dial_schema[1].dial_to" placeholder="Enter Phone Number" style="display:inline;" phone-input>
+                                            </div>
+                                        </div>
+
+                                        <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                            <button type="button" ng-click="incrementOtherDialCount(c)" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                        </div>
+                                        <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                            <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor: not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                        </div>
+
+                                        <div ng-repeat="n in []| range:dialc[c]">
+                                            <div ng-init="show[$index] = true;" ng-show="show[$index]">
+                                                <div class="col-sm-10 backgrndGrey">
+                                                    <div class="col-sm-8" >
+                                                        <input type="checkbox" name="c_noanswer_{{$index}}" ng-model="geo.operations[c + 1].dial_schema[$index + 1].is_next_dial" class="regular-checkbox solid-blue" id='c_noanswer_{{$index}}'><label for="c_noanswer_{{$index}}"></label>
+
+                                                        <label for="c_noanswer_{{$index}}" class="greyColor">If no answer after </label> 
+                                                        <input type="text" class="borderLeft borderRight ivr_select backWhite dialInputSec" ng-pattern="/^[0-9+-]*$/" name="cc_seconds_{{$index}}" ng-model="geo.operations[c + 1].dial_schema[$index + 1].wait_time" placeholder="Seconds" ><span class="greyColor"> seconds, then ring </span>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno_{{$index}}" ng-model="geo.operations[c + 1].dial_schema[$index + 2].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                    <button type="button" ng-click="incrementOtherDialCount(c)" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                </div>
+                                                <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                    <button type="button" ng-click="show[$index] = false;
+                                                                removeItem(geo.operations[c + 1].dial_schema, $index + 2)" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-if="geo.operations[c + 1].pressed_action == 'queue'">
+                                        <div class="input-group form-group col-md-10 backgrndGrey queue">
+                                            <span class="input-group-addon" style="background:none;"> If no agents are available or if no answer after <input type="text" class="ivr_select backWhite dialInputSec" ng-model="ivr.queue_seconds" name="ivr_seconds" placeholder="Seconds"> seconds, then, </span>
+                                            <div class="col-xs-12 marginTB7p">
+                                                <select class="ivr_select" name="cc_queueOptions" ng-model="geo.operations[c + 1].sendToQueue_schema[0].pressed_action" ng-change="resetCount(c, geo.operations[c + 1].sendToQueue_schema[0]);">
+                                                    <option value="">Select</option>
+                                                    <option ng-repeat="option in optionarr" ng-selected="option.value==geo.operations[c + 1].sendToQueue_schema[0].pressed_action" value="{{option.value}}">{{option.display}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="geo.operations[c + 1].sendToQueue_schema[0].pressed_action == 'dial' || geo.operations[c + 1].sendToQueue_schema[0].pressed_action == 'reps'">
+                                            <div class="col-sm-6 backgrndGrey">
+                                                <input type="text" class="ivr_select backWhite" ng-model="geo.operations[c + 1].sendToQueue_schema[0].dial_schema[0].dial_to" name="phonenumber" placeholder="Enter Phone Number" phone-input>
+                                            </div>
+                                            <div class="col-sm-10 backgrndGrey" ng-init="(update)?'':initQueueDialCount(c)">
+                                                <div class="col-sm-8">
+                                                    <input type="checkbox" name="cc_noanswercv" ng-model="geo.operations[c + 1].sendToQueue_schema[0].dial_schema[0].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswercv'><label for="cc_noanswercv"></label>
+
+                                                    <label for="cc_noanswercv" class="greyColor">If no answer after </label> <input type="text" class="borderLeft borderRight ivr_select backWhite dialInputSec" ng-model="geo.operations[c + 1].sendToQueue_schema[0].dial_schema[0].wait_time" ng-pattern="/^[0-9+-]*$/" name="cc_seconds" placeholder="Seconds"> <span class="greyColor">seconds, then ring </span>
+                                                </div>
+                                                <div class="col-sm-4"><input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno" ng-model="geo.operations[c + 1].sendToQueue_schema[0].dial_schema[1].dial_to" placeholder="Enter Phone Number" style="display:inline;" phone-input>
+                                                </div>
+                                            </div>
+                                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                <button type="button" ng-click="incrementOtherQueueDialCount(c)" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                            </div>
+                                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor: not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                            </div>
+
+                                            <div ng-repeat="n in []| range:queuedialc[c]">
+                                                <div ng-init="show[$index] = true;" ng-show="show[$index]">
+                                                    <div class="col-sm-10 backgrndGrey">
+                                                        <div class="col-sm-8" >
+                                                            <input type="checkbox" name="cc_noanswercv_{{$index}}" ng-model="geo.operations[c + 1].sendToQueue_schema[0].dial_schema[$index + 1].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswercv_{{$index}}'><label for="cc_noanswercv_{{$index}}"></label>
+
+                                                            <label for="cc_noanswercv_{{$index}}" class="greyColor">If no answer after </label> 
+                                                            <input type="text" class="ivr_select borderLeft borderRight backWhite dialInputSec" ng-pattern="/^[0-9+-]*$/" name="cc_seconds_{{$index}}" ng-model="geo.operations[c + 1].sendToQueue_schema[0].dial_schema[$index + 1].wait_time" placeholder="Seconds" ><span class="greyColor"> seconds, then ring </span>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="ivr_select backWhite dialInput" name="cc_phoneno_{{$index}}" ng-model="geo.operations[c + 1].sendToQueue_schema[0].dial_schema[$index + 2].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                        <button type="button" ng-click="incrementOtherQueueDialCount(c)" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                    </div>
+                                                    <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                        <button type="button" ng-click="show[$index] = false;
+                                                                    removeItem(geo.operations[c + 1].sendToQueue_schema[0].dial_schema, $index + 2)" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="geo.operations[c + 1].sendToQueue_schema[0].pressed_action == 'prompt'">
+                                            <div class="col-sm-5 backgrndGrey">
+                                                <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].sendToQueue_schema[0].prompt_schema[0].prompt_id">
+                                                    <option value="">Select Prompt</option>
+                                                    <option ng-repeat="prompt in prompts" ng-selected="prompt._id==geo.operations[c + 1].sendToQueue_schema[0].prompt_schema[0].prompt_id" value="{{prompt._id}}">{{prompt.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div ng-if="geo.operations[c + 1].sendToQueue_schema[0].pressed_action == 'queue'">
+                                            <div class="col-sm-5 backgrndGrey">
+                                                <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].sendToQueue_schema[0].sendToQueue_schema[0].queue_id">
+                                                    <option value="">Select Queue</option>
+                                                    <option ng-repeat="queue in queues" ng-selected="queue._id==geo.operations[c + 1].sendToQueue_schema[0].sendToQueue_schema[0].queue_id" value="{{queue._id}}">{{queue.queue_name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div ng-if="geo.operations[c + 1].sendToQueue_schema[0].pressed_action == 'extension'">
+                                            <div class="col-sm-5 backgrndGrey">
+                                                <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].sendToQueue_schema[0].ring_schema[0].phone_agent_id">
+                                                    <option value="">Select Phone Agent</option>
+                                                    <option ng-repeat="pa in pas" ng-selected="pa._id==geo.operations[c + 1].sendToQueue_schema[0].ring_schema[0].phone_agent_id" value="{{pa._id}}">{{pa.first_name}} {{pa.last_name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-if="geo.operations[c + 1].pressed_action == 'prompt'">
+                                        <div class="input-group form-group col-sm-10 backgrndGrey" >
+                                            <div class="col-sm-1 paddingLR5p">
+                                                <span style="" class="input-group-addon borderRight">Then</span>
+                                            </div>
+                                            <div class="col-sm-5 paddingLR5p marginTB7p borderRight">
+                                                <select class="ivr_select" name="cc_promptOptions" ng-model="geo.operations[c + 1].prompt_schema[0].pressed_action" ng-change="resetCount(c, geo.operations[c + 1].prompt_schema[0]);">
+                                                    <option value="">Select Prompt Option</option>
+                                                    <option ng-repeat="option in optionarr" ng-selected="option.value==geo.operations[c + 1].prompt_schema[0].pressed_action" value="{{option.value}}">{{option.display}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xs-6 paddingLR5p marginTB7p">
+                                                <div ng-if="geo.operations[c + 1].prompt_schema[0].pressed_action == 'dial' || geo.operations[c + 1].prompt_schema[0].pressed_action == 'reps'">
+                                                    <input type="text" class="ivr_select backWhite marginDialTB" ng-model="geo.operations[c + 1].prompt_schema[0].dial_schema[0].dial_to" name="phonenumber" placeholder="Enter Phone Number">
+                                                </div>
+                                                <div ng-if="geo.operations[c + 1].prompt_schema[0].pressed_action == 'prompt'">
+                                                    <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].prompt_schema[0].prompt_schema[0].prompt_id">
+                                                        <option value="">Select Prompt</option>
+                                                        <option ng-repeat="prompt in prompts" ng-selected="prompt._id==geo.operations[c + 1].prompt_schema[0].prompt_schema[0].prompt_id" value="{{prompt._id}}">{{prompt.name}}</option>
+                                                    </select>
+                                                </div>
+                                                <div ng-if="geo.operations[c + 1].prompt_schema[0].pressed_action == 'queue'">
+                                                    <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].prompt_schema[0].sendToQueue_schema[0].queue_id">
+                                                        <option value="">Select Queue</option>
+                                                        <option ng-repeat="queue in queues" ng-selected="queue._id==geo.operations[c + 1].prompt_schema[0].sendToQueue_schema[0].queue_id" value="{{queue._id}}">{{queue.queue_name}}</option>
+                                                    </select>
+                                                </div>
+                                                <div ng-if="geo.operations[c + 1].prompt_schema[0].pressed_action == 'extension'">
+                                                    <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].prompt_schema[0].ring_schema[0].phone_agent_id">
+                                                        <option value="">Select Phone Agent</option>
+                                                        <option ng-repeat="pa in pas" ng-selected="pa._id==geo.operations[c + 1].prompt_schema[0].ring_schema[0].phone_agent_id" value="{{pa._id}}">{{pa.first_name}} {{pa.last_name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="geo.operations[c + 1].prompt_schema[0].pressed_action == 'dial' || geo.operations[c + 1].prompt_schema[0].pressed_action == 'reps'">
+                                            <div class="col-sm-10 backgrndGrey" ng-init="(update)?'':initPromptDialCount(c)">
+                                                <div class="col-sm-8">
+                                                    <input type="checkbox" name="cc_noanswerss_{{c + 1}}" ng-model="geo.operations[c + 1].prompt_schema[0].dial_schema[0].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswerss_{{c + 1}}'><label for="cc_noanswerss_{{c + 1}}"></label>
+
+                                                    <label for="cc_noanswerss_{{c + 1}}" class="greyColor">If no answer after </label> <input type="text" class="borderLeft borderRight ivr_select backWhite dialInputSec" ng-model="geo.operations[c + 1].prompt_schema[0].dial_schema[0].wait_time" ng-pattern="/^[0-9+-]*$/" name="cc_seconds" placeholder="Seconds"> <span class="greyColor">seconds, then ring </span>
+                                                </div>
+                                                <div class="col-sm-4"><input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno" ng-model="geo.operations[c + 1].prompt_schema[0].dial_schema[1].dial_to" placeholder="Enter Phone Number" style="display:inline;" phone-input>
+                                                </div>
+                                            </div>
+                                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                <button type="button" ng-click="incrementOtherPromptDialCount(c)" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                            </div>
+                                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor: not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                            </div>
+
+                                            <div ng-repeat="n in []| range:promptdialc[c]">
+                                                <div ng-init="show[$index] = true;" ng-show="show[$index]">
+                                                    <div class="col-sm-10 backgrndGrey">
+                                                        <div class="col-sm-8" >
+                                                            <input type="checkbox" name="cc_noanswersc_{{$index}}" ng-model="geo.operations[c + 1].prompt_schema[0].dial_schema[$index + 1].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswersc_{{$index}}'><label for="cc_noanswersc_{{$index}}"></label>
+
+                                                            <label for="cc_noanswersc_{{$index}}" class="greyColor">If no answer after </label> 
+                                                            <input type="text" class="ivr_select borderLeft borderRight backWhite dialInputSec" ng-pattern="/^[0-9+-]*$/" name="cc_seconds_{{$index}}" ng-model="geo.operations[c + 1].prompt_schema[0].dial_schema[$index + 1].wait_time" placeholder="Seconds" ><span class="greyColor"> seconds, then ring </span>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="ivr_select backWhite dialInput" name="cc_phoneno_{{$index}}" ng-model="geo.operations[c + 1].prompt_schema[0].dial_schema[$index + 2].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                        <button type="button" ng-click="incrementOtherPromptDialCount(c);" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                    </div>
+                                                    <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                        <button type="button" ng-click="show[$index] = false;
+                                                                    removeItem(geo.operations[c + 1].prompt_schema[0].dial_schema, $index + 2)" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group" ng-if="geo.operations[c + 1].pressed_action == 'extension'">
+                                        <!--                                    <div class="col-sm-6 backgrndGrey">
+                                                                                <select name="cc_pa" class="ivr_select" ng-model="cc.ext_pa">
+                                                                                    <option value="">Select Phone Agent</option>
+                                                                                    <option value="1">Phone Agent 1</option>
+                                                                                    <option value="2">Phone Agent 2</option>
+                                                                                </select>
+                                                                            </div>-->
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" name="cc_noanswerExt_{{c}}" ng-model="geo.operations[c + 1].ring_schema[0].is_next_action" class="regular-checkbox solid-blue" id='cc_noanswerExt_{{c}}'><label for="cc_noanswerExt_{{c}}"></label>
+                                            <label for="cc_noanswerExt_{{c}}">If no answer after </label><input type="text" class="dialInputSec" name="cc_seconds" ng-model="geo.operations[c + 1].ring_schema[0].wait_time" placeholder="Seconds"> seconds.
+                                            <div ng-show="geo.operations[c + 1].ring_schema[0].is_next_action">
+                                                <div class="col-sm-10" >
+                                                    <input type="radio" value="true" name="cc_messagebn_{{c}}" ng-model="geo.operations[c + 1].ring_schema[0].leave_message" class="regular-radio big-radio" id='cc_message_allow_{{c}}'><label for="cc_message_allow_{{c}}"></label>
+                                                    <label for="ivr_message">Allow the user to leave a message for the Phone Agent</label>
+                                                </div>
+                                                <div class="col-sm-10" >
+                                                    <input type="radio" value="false" name="cc_messagebn_{{c}}" ng-model="geo.operations[c + 1].ring_schema[0].leave_message" class="regular-radio big-radio" id='cc_message_dropdown_{{c}}'><label for="cc_message_dropdown_{{c}}"></label>
+                                                    <label for="cc_message">Select From Dropdown</label>
+                                                </div>
+                                                <div class="col-sm-5 col-sm-offset-1 backgrndGrey" ng-show="geo.operations[c + 1].ring_schema[0].leave_message == 'false'">
+                                                    <select class="ivr_select" name="cc_promptOptions" ng-model="geo.operations[c + 1].ring_schema[0].pressed_action" ng-change="resetCount(c, geo.operations[c + 1].ring_schema[0]);">
+                                                        <option value="">Select Prompt Option</option>
+                                                        <option ng-repeat="option in optionarr" ng-selected="option.value==geo.operations[c + 1].ring_schema[0].pressed_action" value="{{option.value}}">{{option.display}}</option>
+                                                    </select>
+                                                </div>
+                                                <div ng-if="geo.operations[0].ring_schema[0].pressed_action == 'dial' || geo.operations[0].ring_schema[0].pressed_action == 'reps'">
+                                                    <div class="col-sm-5 backgrndGrey" style="margin-left: 5px;">
+                                                        <input type="text" class="ivr_select backWhite" name="phonenumber" ng-model="geo.operations[c + 1].ring_schema[0].dial_schema[0].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                    </div>
+                                                    <div class="col-sm-10 backgrndGrey">
+                                                        <div class="col-sm-8">
+                                                            <input type="checkbox" name="cc_noanswergh_{{c}}" ng-model="geo.operations[c + 1].ring_schema[0].dial_schema[0].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswergh_{{c}}'><label for="cc_noanswergh_{{c}}"></label>
+
+                                                            <label for="cc_noanswergh_{{c}}" class="greyColor">If no answer after </label> <input type="text" class="borderLeft borderRight ivr_select backWhite dialInputSec" ng-model="geo.operations[c + 1].ring_schema[0].dial_schema[0].wait_time" ng-pattern="/^[0-9+-]*$/" name="cc_seconds" placeholder="Seconds"> <span class="greyColor">seconds, then ring </span>
+                                                        </div>
+                                                        <div class="col-sm-4"><input type="text" class="borderLeft ivr_select backWhite dialInput" name="cc_phoneno" ng-model="geo.operations[c + 1].ring_schema[0].dial_schema[1].dial_to" placeholder="Enter Phone Number" style="display:inline;" phone-input>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                        <button type="button" ng-click="incrementOtherExtDialCount(c);" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                    </div>
+                                                    <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                        <button type="button" ng-disabled="true" class="btn btn-primary plus-btn redBack" style="cursor: not-allowed"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                    </div>
+
+                                                    <div ng-repeat="n in []| range:extdialc[c]">
+                                                        <div ng-init="show[$index] = true;" ng-show="show[$index]">
+                                                            <div class="col-sm-10 backgrndGrey" ng-init="(update)?'':initExtDialCount(c)">
+                                                                <div class="col-sm-8" >
+                                                                    <input type="checkbox" name="cc_noanswerjk_{{$index}}" ng-model="geo.operations[c + 1].ring_schema[0].dial_schema[$index + 1].is_next_dial" class="regular-checkbox solid-blue" id='cc_noanswerjk_{{$index}}'><label for="cc_noanswerjk_{{$index}}"></label>
+
+                                                                    <label for="cc_noanswerjk_{{$index}}" class="greyColor">If no answer after </label> 
+                                                                    <input type="text" class="ivr_select borderLeft borderRight backWhite dialInputSec" ng-pattern="/^[0-9+-]*$/" name="cc_seconds_{{$index}}" ng-model="geo.operations[c + 1].ring_schema[0].dial_schema[$index + 1].wait_time" placeholder="Seconds" ><span class="greyColor"> seconds, then ring </span>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <input type="text" class="ivr_select backWhite" name="cc_phoneno_{{$index}}" ng-model="geo.operations[c + 1].ring_schema[0].dial_schema[$index + 2].dial_to" placeholder="Enter Phone Number" phone-input>
+                                                                </div>
+                                                            </div>
+                                                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                                <button type="button" ng-click="incrementOtherExtDialCount(c);" class="btn btn-primary plus-btn greenBack"> <span><i class="glyphicon glyphicon-plus"></i></span> </button>
+                                                            </div>
+                                                            <div class="pull-left col-sm-1 dial-plus dial-plus-pad10">
+                                                                <button type="button" ng-click="show[$index] = false;
+                                                                            removeItem(geo.operations[c + 1].ring_schema[0].dial_schema, $index + 2)" class="btn btn-primary plus-btn redBack"> <span><i class="glyphicon glyphicon-minus"></i></span> </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="geo.operations[c + 1].ring_schema[0].pressed_action == 'prompt'">
+                                                    <div class="col-sm-5 backgrndGrey" style="margin-left: 5px;">
+                                                        <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].ring_schema[0].prompt_schema[0].prompt_id">
+                                                            <option value="">Select Prompt</option>
+                                                            <option ng-repeat="prompt in prompts" ng-selected="prompt._id==geo.operations[c + 1].ring_schema[0].prompt_schema[0].prompt_id" value="{{prompt._id}}">{{prompt.name}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="geo.operations[c + 1].ring_schema[0].pressed_action == 'queue'">
+                                                    <div class="col-sm-5 backgrndGrey" style="margin-left: 5px;">
+                                                        <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].ring_schema[0].sendToQueue_schema[0].queue_id">
+                                                            <option value="">Select Queue</option>
+                                                            <option ng-repeat="queue in queues" ng-selected="queue._id==geo.operations[c + 1].ring_schema[0].sendToQueue_schema[0].queue_id" value="{{queue._id}}">{{queue.queue_name}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="geo.operations[c + 1].ring_schema[0].pressed_action == 'extension'">
+                                                    <div class="col-sm-5 backgrndGrey" style="margin-left: 5px;">
+                                                        <select class="ivr_select" name="cc_prompts" ng-model="geo.operations[c + 1].ring_schema[0].ring_schema[0].phone_agent_id">
+                                                            <option value="">Select Phone Agent</option>
+                                                            <option ng-repeat="pa in pas" ng-selected="pa._id==geo.operations[c + 1].ring_schema[0].ring_schema[0].phone_agent_id" value="{{pa._id}}">{{pa.first_name}} {{pa.last_name}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 mrgtp30 paddingLR5p">
+                            <div class="input-group form-group col-md-6 pull-left mainIvr">
+                                <span class="input-group-addon borderRight">Name</span>
+
+
+                                <div class="paddingLR5p col-xs-12 margin7p ">
+                                    <input type="text" ng-model="geo.geo_name" placeholder="Enter Name" name="ivr_name" class=" ivr_select backWhite ng-pristine ng-valid">
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-11">
+                                <input type="submit" value="Submit" ng-click="(geo_form.$invalid) ? geo_err = true : submitForm(geo)" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Call Routing - Geographic View Form -->

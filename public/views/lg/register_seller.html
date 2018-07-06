@@ -1,0 +1,94 @@
+<div class="tabsContainer col-sm-12">
+    <div class="panel panel-default" ng-init=" auto_recharge = false;
+            common_msg = false;
+            contracts = false;
+            media_agency = false;
+            payment = false;
+            marketing = false;
+            call_recording = false;">
+        <div class="panel-heading"><h3>Onboard a Lead Seller</h3><div class= "text-center text-danger" ng-show="common_msg">*Please complete the current tab before proceeding</div></div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav navtabs">
+                    <li ng-class="{active:1}"><a >Get Registered</a></li>
+
+                </ul>
+                <div class="tab-content">
+                    <div>
+                        <div class="user">
+
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div  class="form-group">
+                                    <form name="user" ng-init = "myerror = false" data-ng-submit="register_ls(userD)" novalidate  autocomplete = "off">
+                                        <div class="col-sm-10 form-group">
+                                            <input type="email" class="form-control" name="email" data-ng-model="userD.email" placeholder="Email" required>
+                                            <span class = "text-danger" ng-show="(user.email.$error.required) && myerror" class="error">Email is required</span>
+                                            <span class = "text-danger"  ng-show="user.email.$dirty && user.email.$error.email" >Invalid Email Address</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="password" class="form-control" name="pwd" data-ng-model="userD.password" placeholder="Password" required>
+                                            <span class = "text-danger" ng-show="myerror && user.pwd.$error.required">Password is required</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="firstName" ng-pattern="/^[A-Za-z+-]*$/" data-ng-model="userD.first_name"placeholder="First Name" required>
+                                            <span class = "text-danger" ng-show="(user.firstName.$error.required) && myerror">First Name is required</span>
+                                            <span class = "text-danger" ng-show="(user.firstName.$error.pattern) && myerror">First Name should have only alpahbets</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="lastName" ng-pattern="/^[A-Za-z+-]*$/" data-ng-model="userD.last_name"placeholder="Last Name" required>
+                                            <span class = "text-danger" ng-show=" user.lastName.$error.required && myerror">Last Name is required</span>
+                                            <span class = "text-danger" ng-show=" user.lastName.$error.pattern && myerror">Last Name should have only alphabets.</span>
+                                        </div>
+                                        <div class="col-sm-10 form-group">
+                                            <input type="text" class="form-control" name="phone" data-ng-model="userD.phone_no"placeholder="Contact Number"ng-minlength="8" ng-maxlength="15" ng-pattern="/^[0-9+-]*$/" required>
+                                            <span ng-show="user.phone.$error.minlength" class="text-danger">Contact number is too short.</span>
+                                            <span ng-show="user.phone.$error.maxlength"class="text-danger">Contact number is too long.</span>
+                                            <span ng-show="user.phone.$error.pattern && !user.phone.$pristine"
+                                                  class="text-danger">Contact Number should be number only.</span>
+                                            <span class = "text-danger" ng-show="myerror && user.phone.$error.required">Contact Number is required</span>
+                                        </div>
+                                        <div class="col-sm-5 form-group pull-left">
+                                        </div>
+                                        <div class="col-sm-5 form-group pull-left">
+                                            <input type="submit" ng-click = "(user.$invalid) ? myerror = true : setTab(1)" value="Next" class="btn btn-primary btn-block btn-flat">
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="isSet(15)">
+
+                        <div class="split-the-app">
+                            <h4>Congratulations!</h4>
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <form name="form" class="vertical-form">
+                                    <div  class="form-group">
+
+                                        <div class="col-sm-10">
+
+                                            <h5>Your information has been saved successfully. So what's next? The Lead Buyer can now log in to the system.</h5>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-5 pull-left">
+                                            <input type="submit" href ng-click="backToBoard()" value="On-board a New LB">
+
+                                        </div>
+                                        <div class="col-sm-5 pull-left">
+
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

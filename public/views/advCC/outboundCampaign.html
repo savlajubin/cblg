@@ -1,0 +1,314 @@
+<div class="tabsContainer col-sm-12">
+    <div class="panel panel-default" ng-init="setTab(0);
+            composee = false;
+            receiver = false;
+            preview = false;
+            congo = false;">
+        <div class="panel-heading"><h3>Outbound Call Campaign</h3><div class= "text-center text-danger" ng-show="common_msg">*Please complete the current tab before proceeding</div></div>
+        <div class="panel-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav navtabs">
+                    <li ng-class="{active:isSet(0)}"><a href ng-click="routeReload();">Schedule</a></li>
+                    <li ng-class="{active:isSet(1)}"><a href ng-click="(composee) ? setTab(1) : ''">Details</a></li>
+                    <!--<li ng-class="{active:isSet(2)}"><a href ng-click="(receiver) ? setTab(2) : '';">Whisper Message</a></li>-->
+                    <!--<li ng-class="{active:isSet(3)}"><a href ng-click="(preview) ? setTab(3) : '';">Preview & Send</a></li>-->
+                    <li ng-class="{active:isSet(2)}"><a href ng-click="(congo) ? setTab(2) : '';">Congratulations</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div ng-show="isSet(0)">
+                        <div class="user">
+                            <form name="message_type" class="vertical-form" ng-init="messageType = false;" novalidate>
+                                <div class="form-group">
+                                    <div class="pull-right">
+                                        <h4><a class="btn btn-primary" href ng-click="(message_type.$invalid) ? messageType = true : setTab(1)">Next</a></h4>
+                                    </div>
+                                </div>
+                                <h4>Schedule</h4>
+                                <div class="col-sm-9 col-sm-offset-1">
+                                    <!--<div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <input type="text" clss="form-control" name="desc" placeholder="Description" ng-model="compose.description" required>
+                                            <span class="col-sm-4 text-danger" ng-show="messageType && message_type.desc.$error.required">Please Enter Description</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <p>Send Message via :</p>
+                                            <div class="col-sm-5 pull-left">
+                                                <input type="radio" id="messageSMS" value="SMS" name="messagevia" ng-model="compose.mode" class="regular-radio big-radio" ng-checked="compose.message_via == 'SMS'" required>
+                                                <label for="messageSMS"></label>
+                                                <label for="messageSMS">SMS</label>
+                                            </div>
+                                            <div class="col-sm-5 pull-left">
+                                                <input type="radio" id="messageEmail" name="messagevia" value="Email" ng-model="compose.mode" class="regular-radio big-radio" ng-checked="compose.message_via == 'Email'" required>
+                                                <label for="messageEmail"></label>
+                                                <label for="messageEmail">Email</label>
+                                            </div>
+                                            <span class="col-sm-4 text-danger" ng-show="messageType && message_type.messagevia.$error.required">Please Select Message Type</span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <p>Message Type :</p>
+                                            <div class="col-sm-4">
+                                                <input type="radio" id="onetime" value="onetime" name="messagetype" ng-model="compose.frequency" class="regular-radio big-radio" ng-checked="compose.message_type == 'onetime'" required>
+                                                <label for="onetime"></label>
+                                                <label for="onetime">One Time Message</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="radio" id="recurring" name="messagetype" value="recurring" ng-model="compose.frequency" class="regular-radio big-radio" ng-checked="compose.message_type == 'recurring'" required>
+                                                <label for="recurring"></label>
+                                                <label for="recurring">Recurring Message</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="radio" id="weblead" name="messagetype" value="weblead" ng-model="compose.frequency" class="regular-radio big-radio" ng-checked="compose.message_type == 'weblead'" required>
+                                                <label for="weblead"></label>
+                                                <label for="weblead">Associate with Web Leads</label>
+                                            </div>
+                                            <span class="col-sm-4 text-danger" ng-show="messageType && message_type.messagetype.$error.required">Please Select Message Type</span>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group row" ng-show="compose.frequency == 'weblead'">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <select name="timezone" ng-model="compose.offer_id">
+                                                    <option value="">Select Offer</option>
+                                                    <option ng-repeat="offer in offers" value="{{offer._id}}">{{offer.vertical_category_details.title}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" ng-show="compose.frequency == 'onetime'">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-4 pull-left">
+                                                <input type="radio" id="now" value="now" name="frequency" ng-model="compose.method" class="regular-radio big-radio" ng-checked="compose.frequency == 'now'" ng-required="compose.message_type == 'onetime'">
+                                                <label for="now"></label>
+                                                <label for="now">Send Now</label>
+                                            </div>
+                                            <div class="col-sm-5 pull-left">
+                                                <input type="radio" id="later" name="frequency" value="later" ng-model="compose.method" class="regular-radio big-radio" ng-checked="compose.frequency == 'later'" ng-required="compose.message_type == 'onetime'">
+                                                <label for="later"></label>
+                                                <label for="later">Send Later</label>
+                                            </div>
+                                            <span class="col-sm-4 text-danger" ng-show="messageType && message_type.frequency.$error.required">Please Select</span>
+                                        </div>
+
+                                        <div ng-if="compose.method == 'later'">
+                                            <div class="form-group row" >
+                                                <div class="datePickerDiv col-sm-6">
+                                                    <input type="text" clss="ivr_select" name="date" placeholder="Date" ng-model="compose.mixeddate" date-format="MM/dd/yyyy" bs-datepicker style="height: 37px; margin: 3px;" ng-required="compose.frequency == 'later'">
+                                                    <span class="text-danger" ng-show="messageType && (message_type.date.$error.required || message_type.time.$error.required)">Please Select Date and Time</span>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-append">
+                                                        <input class="span2 ivr_select backWhite dialInputSec timeInput" bs-timepicker data-time-format="hh:mm a" name="time" ng-model="compose.time" autoclose="true" id="appendedInput" type="text" ng-required="compose.frequency == 'later'">
+                                                        <span class="add-on"><i class="glyphicon glyphicon-time"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <select name="timezone" ng-model="compose.timezone">
+                                                        <option value="">Select Timezone</option>
+                                                        <option ng-repeat="timezone in timezones" ng-selected="timezone.name==compose.timezone" value="{{timezone.name}}">{{timezone.text}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+
+
+                                    <div ng-ifX="compose.frequency == 'recurring'">
+                                        <div class="form-group row col-sm-3">
+                                            <div>
+                                                <select name="method" class="compose_select" ng-model="compose.method" ng-required="compose.frequency == 'recurring'">
+                                                    <option value="">Select</option>
+                                                    <option value="yearly" ng-selected="compose.method == 'yearly'">Yearly</option>
+                                                    <option value="monthly" ng-selected="compose.method == 'monthly'">Monthly</option>
+                                                    <option value="weekly" ng-selected="compose.method == 'weekly'">Weekly</option>
+                                                    <option value="daily" ng-selected="compose.method == 'daily'">Daily</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" ng-show="messageType && message_type.method.$error.required">Please Select</span>
+                                        </div>
+                                        <div class="form-group row col-sm-3" ng-if="compose.method == 'yearly'">
+                                            <div class="">
+                                                <select name="month" class="compose_select" ng-model="compose.month" ng-required="compose.frequency == 'recurring'">
+                                                    <option value="">Month</option>
+                                                    <option value="01" ng-selected="compose.month == 01">Jan</option>
+                                                    <option value="02" ng-selected="compose.month == 02">Feb</option>
+                                                    <option value="03" ng-selected="compose.month == 03">March</option>
+                                                    <option value="04" ng-selected="compose.month == 04">April</option>
+                                                    <option value="05" ng-selected="compose.month == 05">May</option>
+                                                    <option value="06" ng-selected="compose.month == 06">June</option>
+                                                    <option value="07" ng-selected="compose.month == 07">July</option>
+                                                    <option value="08" ng-selected="compose.month == 08">Aug</option>
+                                                    <option value="09" ng-selected="compose.month == 09">Sep</option>
+                                                    <option value="10" ng-selected="compose.month == 10">Oct</option>
+                                                    <option value="11" ng-selected="compose.month == 11">Nov</option>
+                                                    <option value="12" ng-selected="compose.month == 12">Dec</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" ng-show="messageType && message_type.month.$error.required">Please Select</span>
+                                        </div>
+                                        <div class="form-group row col-sm-3" ng-init="count = 31;" ng-if="compose.method == 'yearly' || compose.method == 'monthly'">
+                                            <div class="">
+                                                <select name="mdate" class="compose_select" ng-model="compose.date" ng-required="compose.frequency == 'recurring'">
+                                                    <option value="">Date</option>
+                                                    <option ng-repeat="n in []| range:count" ng-selected="compose.date == n" value="{{n}}">{{n}}</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" ng-show="messageType && message_type.mdate.$error.required">Please Select</span>
+                                        </div>
+                                        <div class="form-group row col-sm-3" ng-if="compose.method == 'weekly'">
+                                            <div class="">
+                                                <select name="day" class="compose_select" ng-model="compose.day" ng-required="compose.frequency == 'recurring'">
+                                                    <option value="">Day</option>
+                                                    <option value="0" ng-selected="compose.day == 0">Sun</option>
+                                                    <option value="1" ng-selected="compose.day == 1">Mon</option>
+                                                    <option value="2" ng-selected="compose.day == 2">Tue</option>
+                                                    <option value="3" ng-selected="compose.day == 3">Wed</option>
+                                                    <option value="4" ng-selected="compose.day == 4">Thurs</option>
+                                                    <option value="5" ng-selected="compose.day == 5">Fri</option>
+                                                    <option value="6" ng-selected="compose.day == 6">Sat</option>
+                                                </select>
+                                            </div>
+                                            <span class="text-danger" ng-show="messageType && message_type.day.$error.required">Please Select</span>
+                                        </div>
+                                        <div class="form-group row col-sm-3" ng-if="compose.method == 'yearly' || compose.method == 'monthly' || compose.method == 'weekly' || compose.method == 'daily'">
+                                            <div class="">
+                                                <div class="input-append">
+                                                    <input class="span2 ivr_select backWhite dialInputSec timeInput" bs-timepicker data-time-format="hh:mm a" data-time-type="number" name="mtime" ng-model="compose.time" autoclose="true" id="appendedInput" type="text" ng-required="compose.frequency == 'recurring'">
+                                                    <span class="add-on"><i class="glyphicon glyphicon-time"></i></span>
+                                                </div>
+                                            </div>
+                                            <span class="text-danger" ng-show="messageType && message_type.mtime.$error.required">Please Select</span>
+                                        </div>
+                                        <div class="form-group row" ng-if="compose.method == 'yearly' || compose.method == 'monthly' || compose.method == 'weekly' || compose.method == 'daily'">
+                                            <div class="col-sm-12">
+                                                <select name="timezone" ng-model="compose.timezone">
+                                                    <option value="">Select Timezone</option>
+                                                    <option ng-repeat="timezone in timezones" ng-selected="compose.timezone == timezone.name" value="{{timezone.name}}">{{timezone.text}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="submit" ng-click="(message_type.$invalid) ? messageType = true : setTab(1)" value="Next" class="btn btn-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div ng-show="isSet(1)">
+                        <div class="saas-onboard-contact-info">
+                            <form name="compose_frm" class="vertical-form" ng-init="composeFrm = false;" novalidate>
+                                <div class="form-group">
+                                    <div class="pull-right">
+                                        <h4><a class="btn btn-primary" href ng-click="setTab(0)">Previous</a>
+                                            <button type="submit" class="btn btn-primary" ng-click="(compose_frm.$invalid) ? composeFrm = true : setTab(2)">Next</button></h4>
+                                    </div>
+                                </div>
+                                <h4>Message</h4>
+                                <div class="col-sm-8 col-sm-offset-2">
+
+                                    <div class="col-sm-12">
+                                        <label>Phone Number</label>
+                                        <input phone-input class="form-control" ng-model="message.phone" />
+                                        <p>Enter a phone number to connect the caller to when the caller answers</p>
+                                    </div>
+
+                                    <hr class="col-sm-12">
+
+                                    <div class="col-sm-12">
+                                        <p>Pre Recorded Message</p>
+                                        <toggle-switch ng-model="preRecorded.status"></toggle-switch>
+                                    </div>
+                                    <div ng-if="preRecorded.status">
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <input type="radio" value="person" name="ivr_message" ng-model="preRecorded.when" class="regular-radio big-radio" id='preRecord_person'>
+                                                <label for="preRecord_person"></label>
+                                                <label for="preRecord_person">When a person answers</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="radio" value="voicemail" name="ivr_message" ng-model="preRecorded.when" class="regular-radio big-radio" id='preRecord_voicemail'>
+                                                <label for="preRecord_voicemail"></label>
+                                                <label for="preRecord_voicemail">When voicemail answers</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="ivr_prompts" ng-model="preRecorded.prompt">
+                                                    <option value="">Select Prompt</option>
+                                                    <option ng-repeat="prompt in prompts" value="{{prompt._id}}">{{prompt.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr class="col-sm-12">
+
+                                    <div class="col-sm-12">
+                                        <p>Whisper Message</p>
+                                        <toggle-switch ng-model="whisperMessage.status"></toggle-switch>
+                                    </div>
+                                    <div ng-if="whisperMessage.status">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="ivr_prompts" ng-model="whisperMessage.prompt">
+                                                    <option value="">Select Prompt</option>
+                                                    <option ng-repeat="prompt in prompts" value="{{prompt._id}}">{{prompt.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <input type="button" href ng-click="setTab(0)" value="Previous" class="btn btn-primary">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="submit" href ng-click="(compose_frm.$invalid) ? composeFrm = true : setTab(2)" value="Next" class="btn btn-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div ng-show="isSet(2)">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <form name="form" class="vertical-form">
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <h5>Information has been saved successfully.</h5>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+<!--                                    <div class="col-sm-5 pull-left">
+                                        <input type="submit" href ng-click="backToBoard()" value="Send Another Message">
+                                    </div>-->
+                                    <div class="col-sm-5 pull-left">
+                                        <input type="button" ng-click="goToNewLink('/' + currentRoleCode + '/dashboard')" value="Go to Dashboard">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--data-max-time="08:00 PM" data-min-time="08:00 AM"-->

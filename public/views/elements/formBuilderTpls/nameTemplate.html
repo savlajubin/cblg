@@ -1,0 +1,14 @@
+<div class="form-group fb_element">
+    <label for="{{formName + index}}" class="control-label headLabel" ng-class="{'fb-required':required}">{{label}}</label>
+    <div class="col-md-12">
+        <input type='hidden' ng-model="inputText" validator-required="{{required}}" validator-group="{{formName}}"/>
+        <div class="col-sm-6" style="padding-left: 0;">
+            <input type="text" name="{{label}}_pqry_firstName_pqry_{{index}}" ng-model="inputArray[0]" class="form-control" id="{{formName + index}}-0"/>
+            <p class='help-block'>{{firstNameLabel}}</p>
+        </div>
+        <div class="col-sm-6 pad0">
+            <input type="text" name="{{label}}_pqry_lastName_pqry_{{index}}" ng-model="inputArray[1]" class="form-control" id="{{formName + index}}-1"/>
+            <p class='help-block'>{{lastNameLabel}}</p>
+        </div>
+    </div>
+</div>

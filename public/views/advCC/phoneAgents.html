@@ -1,0 +1,246 @@
+<!-- start lsit the user -->
+<div ng-show="showListView" class="col-sm-12" ng-init="showUserList()">
+    <section class="content-header">
+        <div class="box-header">
+            <h1 class="box-title-new">Phone Agent List</h1>
+            <div class="box-tools">
+                <div class="input-group input-group-sm pull-left tableSearchBox">
+                    <input type="text" name="table_search" ng-model="query" ng-change="tableParams.filter(query)" class="form-control pull-right" placeholder="Search">
+
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <button class="btn google-add-btn pull-right" ng-click='getAddPhoneForm();'><i class="fa fa-plus"></i> Agent</button>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body" col-show-hide>
+                <div class="table-responsive">
+                    <table  class="table table-condensed ng-table-responsive" ng-table="tableParams" export-csv="csv">
+                        <tbody>
+                            <tr ng-class="$even ? 'oddcolor' : 'evencolor'" ng-repeat="user in $data" ng-if= "dataPresent">
+                                <td data-title="'#'"  ><span ng-if="params.page() ? true : false">{{params.page() > 1 ? ($index + 1 + ((params.page() - 1) * params.count())) : $index + 1}}</span></td>
+                                <td ng-show="showCol[0]" sortable="'first_name'" data-title="'Full Name'" data-title-text="Full Name">{{user.first_name}} {{user.last_name}}</td>
+                                <td ng-show="showCol[1]" sortable="'extension'" data-title="'Extension'" data-title-text="Extension">{{user.extension}}</td>
+                                <td ng-show="showCol[2]" data-title="'Queues'" data-title-text="Queues">
+                                    <span class="glyphicon glyphicon-eye-open actionBtn" data-html="true" data-title="{{user.associated_queues| associatedQueuesTooltip}}" data-placement="right" data-animation="am-flip-x" bs-tooltip></span>
+                                </td>
+                                <td ng-show="showCol[2]" data-title="'Calendar Scripts'" data-title-text="Calendar Scripts">
+                                    <span class="glyphicon glyphicon-eye-open actionBtn" data-html="true" data-title="{{user.calendarScript| calendarScriptTooltip}}" data-placement="right" data-animation="am-flip-x" bs-tooltip></span>
+                                </td>
+                                <td ng-show="showCol[3]" data-title="'Current Status'" data-title-text="Current Status">Not Logged In</td>
+                                <td data-title="'Action'" data-title-text="Action">
+                                    <span class="glyphicon glyphicon-edit actionBtn" title="Edit" ng-click="getEditPhoneForm(user._id)"></span>
+                                </td>
+                                <td header="'headerSettingGear.html'"></td>
+                            </tr>
+                            <tr ng-if="!dataPresent">
+                                <td colspan="100" class="text-center noDataFoundTd">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row pull-right downloadCsvLink">Download as <a href="javascript:void(0)" ng-click='hideDropDown();
+                    csv.generate($event, "PhoneAgents" + currentDate + ".csv");'>CSV</a></div>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/ng-template" id="headerSettingGear.html">
+    <div class="dropdown">
+    <button class="btn" type="button" data-ng-click="toggleDropDown();">
+    <span class="glyphicon glyphicon-cog "></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu gearbox" data-ng-if="isTHdropdown">
+    <li><a ng-click="showCol[0] = !showCol[0]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[0]]"></i> Full Name</a></li>
+    <li><a ng-click="showCol[1] = !showCol[1]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[1]]"></i> Extension</a></li>
+    <li><a ng-click="showCol[2] = !showCol[2]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[2]]"></i> Queues</a></li>
+    <li><a ng-click="showCol[3] = !showCol[3]"><i class="fa" ng-class="{'true':'fa-eye-slash', 'false':'fa-eye'}[showCol[3]]"></i> Current Status</a></li>
+    </ul>
+    </div>
+</script>
+<!-- End list the user -->
+
+
+<!-- start View the user -->
+<div ng-show="showViewUser">
+    <div class="Absolute-Center is-Responsive">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>User Details</h3></div>
+            <div class="panel-body">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <table class="table">
+                        <tr><td><b>First Name:</b></td><td>  {{userInfo.first_name}}</td></tr>
+                        <tr><td><b>Last Name:</b></td><td> {{userInfo.last_name}}</td></tr>
+                        <tr><td><b>Email:</b></td><td> {{userInfo.email}}</td></tr>
+                        <tr><td><b>Address :</b></td><td> {{userInfo.addressLine1}} {{userInfo.addressLine2}}</td></tr>
+                        <tr><td><b>City :</b></td><td> {{userInfo.city}}</td></tr>
+                        <tr><td><b>State :</b> </td><td>{{userInfo.state}}</td></tr>
+                        <tr><td><b>Zip :</b></td><td> {{userInfo.zip}}</td></tr>
+                        <tr><td><b>Status :</b></td><td> {{userInfo.status}}</td></tr>
+                        <tr><td><b>Role :</b> </td><td>{{userInfo.role_id.type}}</td></tr>
+                        <tr><td><b>Created:</b></td><td> {{userInfo.created| date:'medium'}}</td></tr>
+                        <tr><td><b>Modified:</b> </td><td>{{userInfo.modified| date:'medium'}}</td></tr>
+                    </table>
+                    <button class="btn  btn-primary" type="button" ng-click="back();">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end View the user -->
+
+<!-- start ADD phone number -->
+<div ng-show="showAddPhone">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><span ng-if="add">Add</span><span ng-if="!add">Edit</span> Phone Agent</h3></div>
+            <div class="panel-body">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <form role="form" name="addUser" ng-submit="createPA(formData, add)">
+                        <div class="col-sm-10 form-group">
+                            <input type="email" class="form-control" name="email" data-ng-model="formData.email" placeholder="Email" required>
+                            <span ng-show="addUser.email.$dirty && addUser.email.$error.required" class="error">Email is required</span>
+                            <span ng-show="addUser.email.$dirty && addUser.email.$error.email" class="error">Invalid Email Address</span>
+                        </div>
+                        <div ng-if="add">
+                            <div class="form-group col-sm-10">
+                                <input type="password" class="form-control" name="password" data-ng-model="formData.password" placeholder="Password" ng-required="true" ng-minlength="6">
+                                <span ng-show="addUser.password.$dirty && addUser.password.$error.required" class="error">Password is required</span>
+                                <span ng-show="addUser.password.$dirty && addUser.password.$error.minlength" class="error">Password must be atleast 6 characters</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <input type="text" class="form-control" name="firstName" data-ng-model="formData.first_name" placeholder="First Name *" required>
+                            <span ng-show="addUser.firstName.$dirty && addUser.firstName.$error.required" class="error">First Name is required</span>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <input type="text" class="form-control" name="lastName" data-ng-model="formData.last_name" placeholder="Last Name *" required>
+                            <span ng-show="addUser.lastName.$dirty && addUser.lastName.$error.required" class="error">Last Name is required</span>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <label>Extension</label>
+                            <input type="text" class="form-control" name="extension" data-ng-model="formData.extension" placeholder="Extension *" required ng-pattern="/^[0-9+-]*$/" ng-blur="uniqueExtensionChk(formData.extension)">
+                            <span ng-show="addUser.extension.$dirty && addUser.extension.$error.required" class="error">Extension is required</span>
+                            <span ng-show="addUser.extension.$dirty && addUser.extension.$error.pattern" class="error">Extension must be number</span>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <div class="form-control panel-heading" style="margin:5px auto;border: 2px solid #e7e7e7;height: auto;">
+                                <h4 class="panel-title">Select Queues (Optional)</h4>
+
+                                <isteven-multi-select
+                                    input-model="queueList"
+                                    output-model="formData.queues"
+                                    button-label="queue_name"
+                                    item-label="queue_name"
+                                    tick-property="ticked"
+                                    search-property="queue_name"
+                                    >
+                                </isteven-multi-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <div class="form-control panel-heading" style="margin:5px auto;border: 2px solid #e7e7e7;height: auto;">
+                                <h4 class="panel-title">Select Calendar Script</h4>
+
+                                <isteven-multi-select
+                                    input-model="calendarScriptList"
+                                    output-model="formData.calendarScript"
+                                    button-label="script_name"
+                                    item-label="script_name"
+                                    tick-property="ticked"
+                                    search-property="script_name"
+                                    >
+                                </isteven-multi-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <div class="simpleDragDrop row">
+                                <div class="col-md-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">Inbound Campaigns</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul dnd-list="models.InBoundlist" dnd-allowed-types="allowIn">
+                                                <li ng-repeat="item in models.InBoundlist"
+                                                    dnd-type="item.type"
+                                                    dnd-draggable="item"
+                                                    dnd-moved="models.InBoundlist.splice($index, 1)"
+                                                    dnd-effect-allowed="move"
+                                                    dnd-selected="models.selected = item"
+                                                    ng-class="{'selected': models.selected === item}"
+                                                    >
+                                                    {{item.label}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">My Campaigns</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul dnd-list="formData.pa_my_campaign" dnd-allowed-types="allowAll">
+                                                <li ng-repeat="item in formData.pa_my_campaign"
+                                                    dnd-type="item.type"
+                                                    dnd-draggable="item"
+                                                    dnd-moved="formData.pa_my_campaign.splice($index, 1)"
+                                                    dnd-effect-allowed="move"
+                                                    dnd-selected="models.selected = item"
+                                                    ng-class="{'selected': models.selected === item}"
+                                                    >
+                                                    {{item.label}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--                                    <div class="col-md-4">
+                                                                        <div class="panel panel-info">
+                                                                            <div class="panel-heading">
+                                                                                <h4 class="panel-title">Outbound Campaigns</h4>
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <ul dnd-list="models.OutBoundlist" dnd-allowed-types="allowOut">
+                                                                                    <li ng-repeat="item in models.OutBoundlist"
+                                                                                        dnd-type="item.type"
+                                                                                        dnd-draggable="item"
+                                                                                        dnd-moved="models.OutBoundlist.splice($index, 1)"
+                                                                                        dnd-effect-allowed="move"
+                                                                                        dnd-selected="models.selected = item"
+                                                                                        ng-class="{'selected': models.selected === item}"
+                                                                                        >
+                                                                                        {{item.label}}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>-->
+
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group">-->
+
+                        <div class="col-sm-5 form-group">
+                            <input type="button" value="Cancel" ng-click="back();" class="btn btn-primary btn-flat form-control">
+                        </div>
+
+                        <div class="col-sm-5 form-group">
+                            <input type="submit" ng-disabled="addUser.$invalid" value="Submit" class="btn btn-primary btn-flat form-control">
+                            <!--<button class="btn  btn-primary" type="button" ng-click="back();">Back</button>-->
+                        </div>
+                        <!--                        </div>-->
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

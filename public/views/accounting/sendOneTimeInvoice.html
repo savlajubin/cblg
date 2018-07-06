@@ -1,0 +1,334 @@
+<div class="animate-repeat col-sm-12">
+    <div class="panel panel-defaultX">
+        <div class="panel-heading">
+            <h3 class="text-center">
+                Send One Time Invoice
+            </h3>
+        </div>
+        <div class="panel-body pad0">
+            <form name="invoice_frmX" ng-init="initializeInvoice();
+                        err = false;" novalidate>
+                <div print-section>
+                    <!-- info row -->
+                    <div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+                            <div class="alert alert-danger" ng-show="err && (invoice_frmX.from_name.$error.required || invoice_frmX.from_address.$error.required || invoice_frmX.from_city.$error.required || invoice_frmX.from_country.$error.required)">
+                                <span ng-show="err && (invoice_frmX.from_name.$error.required || invoice_frmX.from_address.$error.required || invoice_frmX.from_city.$error.required || invoice_frmX.from_country.$error.required)" class="text-danger">Please provide sender's details</span>
+                            </div>
+                            <h4 class="from"> From</h4>
+
+                            <div class="form-group">
+                                <input type="text" required name="from_name" class="form-control name" placeholder="Name" ng-model="invoice.from_name">
+                                <input type="text" required name="from_address" class="form-control name" placeholder="Address" ng-model="invoice.from_address">
+                                <input type="text" required name="from_city" class="form-control name" placeholder="City, State, Zip" ng-model="invoice.from_city">
+                                <input type="text" required name="from_country" class="form-control name" placeholder="Country" ng-model="invoice.from_country">
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                            <div class="alert alert-danger" ng-show="err && (invoice_frmX.to_name.$error.required || invoice_frmX.to_address.$error.required || invoice_frmX.to_city.$error.required || invoice_frmX.to_country.$error.required)">
+                                <span ng-show="err && (invoice_frmX.to_name.$error.required || invoice_frmX.to_address.$error.required || invoice_frmX.to_city.$error.required || invoice_frmX.to_country.$error.required || invoice_frmX.to_email.$error.required)" class="text-danger">Please provide receiver's details</span>
+                            </div>
+                            <h4 class="from">To</h4>
+
+                            <select ng-change="getUserDetails(invoice.userId)" name="userList" class="form-control input-lgX" ng-model="invoice.userId">
+                                <option value="">Outside User</option>
+                                <option ng-repeat="user in userList" value="{{user._id}}" >{{user.email}}</option>
+                            </select>
+
+                            <div class="form-group details">                                    
+                                <input type="text" required name="to_name" class="form-control name" placeholder="Name" ng-model="invoice.to_name">
+                                <input type="text" required ng-if="!invoice.userId" name="to_email" class="form-control name" placeholder="Email" ng-model="invoice.to_email">
+                                <input type="text" required name="to_address" class="form-control name" placeholder="Address" ng-model="invoice.to_address">
+                                <input type="text" required name="to_city" class="form-control name" placeholder="City, State, Zip" ng-model="invoice.to_city">
+                                <input type="text" required name="to_country" class="form-control name" placeholder="Country" ng-model="invoice.to_country">
+                            </div>
+                        </div>
+                        <!-- /.col -->
+
+                        <div class="col-sm-4 invoice-col">
+                            <div class="form-horizontal invoice-form alert alert-danger" ng-show="err && (invoice_frmX.invoiceNumber.$error.required || invoice_frmX.invoiceDate.$error.required || invoice_frmX.invoiceDate.$error.required)">
+                                <span ng-show="err && (invoice_frmX.invoiceNumber.$error.required || invoice_frmX.invoiceDate.$error.required || invoice_frmX.invoiceDate.$error.required)" class="text-danger">Please provide invoice details</span>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <b>Invoice </b><input type="text" name="invoideNumber" class="form-controlX name2" placeholder="INV-0001" readonly="readonly" value="[Autogenerated]"><br>
+                            <b>Payment Due:</b> <input type="text" name="invoiceDate" required class="form-controlX name2" data-autoclose="1" date-format="MM/dd/yyyy" bs-datepicker placeholder="03/31/2016" ng-model="invoice.invoice_date"><br>
+                            <b>Due Date: </b><input type="text" name="dueDate" required class="form-controlX name2" data-autoclose="1" date-format="MM/dd/yyyy" bs-datepicker placeholder="04/30/2016" ng-model="invoice.payment_due_date">
+
+                        </div>
+                        <!-- /.col -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="item-border">
+                                        <th>Item</th>
+                                        <th>Description</th>
+                                        <th>Lead/Call Price</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                        <th print-remove></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="item-row" style="border-bottom: 1px solid #e0e0e0;" ng-repeat="(nIndex, n) in ngRepeater">
+                                        <td class="item">
+                                            <input type="text" name="item" required class="form-control name" placeholder="Item name/description"  ng-model="invoice.record[nIndex].item">
+                                            <span ng-show="err && ((invoice.record[nIndex].item)?false:true)" class="text-danger">Please provide item</span>
+                                        </td>
+                                        <td class="item">
+                                            <textarea class="form-control name" name="description_{{nIndex}}" id="description_{{nIndex}}" placeholder="Description" rows="1" cols="90" ng-model="invoice.record[nIndex].description" required></textarea>
+                                            <span ng-show="err && ((invoice.record[nIndex].description)?false:true)" class="text-danger">Provide description</span>
+                                        </td>
+                                        <td class="item1">                                                
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="text" required name="callRate" class="form-control name borderGry dollarInput" placeholder="0.00" ng-keyup="invoice.record[nIndex].amount = (invoice.record[nIndex].unit_price * invoice.record[nIndex].qty); calculateTotal();" ng-model="invoice.record[nIndex].unit_price">
+                                            </div>                                                
+                                            <span ng-show="err && ((invoice.record[nIndex].unit_price)?false:true)" class="text-danger">Enter amount</span>
+                                            <span ng-show="err && ((checkIsValid(invoice.record[nIndex].unit_price, 'amount'))?false:true)" class="text-danger">Enter valid amount</span>
+                                        </td>
+                                        <td>
+                                            <input type="text" required name="quantity" class="form-control name borderGry dollarInput" placeholder="0.00" ng-keyup="invoice.record[nIndex].amount = (invoice.record[nIndex].unit_price * invoice.record[nIndex].qty); calculateTotal();" ng-model="invoice.record[nIndex].qty">
+                                            <span ng-show="err && ((invoice.record[nIndex].qty)?false:true)" class="text-danger">Enter quantity</span>
+                                            <span ng-show="err && ((checkIsValid(invoice.record[nIndex].qty, 'quantity'))?false:true)" class="text-danger">Enter valid quantity.</span>
+                                            <span ng-show="err && ((checkIfNotZero(invoice.record[nIndex].qty))?false:true)" class="text-danger">Quantity should be greater than zero.</span>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="text" readonly class="form-control name dollarInput" ng-model="invoice.record[nIndex].amount" placeholder="0.00" >
+                                            </div>
+                                        </td>
+                                        <td print-remove class="col-sm-1" style="padding: 12px 35px;font-weight:500;font-size:22px;">
+                                            <a><i class="fa fa-minus-circle text-danger" ng-click="decrementCount(nIndex)"></i></a>
+                                            <!--<a ng-click="ngRepeater.push({})"><i class="fa fa-plus-circle"></i></a>-->
+                                        </td>
+                                    </tr>
+                                    <tr print-remove class="item-row" style="font-size: 16px; padding-left: 20px;">
+                                        <td colspan="100" class="text-center"><a ng-click="ngRepeater.push({})"><i class="fa fa-plus-circle"></i> Add Item</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-xs-6">
+                            <!--<p class="lead">Payment Methods:</p>-->
+                            <span>Characters left: {{300 - invoice.notes.length}}</span>
+
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                <textarea type="text" class="form-control" placeholder="This section will be automatically populated with the eCheck Information of the invoice sender (Put maximum 300 characters)" rows="6" cols="60" ng-model="invoice.notes" maxlength="300"></textarea>
+                            </p>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-xs-6">
+                            <p class="lead">Amount</p>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th style="width:50%">Subtotal:</th>
+                                        <td>${{invoice.totalAmount| number :2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Amount Paid:</th>
+                                        <td>${{ 0 | number:2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Balance Due:</th>
+                                        <td>${{invoice.totalAmount| number :2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total:</th>
+                                        <td>${{invoice.totalAmount| number :2}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <div class="form-group row" print-hide>
+                        <div class="col-sm-7 col-sm-offset-3 mrgtp30">
+                            <input type="button" value="Send" ng-click="(invoice_frmX.$invalid) ? err = true : invoiceSubmit(invoice)" class="btn btn-primary btn-flat col-sm-10 btn-lg">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--<div ng-show="!showInvoice" class="panel-body pad0 margin3  ">-->
+
+        <script type="text/ng-template" id="invoiceForm.html">
+
+            <div class="panel-body pad0 margin3  ">
+            <form id="sendmail_form" name="sendmail_form" style="padding:0;" class="col-sm-6 col-sm-offset-3" ng-init="errEmail = false;">
+
+            <div class="row" style="margin:0.3% 7% 5% 0;">
+            <div class="col-sm-12 col-sm-offset-10">
+            <i class="fa  fa-eye fa-2x action actionBtn" title="Invoice Preview" data-animation="am-fade-and-slide-top" content-template  ="/views/accounting/invoiceTemplatePreview.html" ng-click="showPreview('onetime', invoice.record)" bs-modal="modal"></i>
+            <i class="fa  fa-print fa-2x action actionBtn" print-avoid-break print-btn></i>
+            <i class="fa  fa-file-pdf-o fa-2x action actionBtn"  ng-click="pdfGenerate(invoice)"></i>
+            <!--<i class="fa fa-floppy-o fa-2x action actionBtn"  ng-click="(invoice_frmX.$invalid) ? err = true : invoiceSubmit(invoice)"></i>-->
+            </div>
+            </div>
+            <div class="col-sm-12">
+            <div class="form-group">                        
+            <input class="form-control" required type="email" ng-model="formData.email" name="email" placeholder="Email">
+            <span ng-show="errEmail && sendmail_form.email.$error.required" class="text-danger">Please provide email</span>
+            <span ng-show="errEmail && sendmail_form.email.$error.email" class="text-danger">Please enter valid email</span>
+            </div>
+            </div>
+            <div class="col-sm-6">
+            <div class="form-group">
+            <input class="topbutton btn btn-primary" type="button" ng-click="(sendmail_form.$invalid) ? errEmail = true : sendMailInvoice(formData)" value="Send Mail">
+            </div>
+            </div>
+            <div class="col-sm-6">
+            <div class="form-group">
+            <input class="topbutton btn btn-primary" type="button" ng-click="showInvoice = true" value="Cancel">
+            </div>
+            </div>
+            </form>
+            </div>
+        </script>
+    </div>
+
+
+
+    <style type="text/css">
+        .from {font-weight:bold; color:#000000; margin-left: 12px; font-size:14px;}
+        .details {text-align:left;}
+        .container { border: 1px solid;}
+        .vat{width:100% !important;}
+        .name {
+            border: medium none;
+            border-radius: 0px;
+            box-shadow: none;
+            height:30px;
+            margin-top: 3px;
+        }
+        .name2 {
+            border: medium none;
+            border-radius: 0px;
+            box-shadow: none;
+            height:30px;
+            margin-top:3px;
+
+        }
+        .name:focus {border-color: none;box-shadow: none;}
+        .name2:focus {border-color: none;box-shadow: none;}
+        .invoice {text-transform:uppercase; font-size:3em; color:#000000; margin-bottom: 189px; margin-top:0px;padding-left:30px; float:Right;}
+        .invoice-text{float:right;}
+        .space {margin-right:10px;}
+        .item-row {background-color: #FFFFFD !important;}
+        .item {width: 30%;}
+        .item1 {width: 12%;}
+        .item-border {background-color: rgb(66, 139, 202);color: white !important;}
+        .invoice-form {float:right;}
+        .invoice-bottom {margin-bottom:0px !important;}
+        .invoice-align {text-align:end;}
+        .action{ opacity: 0.4; }
+        .action:hover{ opacity: 1; color:rgb(66, 139, 202); }
+        .margin3{ margin-top: 3% }
+
+        .borderGry {
+            background-color: #eee;
+        }
+        td input.form-control[readonly=""] {
+            background-color: #ffee99;
+        }
+
+        .dollarInput{
+            margin: 0px;
+            border: 1px solid #e0e0e0;
+        }
+
+        /*media css start*/
+
+        @media screen and (max-width:767px) {
+            .invoice {
+                margin-bottom: 30px;
+                margin-top: 0px;
+                float: left;
+                font-size: 1.5em;
+            }
+            .name {
+                text-align: center;
+            }
+            .from {
+                text-align: center;
+            }
+            .invoice-align {
+                text-align: center;
+            }
+            .invoice {
+                text-align: center;
+                float: none;
+            }
+            .vat {
+                margin-left: 0px;
+            }
+            .total-text {
+                line-height: 15px;
+                margin-right: 80px;
+            }
+            .invoice-form {
+                margin-bottom: 20px;
+                float: initial;
+            }
+        }
+
+        @media screen and (max-width:380px) {
+            .invoice {
+                margin-bottom: 30px;
+                margin-top: 0px;
+                float: left;
+                font-size: 1.3em;
+                padding-left: 0;
+                text-align: left;
+            }
+            .name {
+                text-align: left;
+            }
+            .from {
+                text-align: left;
+            }
+            .invoice-align {
+                text-align: left;
+            }
+            .vat {
+                margin-left: 0px;
+            }
+            .total-text {
+                line-height: 15px;
+                margin-right: 80px;
+            }
+            .invoice-form {
+                margin-bottom: 20px;
+            }
+
+            .table-form .form-control {width:inherit;}
+
+            .name {
+
+                white-space: inherit;
+                width: 200px !important;
+            }
+
+        }
+
+        @media print {
+            .invoice-col{width:33.33% !important;}
+        }
+
+        /*media css end*/
+    </style>

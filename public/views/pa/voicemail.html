@@ -1,0 +1,57 @@
+<!-- Main Content -->
+<div class="container1 voicemail" ng-controller="voice_mailHistoryCtrl">
+    <div class="row">
+        <div class="page page-table">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>Greeting MP3</h3></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-10 col-sm-10 col-md-10 col-md-offset-1 col-xs-offset-1">
+                            <div ng-show="error_msg" class="alert alert-danger">{{error_msg}}</div>							
+                            <div class="set-voicemail">
+                                <p>In order to upload a personalized greeting, please record your greeting on your computer as an mp3. Recording an mp3 is fairly simple, but the process varies depending on the type of computer you are using. Just Google it - 'record an mp3 using a ____ computer (ex. Windows 10)'.</p>
+                                <p>&nbsp;</p>
+                                <form class="form-horizontal" role="form" name="greeting_form">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-3 col-md-offset-1">
+                                                <label for="inputEmail3" class="control-label">Set a greeting mp3 for your voicemail</label>
+                                            </div>
+                                            <div class="col-sm-6 col-md-4 col-md-offset-0">
+                                                <div ng-show="success_msg" class="chkbox"><img alt="right" src="assets/images/simple-blue-tick-md.png" width="25"></div>
+                                                <input type="file" title="Choose Contract File"  name="greeting_audio" id="greeting_audio" class="btn-primary" data-file-model="greeting_audio" ng-file-select="onAudioFileSelect($files)" onclick="this.value = null" accept="audio" required 
+                                                       />
+                                            </div>			
+                                            <div class="col-sm-3 col-md-3 col-md-offset-0" data-ng-controller="voice_mailHistoryCtrl">
+                                                <ng-progress></ng-progress>
+                                            </div>
+                                        </div>		
+                                    </div>		
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-md-offset-4">
+                                                <div>Current Voicemail Greeting: {{greeting_audio_name}} </div>
+                                            </div>		
+                                        </div>
+                                    </div>								
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-4 col-sm-3 col-md-1 col-md-offset-4 mrgRt3">
+                                                <button type="submit" class="btn btn-primary btn-flat" data-ng-disabled="greeting_form.$invalid" data-ng-click="uploadGreeting()">Upload</button>
+                                            </div>
+                                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                                <div><a href="javascript:void(0);" class="btn btn-primary btn-flat mrgRt5" ng-click='get_greeting_audio.paused ? get_greeting_audio.play() : get_greeting_audio.pause()' >{{get_greeting_audio.paused ? 'Play' : 'Pause'}}</a><a href="javascript:void(0);" class="btn btn-primary btn-flat" ng-click='get_greeting_audio.restart()' data-ng-show="!get_greeting_audio.paused">Stop</a><p></p></div>
+                                            </div>	
+                                        </div>
+                                    </div>							
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>			
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This will be the main page for voicemail. There is another page linked to this called 'check-messages'. I added a link for voicemail in the header file for PA. -->

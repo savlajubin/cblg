@@ -1,0 +1,123 @@
+
+
+<form print-section id="invoice_form" name="invoice_form" action="" method="post" enctype="multipart/form-data" style="padding:0;"> 
+<table print-table="people" id="main_table_wrapper"> 
+<tr> 
+<td> 
+<!-- TB 1 --> 
+<table style="width:100%; margin-left:0px;"> 
+<tr> 
+<td style="text-align:left;padding-top:15px;"> 
+<!-- TB 2 --> 
+<table > 
+<tr print-remove> 
+<td style="height:10px;"> 
+</td> 
+</tr> 
+<tr> 
+<td colspan=100 width="100%" class="td-1"> 
+<!-- TB 3 --> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table-1"> 
+<tr> 
+<td> 
+<table border=0 cellpadding=0 cellspacing=0 style="width:100%;"> 
+<tr style="vertical-align:bottom;"> 
+<td style="padding:0px; margin:0px;"><font style="font-size:18px;font-family:verdana;color:#3c3c3c;">From</font> 
+</td> 
+<td style="padding:0px; margin:0px;text-align:right;"> <font style="font-size:28px;font-weight:bold; letter-spacing:5px; font-family:arial;color:#808080;"> 
+
+<span id="invoiceHeadlineNoLogo" style="position:relative; z-index:100; margin-bottom:-14px;"> <b>' + invoice.heading + '</b> 
+</span> </font> 
+</td> 
+</tr> 
+</table> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+<!-- TB 4 --> 
+<table border=0 cellspacing=0 cellpadding=0 style="width:100%;"> 
+<tr> 
+<td rowspan=2 style="vertical-align:top;"> 
+<!-- TB 5 --> 
+<table border=0 cellpadding=0 cellspacing=0 style="margin-top:5px;"> 
+<tr style="height:25px;"> 
+<td ng-show="invoice.from_name"> ' + invoice.from_name + ', 
+</td> 
+</tr> 
+<tr> 
+<td style="height:5px;"> 
+</td> 
+</tr> 
+<tr> 
+<td ng-show="invoice.from_address">' + invoice.from_address + ', 
+</td> 
+</tr> 
+<tr> 
+<td style="padding:0px; margin:0px;padding-top:25px;padding-bottom:5px;"><font style="font-size:18px;font-family:verdana;color:#3c3c3c;">To</font> 
+</td> 
+</tr> 
+<tr style="height:25px;"> 
+<td ng-show="invoice.to_name"> ' + invoice.to_name + ', 
+</td> 
+</tr> 
+<tr> 
+<td style="height:5px;"> 
+</td> 
+</tr> 
+<tr > 
+<td ng-show="invoice.to_address">' + invoice.to_address + ' 
+</td> 
+</tr> 
+<!-- TB 5 --> 
+</table> 
+</td> 
+<td style="border:0px solid red; padding-right:0px; width:495px; text-align:right;vertical-align:top;"> 
+</td> 
+</tr> 
+<tr> 
+<td style="vertical-align:bottom;"> 
+<!-- TB 5 --> 
+<table border=0 cellpadding=0 cellspacing=0 style="height: 100%; vertical-align: bottom; border: 1px solid white; float: right; margin-bottom: 10px;"> 
+<tr> 
+<td style="width:146px; padding-right:8px;text-align:right;font-weight:bold;font-family:verdana;font-size:13px;color:#3c3c3c"> Invoice # : 
+</td> 
+<td >' + invoice.invoice_number + ' 
+</td> 
+</tr> 
+<tr> 
+<td style="padding-right:8px;text-align:right;font-weight:bold;font-family:verdana;font-size:13px;color:#3c3c3c;"> Invoice Date : 
+</td> 
+<td > ' + invoice.invoice_date + ' 
+</td> 
+</tr> 
+<tr> 
+<td style="padding-right:8px;text-align:right;font-weight:bold;font-family:verdana;font-size:13px;color:#3c3c3c;"> Due Date : 
+</td> 
+<td > ' + invoice.payment_due_date + ' 
+</td> 
+</tr> 
+<!-- TB 5 --> 
+</table> 
+</td> 
+</tr> 
+<!-- TB 4 --> 
+</table> 
+</td> 
+</tr> 
+<tr> 
+<td colspan=100 style="width:100%;vertical-align:top;padding-top:35px;"> 
+<!-- TB 4 --> 
+<table id="dataTable" border=1 cellpadding=0 cellspacing=0 width="100%" style="vertical-align:top;"><tbody ng-init="amount = [1, 2, 3, 4]"> 
+<tr id="topRow" style="background-color:#54A0E7;height:30px;"> 
+<th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:8px;text-align:left;">Item 
+</th> 
+<th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:5px;text-align:left;">Description 
+</th> 
+<th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:0px;text-align:right;padding-right:4px;">Lead/Call Price 
+</th> 
+<th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:0px;text-align:right;padding-right:4px;">Quantity 
+</th> 
+<th style="color:#FFFFFD;font-family:arial;font-size:14px;font-weight:400;padding-left:0px;text-align:right;padding-right:10px;">Amount 
+</th> 
+</tr>

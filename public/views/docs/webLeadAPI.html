@@ -1,0 +1,104 @@
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h2>Documentation</h2></div>
+        <div class="panel-body pad0">
+            <div class="col-md-3">
+                <div class="panel-group" role="tablist" bs-collapse>
+                    <div class="panel" ng-class="{'panel-info': activeGroup != group,'panel-primary':activeGroup == group}">
+                        <div bs-collapse-toggle class="panel-heading" role="tab">
+                            <h4 class="panel-title">
+                                Web Lead
+                            </h4>
+                        </div>
+                        <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                            <div class="panel-body">
+                                <p>Create Web Lead</p>
+                                <!--<a href="#">Create Web Lead</a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 panel panel-default" style="border-radius:0;background-color:#f1f4f6">
+                <h4 class="col-md-12 panel-heading">
+                    Create Web Lead
+                </h4>
+                <div class="panel-body">
+                    <label class="label label-info">POST {{baseURL}}/api_restApi/createWebLead</label>
+                    <h5>REQUEST PARAMS</h5>
+                    <p>Request paramaters are sent via an HTTP POST should be URL Encoded</p>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>label</td>
+                                <td>Label describes the input a form creater set. Keep it unchanged from the request parameters you get on Campaign listing page "Get Lead API Parameters"</td>
+                            </tr>
+                            <tr>
+                                <td>component</td>
+                                <td>Component describes the type of input a form creater set. Keep it unchanged from the request parameters you get on Campaign listing page "Get Lead API Parameters"</td>
+                            </tr>
+                            <tr>
+                                <td>index</td>
+                                <td>Index is the index of field in the created form. Keep it unchanged from the request parameters you get on Campaign page "Get Lead API Parameters"</td>
+                            </tr>
+                            <tr>
+                                <td>value</td>
+                                <td>This is the value from the end user</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h5>Response</h5>
+                    <pre>{{{status:200,message:'Lead has been added successfully!'}| json}}</pre>
+                    
+                    <p>Status codes given in json response stands for -</p>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>200</td>
+                                <td>OK (Standard response for successful HTTP requests)</td>
+                            </tr>
+                            <tr>
+                                <td>400</td>
+                                <td>Bad Request (The server cannot or will not process the request due to an apparent client error - malformed request syntax)</td>
+                            </tr>
+                            <tr>
+                                <td>401</td>
+                                <td> Unauthorized </td>
+                            </tr>
+                            <tr>
+                                <td>403</td>
+                                <td> Forbidden (The request was a valid request, but the server is refusing to respond to it)</td>
+                            </tr>
+                            <tr>
+                                <td>500</td>
+                                <td> Internal Server Error (A generic error message, given when an unexpected condition was encountered and no more specific message is suitable)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+<!--            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Response</h4>
+                    </div>
+                    <div class="panel-body">
+                        some response
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>
